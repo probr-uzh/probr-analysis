@@ -1,0 +1,11 @@
+anyjson==0.3.3
+Django==1.8
+django-bower==5.0.4
+django-compressor==1.5
+django-websocket-redis==0.4.4
+djangorestframework==3.1.1
+gevent==1.0.1
+pymongo==3.0.1
+redis==2.10.3
+six==1.9.0
+django-filter==0.10.0

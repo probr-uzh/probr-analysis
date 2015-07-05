@@ -1,0 +1,50 @@
+{% load staticfiles %}
+{% load compress %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="/analysis/">
+    <title>Probr</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    {% compress css %}
+        <link rel="stylesheet" type="text/less" href="{% static "assets/stylesheet.less" %}">
+    {% endcompress %}
+
+</head>
+<body ng-app="probrApp">
+<div ui-view=""></div>
+
+{% compress js %}
+    <script src="{% static "bower_components/lodash/lodash.js" %}"></script>
+    <script src="{% static "bower_components/Chart.js/Chart.js" %}"></script>
+    <script src="{% static "bower_components/angular/angular.js" %}"></script>
+    <script src="{% static "bower_components/angular-ui-router/release/angular-ui-router.js" %}"></script>
+    <script src="{% static "bower_components/angular-bootstrap/ui-bootstrap-tpls.js" %}"></script>
+    <script src="{% static "bower_components/angular-resource/angular-resource.js" %}"></script>
+    <script src="{% static "bower_components/jquery/dist/jquery.js" %}"></script>
+    <script src="{% static "bower_components/angular-chart.js/angular-chart.js" %}"></script>
+    <script src="{% static "bower_components/angular-websocket/angular-websocket.js" %}"></script>
+    <script src="{% static "bower_components/angular-scroll-glue/src/scrollglue.js" %}"></script>
+    <script src="{% static "app/app.js" %}"></script>
+    <script src="{% static "app/captures/captures.js" %}"></script>
+    <script src="{% static "app/captures/captures.controller.js" %}"></script>
+    <script src="{% static "app/packets/packets.js" %}"></script>
+    <script src="{% static "app/packets/packets.controller.js" %}"></script>
+    <script src="{% static "app/devices/devices.js" %}"></script>
+    <script src="{% static "app/devices/devices.controller.js" %}"></script>
+    <script src="{% static "app/devices/deviceCpuChart/deviceCpuChart.directive.js" %}"></script>
+    <script src="{% static "app/devices/deviceCard/deviceCard.directive.js" %}"></script>
+    <script src="{% static "app/resources/command.service.js" %}"></script>
+    <script src="{% static "app/resources/device.service.js" %}"></script>
+    <script src="{% static "app/resources/status.service.js" %}"></script>
+    <script src="{% static "app/resources/capture.service.js" %}"></script>
+    <script src="{% static "app/resources/resource.socket.js" %}"></script>
+    <script src="{% static "components/navbar/navbar.controller.js" %}"></script>
+{% endcompress %}
+
+</body>
+</html>

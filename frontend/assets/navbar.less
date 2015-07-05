@@ -1,0 +1,91 @@
+@activeNavBarBG: transparent;
+@activeNavBarFontColor: @accentcolor_contrast;
+
+.hamster-cage {
+  height: 90px;
+  background-color: @accentcolor;
+  border-bottom: 1px darken(@lightgrey, 20%) solid;
+
+  .container {
+    background-color: white;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.navbar {
+
+  padding-top: 100px;
+  height: 75px;
+  border: none;
+  background-color: @lightgrey;
+  margin-bottom: 0px;
+
+  .navbar-brand {
+    padding-left: 0px;
+    color: @darkgrey;
+
+    img {
+      height: 40px;
+      margin-top: -15px;
+    }
+  }
+
+  .navbar-brand .active {
+    color: @activeNavBarFontColor;
+    background-color: @activeNavBarBG;
+  }
+
+  .navbar-text {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .navbar-nav {
+    background-color: @lightgrey;
+    margin-top: 0px;
+
+    > li > a {
+      color: @accentcolor;
+    }
+
+    > li > a:hover {
+      color: @activeNavBarFontColor;
+      background-color: @activeNavBarBG;
+    }
+
+    .active > a {
+      color: @activeNavBarFontColor;
+      background-color: @activeNavBarBG;
+    }
+
+    .active > a:hover {
+      color: @activeNavBarFontColor;
+      background-color: @activeNavBarBG;
+    }
+
+    .active a:focus {
+      color: @activeNavBarFontColor;
+      background-color: @activeNavBarBG;
+    }
+
+  }
+
+  .navbar-toggle {
+    border: none;
+    background-color: transparent;
+    .icon-bar {
+      background-color: @accentcolor;
+    }
+  }
+
+  .navbar-toggle:focus {
+    background-color: transparent;
+  }
+
+  .navbar-toggle:hover {
+    background-color: transparent;
+    .icon-bar {
+      background-color: @activeNavBarBG;
+    }
+  }
+}
