@@ -3,6 +3,7 @@
 angular.module('probrAnalysis')
     .controller('PacketsCtrl', function ($scope, $state, $stateParams, Packet) {
 
+        $scope.query = '';
         $scope.pageLength = 100;
         $scope.currentPage = $stateParams.page;
         $scope.isSearching = true;
@@ -12,15 +13,27 @@ angular.module('probrAnalysis')
         }
 
         $scope.queryPackets = function () {
-            $scope.isSearching = true;
-            Packet.query({
-                offset: ($scope.currentPage - 1) * $scope.pageLength,
-                limit: $scope.pageLength
-            }, function (resultObj) {
+
+            var handleResult = function (resultObj) {
                 $scope.packetsCount = resultObj.count
                 $scope.packets = resultObj.results;
                 $scope.isSearching = false;
-            });
+            }
+
+            $scope.isSearching = true;
+
+            if ($scope.query.length !== 0) {
+                Packet.query({
+                    q: $scope.query,
+                    offset: ($scope.currentPage - 1) * $scope.pageLength,
+                    limit: $scope.pageLength
+                }, handleResult);
+            } else {
+                Packet.query({
+                    offset: ($scope.currentPage - 1) * $scope.pageLength,
+                    limit: $scope.pageLength
+                }, handleResult);
+            }
         }
 
         $scope.queryPackets();
