@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrApp')
+angular.module('probrAnalysis')
     .controller('NavbarCtrl', function ($scope, $location) {
 
         $scope.menu = [

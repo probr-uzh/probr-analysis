@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrApp')
+angular.module('probrAnalysis')
   .factory('User', function ($resource) {
     return $resource('/api/users/:id/:controller', {
       id: '@_id'

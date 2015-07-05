@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrApp')
+angular.module('probrAnalysis')
     .service('resourceSocket', function ($rootScope, $websocket, $location) {
 
         var so = this;
