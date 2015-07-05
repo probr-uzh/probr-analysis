@@ -1,19 +1,15 @@
-__author__ = 'gmazlami'
-from taggit_serializer.serializers import TagListSerializerField,TaggitSerializer
-from rest_framework import serializers
-from models import Device, Command
-from models import Status
+from rest_framework_mongoengine.serializers import DocumentSerializer
+from rest_framework.serializers import ModelSerializer
+from models import Packets
 
-class DeviceSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagListSerializerField()
+class CustomModelSerializer(ModelSerializer):
 
+    def _include_additional_options(self, *args, **kwargs):
+        return self.get_extra_kwargs()
+
+    def _get_default_field_names(self, *args, **kwargs):
+        return self.get_field_names(*args, **kwargs)
+
+class PacketSerializer(CustomModelSerializer, DocumentSerializer):
     class Meta:
-        model = Device
-
-class StatusSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Status
-
-class CommandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Command
+        model = Packets

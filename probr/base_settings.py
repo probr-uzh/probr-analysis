@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'ws4redis',
     'rest_framework',
     'rest_framework_mongoengine',
-    'mongoengine',
     'djangobower',
 )
 
@@ -76,7 +75,8 @@ DATABASES = {
     }
 }
 
-MONGO_URI = 'mongodb://localhost/probr_analysis'
+MONGO_URI = 'localhost'
+MONGO_DB = 'probr-analysis'
 
 # Rest-Framework
 # http://www.django-rest-framework.org/
