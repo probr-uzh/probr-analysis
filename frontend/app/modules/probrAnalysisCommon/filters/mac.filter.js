@@ -1,4 +1,4 @@
-angular.module('probrAnalysisFilters', []).filter('mac', function () {
+angular.module('probrAnalysisCommon').filter('mac', function () {
     return function (input) {
 
         var chunk = function(str, n) {

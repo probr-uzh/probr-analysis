@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrAnalysis')
+angular.module('probrAnalysisCommon')
     .factory('Packet', function ($resource) {
         var Packet = $resource('/api/packets/:packetId/', {packetId: '@_id'},
             {

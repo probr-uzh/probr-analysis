@@ -30,14 +30,16 @@
     <script src="{% static "bower_components/angular-chart.js/angular-chart.js" %}"></script>
     <script src="{% static "bower_components/angular-websocket/angular-websocket.js" %}"></script>
     <script src="{% static "app/app.js" %}"></script>
-    <script src="{% static "app/packets/packets.js" %}"></script>
-    <script src="{% static "app/packets/packets.controller.js" %}"></script>
-    <script src="{% static "app/resources/packet.service.js" %}"></script>
-    <script src="{% static "app/resources/resource.socket.js" %}"></script>
-    <script src="{% static "components/navbar/navbar.controller.js" %}"></script>
-    <script src="{% static "components/mac/mac.filter.js" %}"></script>
     <script src="{% static "components/searchInput/searchInput.directive.js" %}"></script>
-    <script src="{% static "components/pagination/pagination.directive.js" %}"></script>
+    <script src="{% static "components/probrPagination/pagination.directive.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisCommon/common.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisCommon/resources/packet.service.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisCommon/resources/resource.socket.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisCommon/filters/mac.filter.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisCommon/navbar/navbar.controller.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisPacketsFilter/packetsFilter.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisPacketsFilter/packets/packets.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisPacketsFilter/packets/packets.controller.js" %}"></script>
 {% endcompress %}
 
 </body>

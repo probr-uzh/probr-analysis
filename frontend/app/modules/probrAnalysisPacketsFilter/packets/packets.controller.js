@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrAnalysis')
+angular.module('probrAnalysisPacketsFilter')
     .controller('PacketsCtrl', function ($scope, $state, $stateParams, Packet) {
 
         $scope.pageLength = 50;
@@ -14,6 +14,10 @@ angular.module('probrAnalysis')
                 $scope.packets = resultObj.results;
             }
         );
+
+        $scope.search = function(query) {
+            $scope.query = { mac_address_src: query.replace(/:/g, '') };
+        }
 
         /*
          $scope.query = '';
