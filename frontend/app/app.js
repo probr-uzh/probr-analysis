@@ -10,6 +10,7 @@ angular.module('probrAnalysis', [
 
     // Analysis-Module
     'probrAnalysisPacketsFilter',
+    'probrAnalysisVendors'
 
     ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $resourceProvider) {
