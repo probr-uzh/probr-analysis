@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-xs-12 text-center">
+        <pagination total-items="itemsCount"
+                    items-per-page="pageLength"
+                    max-size="10"
+                    boundary-links="true"
+                    ng-model="pageCurrent"
+                    class="pagination-sm"
+                    ng-change="pageChanged()"
+                    rotate="false">
+        </pagination>
+
+        <div ng-show="isSearching" class="col-xs-12 text-center documents-loading">
+            <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+        </div>
+    </div>
+</div>
+
+<div ng-hide="isSearching" ng-transclude></div>
