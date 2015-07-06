@@ -3,5 +3,6 @@
 angular.module('probrAnalysisVendors', [
     'ui.router',
     'ui.bootstrap',
-    'probrAnalysisCommon'
+    'probrAnalysisCommon',
+    'pvtlD3Treemap'
 ]);

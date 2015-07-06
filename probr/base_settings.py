@@ -137,7 +137,8 @@ BOWER_INSTALLED_APPS = (
  'lodash#3.8.0',
  'font-awesome#4.3.0',
  'angular-resource#1.4.0',
- 'angular-scroll-glue#2.0.5'
+ 'angular-scroll-glue#2.0.5',
+ 'd3#3.5.6',
 )
 
 # Compress

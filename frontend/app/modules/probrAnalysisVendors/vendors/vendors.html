@@ -4,6 +4,44 @@
 
     <h1>Vendors</h1>
 
-
+    <pvtl-d3-treemap width="850" height="850" data="populationData" value="population">
+        <div>
+            <div ng-if="!children">
+                <span class="label">{{ label }}</span>
+                <span class="population">{{ population }}</span>
+            </div>
+        </div>
+    </pvtl-d3-treemap>
 
 </div>
+
+<style type="text/css">
+    .container .pvtlD3TreemapNode {
+        background: darkseagreen;
+        border: 3px solid white;
+    }
+
+    .container .pvtlD3TreemapNode div {
+        margin: 0;
+        padding: 15px;
+    }
+
+    span.population,
+    span.label {
+        display: block;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    span.label:before {
+        content: 'Label:';
+        display: block;
+        font-weight: normal;
+    }
+
+    span.population:before {
+        content: 'Population:';
+        display: block;
+        font-weight: normal;
+    }
+</style>
