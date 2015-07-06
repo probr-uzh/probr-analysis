@@ -11,12 +11,12 @@ angular.module('probrAnalysis')
 			templateUrl: '/static/components/searchInput/searchInput.html',
 			controller: function ($scope) {
 
-				$scope.submitInput = function () {
-					$scope.onSubmit({query: $scope.query});
+				$scope.submitInput = function (query) {
+					$scope.onSubmit({query: query});
 				};
 
-				$scope.inputChanged = function () {
-					$scope.onChange({query: $scope.query});
+				$scope.inputChanged = function (query) {
+					$scope.onChange({query: query});
 				};
 
 			}

@@ -8,6 +8,11 @@ angular.module('probrAnalysis')
         $scope.currentPage = $stateParams.page;
         $scope.isSearching = true;
 
+        $scope.search = function(query) {
+            $scope.query = query;
+            $scope.queryPackets();
+        }
+
         $scope.changePage = function () {
             $scope.queryPackets();
         }
@@ -22,15 +27,15 @@ angular.module('probrAnalysis')
 
             $scope.isSearching = true;
 
-            if ($scope.query.length !== 0) {
+            if ($scope.query !== undefined && $scope.query.length !== 0) {
                 Packet.query({
-                    q: $scope.query,
-                    offset: ($scope.currentPage - 1) * $scope.pageLength,
+                    mac_address_src: $scope.query,
+                    offset: (parseInt($scope.currentPage) - 1) * $scope.pageLength,
                     limit: $scope.pageLength
                 }, handleResult);
             } else {
                 Packet.query({
-                    offset: ($scope.currentPage - 1) * $scope.pageLength,
+                    offset: (parseInt($scope.currentPage) - 1) * $scope.pageLength,
                     limit: $scope.pageLength
                 }, handleResult);
             }

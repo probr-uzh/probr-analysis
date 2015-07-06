@@ -1,5 +1,6 @@
 __author__ = 'Dominik'
 from mongoengine import *
+from drf_mongo_filters import ModelFilterset
 
 class Packets(DynamicDocument):
     capture_uuid = StringField()
@@ -7,3 +8,7 @@ class Packets(DynamicDocument):
     mac_address_dst = StringField()
     signal_strength = IntField()
     ssid = StringField()
+
+class PacketsFilterset(ModelFilterset):
+  class Meta:
+    model=Packets

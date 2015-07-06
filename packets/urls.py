@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^api/packets/$', PacketListView.as_view(), name='packet-list'),
 
     #details of a packet by its mongoid
-    url(r'^api/packets/(?P<uuid>[^/]+)/+$', PacketDetailsView.as_view(), name='packet-details'),
+    url(r'^api/packets/(?P<id>[\w]{24})/$', PacketDetailsView.as_view(), name='packet-details'),
 
     ###########################################
 
