@@ -77,8 +77,8 @@ DATABASES = {
     }
 }
 
-MONGO_URI = 'localhost'
-MONGO_DB = 'probr-analysis'
+MONGO_URI = 'mongodb://localhost/probr_core'
+MONGO_DB = 'probr_core'
 
 # Rest-Framework
 # http://www.django-rest-framework.org/
