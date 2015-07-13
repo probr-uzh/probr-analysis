@@ -4,11 +4,11 @@
 
     <h1>Vendors</h1>
 
-    <pvtl-d3-treemap width="850" height="850" data="populationData" value="population">
+    <pvtl-d3-treemap width="850" height="500" data="populationData" value="count">
         <div>
             <div ng-if="!children">
                 <span class="label">{{ label }}</span>
-                <span class="population">{{ population }}</span>
+                <span class="population">{{ count }}</span>
             </div>
         </div>
     </pvtl-d3-treemap>

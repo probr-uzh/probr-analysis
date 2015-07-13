@@ -3,7 +3,7 @@
 angular.module('probrAnalysisVendors')
     .controller('VendorsCtrl', function ($scope, $state, $stateParams, Packet) {
 
-        $scope.vendors =
+        $scope.populationData = undefined;
 
         Packet.query({
                 offset: 0,
@@ -16,23 +16,22 @@ angular.module('probrAnalysisVendors')
 
         $scope.populationData = {
             label: 'Device Vendors',
-            count: 63181775,
             children: [
                 {
                     label: 'England',
-                    count: 53012456
+                    count: 25
                 },
                 {
                     label: 'Scotland',
-                    count: 5295000
+                    count: 25
                 },
                 {
                     label: 'Wales',
-                    count: 3063456
+                    count: 25
                 },
                 {
                     label: 'Northern Ireland',
-                    count: 1810863
+                    count: 25
                 }
             ]
         };
