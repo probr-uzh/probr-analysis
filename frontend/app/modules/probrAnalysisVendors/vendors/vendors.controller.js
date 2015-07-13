@@ -1,41 +1,19 @@
 'use strict';
 
 angular.module('probrAnalysisVendors')
-    .controller('VendorsCtrl', function ($scope, $state, $stateParams, Packet) {
+    .controller('VendorsCtrl', function ($scope, $state, $stateParams, $http) {
 
         $scope.populationData = undefined;
 
-        Packet.query({
-                offset: 0,
-                limit: 1000
-            }, function (resultObj) {
-                $scope.packetsCount = resultObj.count;
-                $scope.packets = resultObj.results;
-            }
-        );
-
-        $scope.populationData = {
-            label: 'Device Vendors',
-            children: [
-                {
-                    label: 'England',
-                    count: 25
-                },
-                {
-                    label: 'Scotland',
-                    count: 25
-                },
-                {
-                    label: 'Wales',
-                    count: 25
-                },
-                {
-                    label: 'Northern Ireland',
-                    count: 25
-                }
-            ]
-        };
-
+        $http.get('/api/vendors').
+            success(function (data, status, headers, config) {
+                var populationData = {'_id': 'Device Vendors', children: data};
+                $scope.populationData = populationData;
+            }).
+            error(function (data, status, headers, config) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+            });
 
     });
 ;

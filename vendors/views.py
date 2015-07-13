@@ -2,50 +2,52 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from packets.models import Packets
 from probr.renderers import MongoRenderer
-from django.db import connection, IntegrityError
+from mongoengine import connection
+from bson.code import Code
 
 class VendorListView(ListAPIView):
-    renderer_classes = (MongoRenderer, )
+    renderer_classes = (MongoRenderer,)
 
     def get(self, request, format=None):
 
-        cursor = connection.cursor()
-        cursor.execute("DROP TABLE IF EXISTS oui")
-        cursor.execute("CREATE TABLE IF NOT EXISTS oui(oui TEXT PRIMARY KEY, name TEXT)")
-
-        count = 0;
-
+        packet_collection = Packets._get_collection()
         print('open oui database')
-        inputfile = open('vendors/oui.txt', 'r')
 
-        for line in inputfile:
-            line = line.lstrip()
-            line = line.rstrip()
+        vendors = {}
+        for line in open('vendors/oui.txt', 'r'):
+                line = line.lstrip().rstrip()
 
-            if '(hex)' in line:
-                oui = line[line.find('-')-2:line.find('-')+8].replace('-', '')
-                name = line[line.find('(hex)')+5:].lstrip()
+                if '(hex)' in line:
+                    oui = line[line.find('-') - 2:line.find('-') + 8].replace('-', '').rstrip().upper()
+                    name = line[line.find('(hex)') + 5:].lstrip()
 
-                try:
-                    insertSTMT = 'INSERT INTO oui(oui, name) VALUES(%s, %s)'
-                    cursor.execute(insertSTMT, [oui, name])
-                    count += 1
-                except IntegrityError:
-                    print('integrity error')
+                    vendors[oui] = name
 
-        print('done inserting - ' + count)
+        for uncategorizedPacket in packet_collection.find({'vendor': {'$exists': False}}):
+            mac_to_compare = uncategorizedPacket['mac_address_src'][0:6].upper()
 
+            if vendors.get(mac_to_compare, None):
+                packet_collection.update({'_id': uncategorizedPacket['_id']}, {'$set': {'vendor': vendors[mac_to_compare]}}, upsert=False, multi=False)
+
+        mapper = Code("""
+                        function () {
+                            emit(this.vendor, 1)
+                        }
+                        """)
+
+        reducer = Code("""
+                        function (key, values) {
+                            var total = 0;
+                            for (var i = 0; i < values.length; i++) {
+                                total += values[i];
+                            }
+                            return total;
+                        }
+                        """)
+
+        result = packet_collection.map_reduce(mapper, reducer, "vendors")
         vendors = []
-        collection = Packets._get_collection()
-        cursor = connection.cursor()
+        for doc in result.find({}):
+            vendors.append(doc)
 
-        for packet in collection.find({}):
-            cursor.execute("SELECT * FROM oui WHERE oui = %s LIMIT 1", [packet['mac_address_src'][0:6]])
-            manufacturer = cursor.fetchone()
-
-            if manufacturer != None:
-                print manufacturer
-                vendors[manufacturer].count += 1
-
-        print vendors
         return Response(vendors)
