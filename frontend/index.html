@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width">
 
     {% compress css %}
+        <link rel="stylesheet" type="text/css" href="{% static "bower_components/angular-punch-card/dist/punch-card.css" %}">
         <link rel="stylesheet" type="text/less" href="{% static "assets/stylesheet.less" %}">
         <link rel="stylesheet" type="text/less" href="{% static "components/searchInput/searchInput.less" %}">
     {% endcompress %}
@@ -30,6 +31,7 @@
     <script src="{% static "bower_components/angular-chart.js/angular-chart.js" %}"></script>
     <script src="{% static "bower_components/angular-websocket/angular-websocket.js" %}"></script>
     <script src="{% static "bower_components/d3/d3.js" %}"></script>
+    <script src="{% static "bower_components/angular-punch-card/dist/punch-card.js" %}"></script>
     <script src="{% static "app/app.js" %}"></script>
     <script src="{% static "components/PvtlD3TreemapDirective/PvtlD3TreemapDirective.js" %}"></script>
     <script src="{% static "components/searchInput/searchInput.directive.js" %}"></script>
@@ -45,6 +47,9 @@
     <script src="{% static "app/modules/probrAnalysisVendors/vendors.js" %}"></script>
     <script src="{% static "app/modules/probrAnalysisVendors/vendors/vendors.js" %}"></script>
     <script src="{% static "app/modules/probrAnalysisVendors/vendors/vendors.controller.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisRoomUtilization/utilization.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisRoomUtilization/utilization/utilization.js" %}"></script>
+    <script src="{% static "app/modules/probrAnalysisRoomUtilization/utilization/utilization.controller.js" %}"></script>
 {% endcompress %}
 
 </body>

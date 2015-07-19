@@ -11,6 +11,10 @@ angular.module('probrAnalysisCommon')
             {
                 'title': 'Vendors',
                 'link': '/analysis/vendors'
+            },
+            {
+                'title': 'Utilization',
+                'link': '/analysis/utilization'
             }
         ];
 

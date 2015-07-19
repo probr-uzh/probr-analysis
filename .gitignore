@@ -86,3 +86,4 @@ db.sqlite3
 
 # Local virtualenv auto configuration
 .env
+db.sqlite3-journal

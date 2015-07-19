@@ -27,7 +27,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -122,23 +121,6 @@ TEMPLATE_DIRS = (
 
 STATICFILES_DIRS = (
     'frontend',
-)
-
-BOWER_INSTALLED_APPS = (
- 'angular-django-rest-resource#1.0.3',
- 'bootstrap#3.3.4',
- 'angular-ui-router#0.2.14',
- 'angular-bootstrap#0.13.0',
- 'angular#1.3.15',
- 'jquery#2.1.4',
- 'font-awesome#4.3.0',
- 'angular-websocket#1.0.9',
- 'angular-chart.js#0.7.1',
- 'lodash#3.8.0',
- 'font-awesome#4.3.0',
- 'angular-resource#1.4.0',
- 'angular-scroll-glue#2.0.5',
- 'd3#3.5.6',
 )
 
 # Compress
