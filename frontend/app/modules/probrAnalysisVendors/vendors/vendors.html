@@ -4,13 +4,19 @@
 
     <h1>Vendors</h1>
 
-    <pvtl-d3-treemap width="1000" height="700" data="populationData" value="value">
-        <div class="node">
-            <div ng-if="!children">
-                <span class="label">{{ _id }} / {{ value }}</span>
+    <div ng-show="isLoading" class="col-xs-12 text-center loading">
+        <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+    </div>
+
+    <div ng-hide="isLoading">
+        <pvtl-d3-treemap width="1000" height="700" data="populationData" value="value">
+            <div class="node">
+                <div ng-if="!children">
+                    <span class="label">{{ _id }} / {{ value }}</span>
+                </div>
             </div>
-        </div>
-    </pvtl-d3-treemap>
+        </pvtl-d3-treemap>
+    </div>
 
 </div>
 

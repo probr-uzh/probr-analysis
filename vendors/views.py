@@ -2,7 +2,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from packets.models import Packets
 from probr.renderers import MongoRenderer
-from mongoengine import connection
+from pymongo.errors import BulkWriteError
+from pymongo import TEXT
 from bson.code import Code
 
 class VendorListView(ListAPIView):
@@ -11,23 +12,38 @@ class VendorListView(ListAPIView):
     def get(self, request, format=None):
 
         packet_collection = Packets._get_collection()
-        print('open oui database')
+        packet_collection.create_index([('mac_address_src', TEXT)]);
 
         vendors = {}
         for line in open('vendors/oui.txt', 'r'):
-                line = line.lstrip().rstrip()
+            line = line.lstrip().rstrip()
 
-                if '(hex)' in line:
-                    oui = line[line.find('-') - 2:line.find('-') + 8].replace('-', '').rstrip().upper()
-                    name = line[line.find('(hex)') + 5:].lstrip()
+            if '(hex)' in line:
+                oui = line[line.find('-') - 2:line.find('-') + 8].replace('-', '').rstrip().upper()
+                name = line[line.find('(hex)') + 5:].lstrip()
 
-                    vendors[oui] = name
+                vendors[oui] = name
 
-        for uncategorizedPacket in packet_collection.find({'vendor': {'$exists': False}}):
-            mac_to_compare = uncategorizedPacket['mac_address_src'][0:6].upper()
+        bulk = packet_collection.initialize_unordered_bulk_op()
 
-            if vendors.get(mac_to_compare, None):
-                packet_collection.update({'_id': uncategorizedPacket['_id']}, {'$set': {'vendor': vendors[mac_to_compare]}}, upsert=False, multi=False)
+        for vendorMac in vendors:
+            vendorString = vendors[vendorMac]
+
+            if 'Samsung'.upper() in vendorString.upper():
+                vendorString = 'Samsung'
+            if 'Apple'.upper() in vendorString.upper():
+                vendorString = 'Apple'
+            if 'Nokia'.upper() in vendorString.upper():
+                vendorString = 'Nokia'
+            if 'Microsoft'.upper() in vendorString.upper():
+                vendorString = 'Microsoft'
+
+            bulk.find({'$text': {'$search': vendorMac}}).update({'$set': {'vendor': vendorString}})
+
+        try:
+            bulk.execute()
+        except BulkWriteError as bwe:
+            print(bwe.details)
 
         mapper = Code("""
                         function () {
@@ -45,7 +61,8 @@ class VendorListView(ListAPIView):
                         }
                         """)
 
-        result = packet_collection.map_reduce(mapper, reducer, "vendors")
+        result = packet_collection.map_reduce(mapper, reducer, "vendors", query={'vendor': {'$exists': True}})
+
         vendors = []
         for doc in result.find({}):
             vendors.append(doc)
