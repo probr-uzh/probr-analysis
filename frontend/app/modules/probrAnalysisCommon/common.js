@@ -4,5 +4,6 @@ angular.module('probrAnalysisCommon', [
     'ngResource',
     'ui.router',
     'ui.bootstrap',
-    'angular-websocket'
+    'angular-websocket',
+    'ngEnter'
 ]);
