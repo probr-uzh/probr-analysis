@@ -16,11 +16,11 @@
                 </span>
             </div>
 
-            <div ng-repeat="(key,value) in filters">
-                <span class="label label-default" style="margin-right: 5px" ng-click="removeLabel(key)">
+            <span ng-repeat="(key,value) in filters">
+                <span class="label label-default" style="margin-right: 3px;" ng-click="removeLabel(key)">
                 {{ key }}:{{ value }}
                 </span>
-            </div>
+            </span>
 
             <!--<search-input on-submit="search(query)" tooltip-placement="bottom" tooltip="Filter by MAC-Address"></search-input>-->
         </div>
