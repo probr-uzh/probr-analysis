@@ -14,8 +14,6 @@ class VendorListView(ListAPIView):
         packet_collection = Packets._get_collection()
         packet_collection.create_index([('mac_address_src', TEXT)]);
 
-        print('open oui database')
-
         vendors = {}
         for line in open('vendors/oui.txt', 'r'):
             line = line.lstrip().rstrip()
@@ -26,7 +24,6 @@ class VendorListView(ListAPIView):
 
                 vendors[oui] = name
 
-        print('preparing bulk')
         bulk = packet_collection.initialize_unordered_bulk_op()
 
         for vendorMac in vendors:
@@ -43,14 +40,10 @@ class VendorListView(ListAPIView):
 
             bulk.find({'$text': {'$search': vendorMac}}).update({'$set': {'vendor': vendorString}})
 
-        print('executing bulk')
-
         try:
             bulk.execute()
         except BulkWriteError as bwe:
             print(bwe.details)
-
-        print('executed vendor-bulk update')
 
         mapper = Code("""
                         function () {
