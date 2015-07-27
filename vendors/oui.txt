@@ -1,4 +1,4 @@
-  Generated: Mon, 13 Jul 2015 05:00:02 -0400
+﻿  Generated: Mon, 13 Jul 2015 05:00:02 -0400
 
   OUI/MA-L			Organization
   company_id			Organization
@@ -65956,14 +65956,9 @@
 				CANADA R3C 3H8
 				CANADA
 
-  00-40-88   (hex)		MOBIUS TECHNOLOGIES, INC.
-  004088     (base 16)		MOBIUS TECHNOLOGIES, INC.
-  				5835 DOYLE STREET
-				EMERYVILLE CA 94608
-				UNITED STATES
-
-  00-40-89   (hex)		MEIDENSHA CORPORATION
-  004089     (base 16)		MEIDENSHA CORPORATION
+  00-40-88   (hex)		MOBIUS TECHNOLOGIES, INC.awei Communication Technologies Co., Ltd
+  308730     (base 16)		Shenzhen Huawei Communication Technologies Co., Ltd
+  				Building 17,Nangang Industrial Park, Tangtou 3nd Industrial Estate,Shiyan Baoan District,ON
   				FACTORY NO.4, 515 KAMINAKAMIZO
 				HIGASHI MAKADO NUMAZU-CITY SHIZUOKA-PREF
 				JAPAN
@@ -132126,5 +132121,4 @@
   				
 				445 HOES LANE
 				PISCATAWAY NJ 08854
-				UNITED STATES
-
+				UNITED STAT
