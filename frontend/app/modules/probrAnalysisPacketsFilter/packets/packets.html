@@ -14,6 +14,13 @@
         <div class="row">
             <div class="col-xs-12 table-responsive">
                 <table class="table table-condensed">
+                    <tr>
+                        <td> Source </td>
+                        <td> Destination </td>
+                        <td> Signal Strength </td>
+                        <td> SSID </td>
+                        <td> Packet ID </td>
+                    </tr>
                     <tr ng-repeat="packet in packets">
                         <td>{{ packet.mac_address_src | mac }}</td>
                         <td>{{ packet.mac_address_dst | mac }}</td>
