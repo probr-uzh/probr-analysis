@@ -21,7 +21,8 @@
     "lodash": "3.8.0",
     "d3": "3.5.6",
     "jquery": "2.1.4",
-    "angular-punch-card": "https://github.com/grsmv/angular-punch-card.git"
+    "angular-punch-card": "https://github.com/grsmv/angular-punch-card.git",
+    "ngEnter": "~0.0.1"
   },
   "resolutions": {
     "angular-resource": "1.4.0",
