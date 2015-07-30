@@ -17,7 +17,7 @@ angular.module('probrAnalysisMap')
         });
         OpenStreetMap_DE.addTo(map);
 
-
+        //CAUTION:!!!! longitude and latitude are swapped (since datamodel has swapped them wrongly..)
         var printMarkers = function(count, packets, mymap){
             for(var i = 0; i < count ; i++){
                 L.marker([packets[i].longitude, packets[i].latitude]).addTo(mymap).bindPopup("Source: " + packets[i].mac_address_src + " , Tags: " + packets[i].tags + " , SSID: " + packets[i].ssid + " Signalstrength: " + packets[i].signal_strength);
