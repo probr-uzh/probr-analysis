@@ -11,7 +11,8 @@ angular.module('probrAnalysis', [
     // Analysis-Module
     'probrAnalysisPacketsFilter',
     'probrAnalysisVendors',
-    'probrAnalysisRoomUtilization'
+    'probrAnalysisRoomUtilization',
+    'probrAnalysisMap'
 
     ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, $resourceProvider) {
