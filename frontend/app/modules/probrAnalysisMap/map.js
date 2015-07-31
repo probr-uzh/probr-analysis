@@ -3,5 +3,6 @@
 angular.module('probrAnalysisMap', [
     'ui.router',
     'ui.bootstrap',
-    'probrAnalysisCommon'
+    'probrAnalysisCommon',
+    'probrMap'
 ]);
