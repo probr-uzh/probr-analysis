@@ -8,6 +8,8 @@ class Packets(DynamicDocument):
     mac_address_dst = StringField()
     signal_strength = IntField()
     ssid = StringField()
+    longitude = FloatField()
+    latitude = FloatField()
 
 class PacketsFilterset(ModelFilterset):
   class Meta:
