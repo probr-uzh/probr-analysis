@@ -15,10 +15,12 @@ angular.module('probrAnalysisMap')
             }, function (resultObj) {
                 $scope.packetsCount = resultObj.count;
                 $scope.packets = resultObj.results;
-                console.log("PACKETS: " + JSON.stringify($scope.packets));
-                //printMarkers($scope.pageLength,resultObj.results, map);
             }
         );
+
+        $scope.search = function(query) {
+            $scope.query = { mac_address_src: query.replace(/:/g, '') };
+        }
 
 
     });

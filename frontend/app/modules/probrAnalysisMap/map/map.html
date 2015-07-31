@@ -4,8 +4,16 @@
 
     <h1>Map</h1>
 
-    <probr-map resource="resource" items="packets" items-count="packetsCount" page-length="pageLength"></probr-map>
+    <div class="row">
+        <div col="col-xs-12">
+            <search-input on-submit="search(query)" tooltip-placement="bottom" tooltip="Filter by MAC-Address"></search-input>
+        </div>
+    </div>
 
+    <probr-pagination resource="resource" items="packets" items-count="packetsCount" page-length="pageLength" query="query">
 
+        <probr-map resource="resource" items="packets" items-count="packetsCount" page-length="pageLength"></probr-map>
+
+    </probr-pagination>
 
 </div>
