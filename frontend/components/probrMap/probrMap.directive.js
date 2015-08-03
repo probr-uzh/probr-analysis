@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrMap', [])
+angular.module('probrMap', ['leaflet-directive'])
     .directive('probrMap', function () {
         return {
             restrict: 'E',
@@ -10,39 +10,69 @@ angular.module('probrMap', [])
                 itemsCount: '=',
                 pageLength: '='
             },
-            templateUrl: '/static/components/probrMap/map.html',
-            controller: function($scope){
-                //TODO: avoid hardcoding the initial center coordinates (how to compute them from the data?)
-                // initialize the map
-                var map = L.map('map').setView([47.3731,8.552033], 12);
+            templateUrl: '/static/components/probrMap/probrMap.html',
+            controller: function ($scope, leafletBoundsHelpers) {
 
-                // load a tile layer in order to have a visual representation of the map
-                var OpenStreetMap_DE = L.tileLayer('http://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png', {
-                    maxZoom: 18,
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                });
-                OpenStreetMap_DE.addTo(map);
+                $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([[50, 0], [50, 0]]);
 
-                var lastMarkers = [];
+                // Awesome Marker
+                var awesomeMarker = {
+                    type: 'awesomeMarker',
+                    icon: 'tag',
+                    markerColor: 'gray'
+                };
 
-                $scope.$watch('items', function(newVal, oldVal, scope){
-                    if(newVal){
-                        if(lastMarkers.length !== 0){
-                            for(var k = 0; k < lastMarkers.length; k++){
-                                map.removeLayer(lastMarkers[k]);
+                $scope.$watch('items', function () {
+
+                    $scope.markers = {};
+                    var latLngArray = [];
+
+                    angular.forEach($scope.items, function (item) {
+                        if (item.loc !== undefined) {
+                            latLngArray.push([item.loc.coordinates[1], item.loc.coordinates[0]]);
+                            $scope.markers[item.id] = {
+                                lat: item.loc.coordinates[1],
+                                lng: item.loc.coordinates[0],
+                                title: item.mac_address_src,
+                                label: {
+                                    message: "Source: " + item.mac_address_src + " , Tags: " + item.tags + " , SSID: " + item.ssid + " Signalstrength: " + item.signal_strength,
+                                    options: {
+                                        noHide: true
+                                    }
+                                },
+                                icon: awesomeMarker
                             }
-                            lastMarkers = [];
                         }
+                    });
 
-                        var length = (scope.pageLength > scope.itemsCount) ? scope.itemsCount : scope.pageLength;
-                        //CAUTION:!!!! longitude and latitude are swapped (since datamodel has swapped them wrongly..)
-                        for(var i = 0; i < length ; i++){
-                            var marker = L.marker([scope.items[i].longitude, scope.items[i].latitude]).addTo(map).bindPopup("Source: " + scope.items[i].mac_address_src + " , Tags: " + scope.items[i].tags + " , SSID: " + scope.items[i].ssid + " Signalstrength: " + scope.items[i].signal_strength);
-                            lastMarkers.push(marker);
-                        };
+                    if (latLngArray.length > 0) {
+                        $scope.bounds = leafletBoundsHelpers.createBoundsFromArray(latLngArray);
                     }
+
                 });
+
+                /*
+                 if(newVal){
+                 if(lastMarkers.length !== 0){
+                 for(var k = 0; k < lastMarkers.length; k++){
+                 map.removeLayer(lastMarkers[k]);
+                 }
+                 lastMarkers = [];
+                 }
+
+                 var length = (scope.pageLength > scope.itemsCount) ? scope.itemsCount : scope.pageLength;
+
+                 for(var i = 0; i < length ; i++){
+                 if (scope.items[i].loc !== undefined) {
+                 var marker = L.marker([scope.items[i].loc.coordinates[1], scope.items[i].loc.coordinates[0]]).addTo(map).bindPopup("Source: " + scope.items[i].mac_address_src + " , Tags: " + scope.items[i].tags + " , SSID: " + scope.items[i].ssid + " Signalstrength: " + scope.items[i].signal_strength);
+                 lastMarkers.push(marker);
+                 }
+                 };
+                 }
+                 */
             }
 
-        };
-    });
+        }
+            ;
+    })
+;

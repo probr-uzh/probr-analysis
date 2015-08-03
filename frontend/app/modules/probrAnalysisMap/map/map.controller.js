@@ -8,18 +8,10 @@ angular.module('probrAnalysisMap')
 
         $scope.pageLength = 50;
         $scope.resource = Packet;
+        $scope.query = {loc_exists: 'True'};
 
-        Packet.query({
-                offset: 0,
-                limit: $scope.pageLength
-            }, function (resultObj) {
-                $scope.packetsCount = resultObj.count;
-                $scope.packets = resultObj.results;
-            }
-        );
-
-        $scope.search = function(query) {
-            $scope.query = { mac_address_src: query.replace(/:/g, '') };
+        $scope.search = function (query) {
+            $scope.query = {loc_exists: true, mac_address_src: query.replace(/:/g, '')};
         }
 
 

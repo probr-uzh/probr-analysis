@@ -23,7 +23,9 @@
     "jquery": "2.1.4",
     "angular-punch-card": "https://github.com/grsmv/angular-punch-card.git",
     "ngEnter": "~0.0.1",
-    "bootleaf":"*"
+    "angular-leaflet-directive": "~0.8.6",
+    "leaflet": "~0.7.3",
+    "Leaflet.awesome-markers": "~2.0.2"
   },
   "resolutions": {
     "angular-resource": "1.4.0",

@@ -6,22 +6,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="input-group">
-                <input type="text" ng-model="typeaheadQuery" typeahead="field for field in fields | filter:$viewValue" class="form-control" ng-enter="submitInput()">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-default" ng-click="submitInput()">Add</button>
-                </span>
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="search()">Query</button>
-                </span>
-            </div>
-
-            <span ng-repeat="(key,value) in filters">
-                <span class="label label-default" style="margin-right: 3px;" ng-click="removeLabel(key)">
-                {{ key }}:{{ value }}
-                </span>
-            </span>
-
+            <probr-packet-search query="query"></probr-packet-search>
             <!--<search-input on-submit="search(query)" tooltip-placement="bottom" tooltip="Filter by MAC-Address"></search-input>-->
         </div>
     </div>
@@ -42,7 +27,7 @@
                         <td>{{ packet.mac_address_dst | mac }}</td>
                         <td>{{ packet.signal_strength }}</td>
                         <td>{{ packet.ssid }}</td>
-                        <td>{{ packet.longitude }} / {{ packet.latitude }}</td>
+                        <td>{{ packet.loc.coordinates[1] }} / {{ packet.loc.coordinates[0] }}</td>
                         <td>{{ packet.time }}</td>
                         <td>{{ packet.tags }}</td>
                     </tr>

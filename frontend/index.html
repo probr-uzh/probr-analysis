@@ -12,9 +12,9 @@
 
     {% compress css %}
         <link rel="stylesheet" type="text/css" href="{% static "bower_components/angular-punch-card/dist/punch-card.css" %}">
-        <link rel="stylesheet" type="text/css" href="{% static "assets/leaflet/leaflet.css" %}">
         <link rel="stylesheet" type="text/less" href="{% static "assets/stylesheet.less" %}">
         <link rel="stylesheet" type="text/css" href="{% static "bower_components/bootleaf/assets/css/app.css" %}">
+        <link rel="stylesheet" type="text/css" href="{% static "bower_components/leaflet/dist/leaflet.css" %}">
         <link rel="stylesheet" type="text/less" href="{% static "components/searchInput/searchInput.less" %}">
     {% endcompress %}
 
@@ -35,15 +35,14 @@
     <script src="{% static "bower_components/d3/d3.js" %}"></script>
     <script src="{% static "bower_components/angular-punch-card/dist/punch-card.js" %}"></script>
     <script src="{% static "bower_components/ngEnter/dist/ngEnter.js" %}"></script>
+    <script src="{% static "bower_components/leaflet/dist/leaflet-src.js" %}"></script>
+    <script src="{% static "bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js" %}"></script>
 
-
-    <script src="{% static "assets/leaflet/leaflet.js" %}"></script>
 
     <script src="{% static "app/app.js" %}"></script>
 
-
     <script src="{% static "components/PvtlD3TreemapDirective/PvtlD3TreemapDirective.js" %}"></script>
-    <script src="{% static "components/searchInput/searchInput.directive.js" %}"></script>
+    <script src="{% static "components/probrPacketSearch/probrPacketSearch.directive.js" %}"></script>
     <script src="{% static "components/probrPagination/pagination.directive.js" %}"></script>
     <script src="{% static "components/probrMap/probrMap.directive.js" %}"></script>
 
