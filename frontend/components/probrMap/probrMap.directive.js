@@ -13,12 +13,13 @@ angular.module('probrMap', ['leaflet-directive'])
             templateUrl: '/static/components/probrMap/probrMap.html',
             controller: function ($scope, leafletBoundsHelpers) {
 
-                $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([[50, 0], [50, 0]]);
+                $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([[47.360190, 8.590874], [47.401570, 8.486075]]);
 
                 // Awesome Marker
                 var awesomeMarker = {
                     type: 'awesomeMarker',
                     icon: 'tag',
+                    prefix: 'fa',
                     markerColor: 'gray'
                 };
 
