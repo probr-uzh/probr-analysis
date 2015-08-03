@@ -6,6 +6,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 urlpatterns = [
     url(r'', include('packets.urls')),
     url(r'', include('vendors.urls')),
+    url(r'', include('utilization.urls')),
 
     #admin site
     url(r'^admin/', include(admin.site.urls)),

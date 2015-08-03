@@ -14,5 +14,10 @@ class Packets(DynamicDocument):
     timestamp = DateTimeField()
 
 class PacketsFilterset(ModelFilterset):
-  class Meta:
-    model = Packets
+
+    filters_mapping = {
+        PointField: filters.GeoDistanceFilter
+    }
+
+    class Meta:
+        model = Packets
