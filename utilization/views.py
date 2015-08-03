@@ -8,28 +8,31 @@ class UtilizationListView(ListAPIView):
     renderer_classes = (MongoRenderer,)
 
     def get(self, request, format=None):
-
-        packet_collection = Packets._get_collection()
-
-        mapper = Code("""
-                        function () {
-                            emit(this.vendor, 1)
+        if "max-utilization" in request.query_params:
+            result = Packets.objects.aggregate({
+                        "$group":{
+                            "_id":{"$dateToString":{"format":"%Y-%m-%d-%H","date":"$timestamp"}},
+                            "count":{"$sum":1}
                         }
-                        """)
+                    } , {
+                        "$sort":{"count":-1}
+            })
+            days = []
+            for doc in result:
+                days.append(doc)
 
-        reducer = Code("""
-                        function (key, values) {
-                            var total = 0;
-                            for (var i = 0; i < values.length; i++) {
-                                total += values[i];
-                            }
-                            return total;
+            return Response(days)
+
+        if "punchcard" in request.query_params:
+            result = Packets.objects.aggregate({
+                        "$group":{
+                            "_id":{"$dateToString":{"format":"%w-%H","date":"$timestamp"}},
+                            "count":{"$sum":1}
                         }
-                        """)
+                    })
 
-        result = packet_collection.map_reduce(mapper, reducer, "vendors")
-        vendors = []
-        for doc in result.find({}):
-            vendors.append(doc)
+            days = []
+            for doc in result:
+                days.append(doc)
 
-        return Response(vendors)
+            return Response(days)

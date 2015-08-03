@@ -37,7 +37,8 @@ angular.module('probrMap', [])
                         var length = (scope.pageLength > scope.itemsCount) ? scope.itemsCount : scope.pageLength;
                         //CAUTION:!!!! longitude and latitude are swapped (since datamodel has swapped them wrongly..)
                         for(var i = 0; i < length ; i++){
-                            var marker = L.marker([scope.items[i].longitude, scope.items[i].latitude]).addTo(map).bindPopup("Source: " + scope.items[i].mac_address_src + " , Tags: " + scope.items[i].tags + " , SSID: " + scope.items[i].ssid + " Signalstrength: " + scope.items[i].signal_strength);
+                            console.log(scope.items[0])
+                            var marker = L.marker([scope.items[i].coordinates.coordinates[0], scope.items[i].coordinates.coordinates[1]]).addTo(map).bindPopup("Source: " + scope.items[i].mac_address_src + " , Tags: " + scope.items[i].tags + " , SSID: " + scope.items[i].ssid + " Signalstrength: " + scope.items[i].signal_strength);
                             lastMarkers.push(marker);
                         };
                     }
