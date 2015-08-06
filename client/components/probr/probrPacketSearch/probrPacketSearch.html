@@ -1,0 +1,15 @@
+<div class="input-group">
+    <input type="text" ng-model="typeaheadQuery" typeahead="field for field in fields | filter:$viewValue" class="form-control" ng-enter="submitInput()">
+    <span class="input-group-btn">
+        <button class="btn btn-default" ng-click="submitInput()">Add</button>
+    </span>
+    <span class="input-group-btn">
+        <button class="btn btn-primary" ng-click="search()">Query</button>
+    </span>
+</div>
+
+<span ng-repeat="(key,value) in filters">
+    <span class="label label-default" style="margin-right: 3px;" ng-click="removeLabel(key)">
+    {{ key }}:{{ value }}
+    </span>
+</span>
