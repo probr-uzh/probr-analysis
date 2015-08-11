@@ -13,7 +13,7 @@ exports.punchcard = function (req, res) {
         }
     }).exec(function (err, result) {
         if (err) handleError(res, err);
-        return res.json(200, result);
+        return res.status(200).json(result);
     });
 
 };
@@ -28,7 +28,7 @@ exports.max = function (req, res) {
         }
     }).sort({"count": -1}).exec(function (err, result) {
         if (err) handleError(res, err);
-        return res.json(200, result);
+        return res.status(200).json(result);
     });
 
 };

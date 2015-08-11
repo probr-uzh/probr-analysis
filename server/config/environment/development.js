@@ -6,7 +6,7 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/probr-analysis'
+    uri: 'mongodb://localhost/probr-core'
   },
 
   seedDB: true
