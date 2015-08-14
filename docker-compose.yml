@@ -1,9 +1,5 @@
 web:
    build: .
    command: npm start
-   volumes:
-    - .:/app
    ports:
     - "8080:8080"
-   external_links:
-    - mongodb

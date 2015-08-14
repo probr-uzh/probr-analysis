@@ -6,15 +6,15 @@ RUN mkdir /app
 WORKDIR /app
 
 # npm install
-ADD package.json /app/package.json
+COPY package.json /app/package.json
 RUN npm install
 
 # bower install
-ADD bower.json /app/bower.json
+COPY bower.json /app/bower.json
 RUN bower install --allow-root
 
 # add application code
-ADD . /app/
+COPY . /app/
 
 # build it
 RUN grunt build --force
