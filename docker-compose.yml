@@ -5,5 +5,5 @@ web:
     - .:/app
    ports:
     - "8080:8080"
-   external_link:
+   external_links:
     - mongodb
