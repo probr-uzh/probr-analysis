@@ -10,6 +10,7 @@ COPY package.json /app/package.json
 RUN npm install
 
 # bower install
+COPY .bowerrc /app/.bowerrc
 COPY bower.json /app/bower.json
 RUN bower install --allow-root
 
@@ -17,7 +18,7 @@ RUN bower install --allow-root
 COPY . /app/
 
 # build it
-RUN grunt build --force
+RUN NODE_ENV=production grunt build --force
 
 # Define default command
 CMD ["npm", "start"]
