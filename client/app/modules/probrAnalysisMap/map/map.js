@@ -5,7 +5,7 @@ angular.module('probrAnalysisMap')
         $stateProvider
             .state('map', {
                 url: '/map',
-                templateUrl: '/app/modules/probrAnalysisMap/map/map.html',
+                templateUrl: 'app/modules/probrAnalysisMap/map/map.html',
                 controller: 'MapCtrl'
             });
         ;

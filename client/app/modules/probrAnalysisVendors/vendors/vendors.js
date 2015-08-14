@@ -5,7 +5,7 @@ angular.module('probrAnalysisVendors')
         $stateProvider
             .state('vendors', {
                 url: '/vendors',
-                templateUrl: '/app/modules/probrAnalysisVendors/vendors/vendors.html',
+                templateUrl: 'app/modules/probrAnalysisVendors/vendors/vendors.html',
                 controller: 'VendorsCtrl'
             });
         ;

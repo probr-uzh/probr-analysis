@@ -5,7 +5,7 @@ angular.module('probrAnalysisPacketsFilter')
         $stateProvider
             .state('packets', {
                 url: '/packets',
-                templateUrl: '/app/modules/probrAnalysisPacketsFilter/packets/packets.html',
+                templateUrl: 'app/modules/probrAnalysisPacketsFilter/packets/packets.html',
                 controller: 'PacketsCtrl'
             });
         ;
