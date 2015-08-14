@@ -3,8 +3,9 @@ angular.module('probrAnalysisCommon').filter('mac', function () {
 
         var chunk = function(str, n) {
             var ret = [];
+            var len = str.length;
 
-            for (var i = 0; len = str.length, i < len; i += n) {
+            for (var i = 0; i < len; i += n) {
                 ret.push(str.substr(i, n));
             }
 

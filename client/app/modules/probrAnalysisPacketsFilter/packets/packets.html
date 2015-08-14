@@ -29,7 +29,7 @@
                         <td>{{ packet.mac_address_dst | mac }}</td>
                         <td>{{ packet.signal_strength }}</td>
                         <td>{{ packet.ssid }}</td>
-                        <td>{{ packet.loc.coordinates[1] }} / {{ packet.loc.coordinates[0] }}</td>
+                        <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
                         <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'shortTime' }}</td>
                         <td>{{ packet.tags }}</td>
                     </tr>

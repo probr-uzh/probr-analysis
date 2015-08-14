@@ -11,7 +11,7 @@ var PacketSchema = new Schema({
     ssid: String,
     tags: [{type: String}],
     vendor: String,
-    loc: {type: [Number], index: '2dsphere'}
+    location: {type: [Number], index: '2dsphere'}
 });
 
 module.exports = mongoose.model('Packet', PacketSchema);
