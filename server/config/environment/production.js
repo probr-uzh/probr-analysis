@@ -15,9 +15,6 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://localhost/probr-core'
+    uri:    'mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/probr-core' || 'mongodb://localhost/probr-core'
   }
 };
