@@ -3,11 +3,14 @@
 angular.module('probrAnalysisRoomUtilization')
   .controller('UtilizationCtrl', function ($scope, $state, $stateParams, Utilization) {
 
+    $scope.isSearching = false;
+
     $scope.submit = function (query) {
       $scope.loadPunchcard(query);
     }
 
     $scope.loadPunchcard = function (query) {
+      $scope.isSearching = true;
 
       var params = query || {};
       params.type = 'punchcard';
@@ -23,7 +26,7 @@ angular.module('probrAnalysisRoomUtilization')
         }
 
         angular.forEach(result, function(obj) {
-          
+
           var key = obj._id;
           // since we dont start from 0
           var dayIndex = parseInt(key.split("-")[0], 10)
@@ -34,6 +37,7 @@ angular.module('probrAnalysisRoomUtilization')
         });
 
         $scope.punchCardData = payload;
+        $scope.isSearching = false;
 
       });
 

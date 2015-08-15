@@ -21,9 +21,15 @@
 
   -->
 
-  <div class="row">
-    <div class="col-xs-12" ng-show="punchCardData.length > 0">
+  <div class="row" ng-hide="isSearching">
+    <div class="col-xs-12">
       <div punch-card data="punchCardData" singular="occurence" plural="occurences"></div>
+    </div>
+  </div>
+
+  <div class="row" ng-show="isSearching">
+    <div class="col-xs-12 text-center loading">
+      <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
     </div>
   </div>
 </div>
