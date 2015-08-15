@@ -1,41 +1,55 @@
 'use strict';
 
 angular.module('probrAnalysisRoomUtilization')
-    .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $http) {
+  .controller('UtilizationCtrl', function ($scope, $state, $stateParams, Utilization) {
 
-        //resourceSocket.updateResource($scope, $scope.devices, 'packet', 0, true);
+    $scope.submit = function (query) {
+      $scope.loadPunchcard(query);
+    }
 
-        $http.get('/api/utilization/punchcard').
-            success(function (data, status, headers, config) {
-                var payload = [];
-                for (var dayRunner = 0; dayRunner < 7; dayRunner++) {
-                    payload.push([])
-                    for (var hourRunner = 0; hourRunner < 24; hourRunner++) {
-                        payload[dayRunner].push(0);
-                    }
-                }
+    $scope.loadPunchcard = function (query) {
 
-                for (var index in data) {
-                    var key = data[index]['_id'];
-                    // since we dont start from 0
-                    var dayIndex = parseInt(key.split("-")[0], 10)
-                    dayIndex -= 1
-                    var hourIndex = parseInt(key.split("-")[1], 10)
-                    payload[dayIndex][hourIndex] += data[index]['count'];
+      var params = query || {};
+      params.type = 'punchcard';
 
-                }
-                $scope.punchCardData = payload;
-            }).
-            error(function (data, status, headers, config) {
+      Utilization.query(params, function (result, err) {
 
-            });
+        var payload = [];
+        for (var dayRunner = 0; dayRunner < 7; dayRunner++) {
+          payload.push([])
+          for (var hourRunner = 0; hourRunner < 24; hourRunner++) {
+            payload[dayRunner].push(0);
+          }
+        }
 
-        $http.get('/api/utilization/max').
-            success(function (data, status, headers, config) {
-                $scope.maxUtilization = data[0]["count"];
-            }).
-            error(function (data, status, headers, config) {
+        angular.forEach(result, function(obj) {
+          
+          var key = obj._id;
+          // since we dont start from 0
+          var dayIndex = parseInt(key.split("-")[0], 10)
+          dayIndex -= 1
+          var hourIndex = parseInt(key.split("-")[1], 10)
+          payload[dayIndex][hourIndex] += obj.count;
 
-            });
-    });
+        });
+
+        $scope.punchCardData = payload;
+
+      });
+
+    }
+
+    // Load Default
+    $scope.loadPunchcard(null);
+
+    /*
+     $http.get('/api/utilization/max').
+     success(function (data, status, headers, config) {
+     $scope.maxUtilization = data[0]["count"];
+     }).
+     error(function (data, status, headers, config) {
+
+     });
+     */
+  });
 ;

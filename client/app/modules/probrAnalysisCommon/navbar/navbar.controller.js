@@ -13,7 +13,7 @@ angular.module('probrAnalysisCommon')
             //    'link': '/vendors'
             //},
             {
-                'title': 'Utilization',
+                'title': 'Room Utilization',
                 'link': '/utilization'
             },
             {
