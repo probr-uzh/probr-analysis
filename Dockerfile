@@ -18,7 +18,7 @@ RUN bower install --allow-root
 COPY . /app/
 
 # build it
-RUN NODE_ENV=production grunt build --force
+RUN NODE_ENV=production grunt build
 
 # Define default command
 CMD ["npm", "start"]
