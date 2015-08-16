@@ -8,8 +8,28 @@ exports.punchcard = function (req, res) {
 
   var pipeline = [];
 
+  if (req.query) {
+    var match = {"$match" : { "$and": []}};
+    for (var param in req.query) {
+      var obj = {};
+      if (Array.isArray(req.query[param])) {
+        obj[param] = { $in: req.query[param] };
+      } else {
+        obj[param] = req.query[param];
+      }
+      match["$match"]["$and"].push(obj);
+    }
+    if (match["$match"]["$and"].length > 0) {
+      pipeline.push(match);
+    }
+  }
+
   if (req.query.mac_address_src) {
-    pipeline.push({"$match": {"mac_address_src": req.query.mac_address_src}});
+    pipeline.push({"$match": { "$and": [{"mac_address_src": req.query.mac_address_src}]}});
+  }
+
+  if (req.query.tags) {
+    pipeline.push({"$match": {"tag": req.query.mac_address_src}});
   }
 
   pipeline.push({

@@ -19,7 +19,7 @@ angular.module('probrAnalysisRoomUtilization')
 
         var payload = [];
         for (var dayRunner = 0; dayRunner < 7; dayRunner++) {
-          payload.push([])
+          payload.push([]);
           for (var hourRunner = 0; hourRunner < 24; hourRunner++) {
             payload[dayRunner].push(0);
           }
@@ -29,9 +29,23 @@ angular.module('probrAnalysisRoomUtilization')
 
           var key = obj._id;
           // since we dont start from 0
-          var dayIndex = parseInt(key.split("-")[0], 10)
-          dayIndex -= 1
-          var hourIndex = parseInt(key.split("-")[1], 10)
+          var dayIndex = parseInt(key.split("-")[0], 10);
+          dayIndex -= 1;
+
+          var hourIndex = parseInt(key.split("-")[1], 10);
+
+          // timezone correction of sniffing: GMT+2
+          if ((hourIndex - 2) <= 0) {
+            if (dayIndex === 0) {
+              dayIndex = 6;
+            } else {
+              dayIndex--;
+            }
+            hourIndex = (hourIndex - 2) + 24;
+          } else {
+            hourIndex -= 2;
+          }
+
           payload[dayIndex][hourIndex] += obj.count;
 
         });
