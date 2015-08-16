@@ -6,19 +6,15 @@ angular.module('probrAnalysisCommon')
         $scope.menu = [
             {
                 'title': 'Packets',
-                'link': '/packets'
+                'link': 'packets'
             },
-            //{
-            //    'title': 'Vendors',
-            //    'link': '/vendors'
-            //},
             {
                 'title': 'Room Utilization',
-                'link': '/utilization'
+                'link': 'utilization'
             },
             {
                 'title':'Map',
-                'link':'/map'
+                'link':'map'
             }
         ];
 
