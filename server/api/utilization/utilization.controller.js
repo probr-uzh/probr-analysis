@@ -14,7 +14,7 @@ exports.punchcard = function (req, res) {
 
   pipeline.push({
     "$group": {
-      "_id": {"$dateToString": {"format": "%w-%H", "date": "$timestamp"}},
+      "_id": {"$dateToString": {"format": "%w-%H", "date": "$time"}},
       "count": {"$sum": 1}
     }
   });
@@ -31,7 +31,7 @@ exports.max = function (req, res) {
 
   Packet.aggregate({
     "$group": {
-      "_id": {"$dateToString": {"format": "%Y-%m-%d-%H", "date": "$timestamp"}},
+      "_id": {"$dateToString": {"format": "%Y-%m-%d-%H", "date": "$time"}},
       "count": {"$sum": 1}
     }
   }).sort({"count": -1}).exec(function (err, result) {
