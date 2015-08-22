@@ -9,11 +9,11 @@ exports.punchcard = function (req, res) {
   var pipeline = [];
 
   if (req.query) {
-    var match = {"$match" : { "$and": []}};
+    var match = {"$match": {"$and": []}};
     for (var param in req.query) {
       var obj = {};
       if (Array.isArray(req.query[param])) {
-        obj[param] = { $in: req.query[param] };
+        obj[param] = {$in: req.query[param]};
       } else {
         obj[param] = req.query[param];
       }
@@ -25,7 +25,7 @@ exports.punchcard = function (req, res) {
   }
 
   if (req.query.mac_address_src) {
-    pipeline.push({"$match": { "$and": [{"mac_address_src": req.query.mac_address_src}]}});
+    pipeline.push({"$match": {"$and": [{"mac_address_src": req.query.mac_address_src}]}});
   }
 
   if (req.query.tags) {
@@ -58,6 +58,54 @@ exports.max = function (req, res) {
     if (err) handleError(res, err);
     return res.status(200).json(result);
   });
+
+};
+
+// Get triangulation data
+exports.triangulation = function (req, res) {
+  var mapReduceOptions = {};
+  mapReduceOptions.map = function () {
+    emit(this.time, {
+      totalSignalStrength: this.signal_strength,
+      weightedLongitude: this.location.coordinates[0] * this.signal_strength,
+      weightedLatitude: this.location.coordinates[1] * this.signal_strength
+    })
+  }
+
+  mapReduceOptions.reduce = function (key, values) {
+    var totalSignalStrength = 0.0;
+    var weightedLongitude = 0.0;
+    var weightedLatitude = 0.0;
+    for (var i = 0; i < values.length; i++) {
+      totalSignalStrength += values[i].totalSignalStrength;
+      weightedLongitude += values[i].weightedLongitude;
+      weightedLatitude += values[i].weightedLatitude;
+    }
+
+    return {
+      totalSignalStrength: totalSignalStrength,
+      weightedLongitude: weightedLongitude,
+      weightedLatitude: weightedLatitude
+    };
+  }
+
+  mapReduceOptions.finalize = function (key, result) {
+    result.latitude = result.weightedLatitude / result.totalSignalStrength;
+    result.longitude = result.weightedLongitude / result.totalSignalStrength;
+    return result;
+  }
+
+  mapReduceOptions.query = {
+    "time": {$gt: new Date(new Date().getTime() - 1000 * 60 * 10)}
+  }
+
+  Packet.mapReduce(
+    mapReduceOptions,
+    function (err, result, stats) {
+      if (err) handleError(res, err);
+      return res.status(200).json(result);
+    }
+  );
 
 };
 
