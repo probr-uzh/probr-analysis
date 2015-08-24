@@ -37,7 +37,7 @@
 <![endif]-->
 
 <!-- Add your site or application content here -->
-<div ui-view=""></div>
+<div ui-view="" style="height: 100%"></div>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>
@@ -106,6 +106,8 @@
 <script src="bower_components/leaflet-plugins/layer/tile/Google.js"></script>
 <script src="bower_components/leaflet-plugins/layer/tile/Yandex.js"></script>
 <!-- endbower -->
+<script src="bower_components/webgl-heatmap-leaflet/js/webgl-heatmap.js"></script>
+<script src="bower_components/webgl-heatmap-leaflet/js/webgl-heatmap-leaflet.js"></script>
 <script src="socket.io-client/socket.io.js"></script>
 <!-- endbuild -->
 
@@ -119,9 +121,11 @@
 <script src="app/modules/probrAnalysisCommon/navbar/navbar.controller.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/packet.service.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/resource.socket.js"></script>
+<script src="app/modules/probrAnalysisCommon/resources/utilization.service.js"></script>
 <script src="app/modules/probrAnalysisMap/map.js"></script>
 <script src="app/modules/probrAnalysisMap/map/map.controller.js"></script>
 <script src="app/modules/probrAnalysisMap/map/map.js"></script>
+<script src="app/modules/probrAnalysisMap/map/room.service.js"></script>
 <script src="app/modules/probrAnalysisPacketsFilter/packets.js"></script>
 <script src="app/modules/probrAnalysisPacketsFilter/packets/packets.controller.js"></script>
 <script src="app/modules/probrAnalysisPacketsFilter/packets/packets.js"></script>

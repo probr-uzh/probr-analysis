@@ -18,6 +18,7 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/room/room.socket').register(socket);
   require('../api/vendor/vendor.socket').register(socket);
   require('../api/utilization/utilization.socket').register(socket);
   require('../api/packet/packet.socket').register(socket);

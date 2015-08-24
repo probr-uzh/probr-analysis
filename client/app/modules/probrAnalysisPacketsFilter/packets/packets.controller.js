@@ -12,10 +12,10 @@ angular.module('probrAnalysisPacketsFilter')
         skip: 0,
         limit: $scope.pageLength
       }, function (resultObj) {
-        $scope.packetsCount = resultObj.count;
         $scope.packets = resultObj.results;
       }
     );
+
 
   });
 

@@ -1,17 +1,85 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
 
-<div class="container">
-
-    <h1>Map</h1>
-
+<div class="container-fluid" style="padding-bottom: 15px">
     <div class="row">
         <div class="col-xs-12">
-            <search-input on-submit="search(query)" tooltip-placement="bottom" tooltip="Filter by MAC-Address"></search-input>
+            <label class="btn btn-primary pull-left" ng-model="$parent.selectedRoom" btn-radio="room" ng-repeat="room in rooms">{{room.name}}</label>
+
+            <timepicker class="pull-left" style="margin-left: 5px; margin-right: 5px" ng-model="fromDate" ng-change="fromChange()" hour-step="1" show-meridian="false"
+                        show-spinners="false"></timepicker>
+            <timepicker class="pull-left" style="margin-right: 5px" ng-model="toDate" ng-change="toChange()" hour-step="1" show-meridian="false" show-spinners="false"></timepicker>
+
+            <p class="input-group col-xs-2">
+                <input style="width: 150px" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="fromDate" ng-change="dateChange()" show-weeks="false" is-open="datepickerOpened" ng-required="true" close-text="Close"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="datepickerOpened = !datepickerOpened"><i class="fa fa-calendar"></i></button>
+                </span>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="query()" ng-disabled="isQuerying">Crunch Data <i ng-show="isQuerying" class="fa fa-circle-o-notch fa-spin"></i></button>
+                </span>
+            </p>
+
         </div>
     </div>
+</div>
 
-    <probr-pagination resource="resource" items="packets" items-count="packetsCount" page-length="pageLength" query="query">
-        <probr-map resource="resource" items="packets" items-count="packetsCount" page-length="pageLength"></probr-map>
-    </probr-pagination>
+<probr-map room="selectedRoom" overlays="overlays"></probr-map>
+
+<!--
+    <div class="row">
+
+        <div class="col-xs-8">
+            <probr-map room="selectedRoom" overlays="overlays"></probr-map>
+        </div>
+        <div class="col-xs-4">
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="btn-group">
+                        <label class="btn btn-primary" ng-model="$parent.selectedRoom" btn-radio="room" ng-repeat="room in rooms">{{room.name}}</label>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div style="display:inline-block;">
+                        <datepicker ng-model="fromDate" ng-change="dateChange()" show-weeks="true" class="well well-sm"></datepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <timepicker style="float: left; margin-right: 10px;" ng-model="fromDate" ng-change="fromChange()" hour-step="1" show-meridian="false"></timepicker>
+                    <timepicker ng-model="toDate" ng-change="toChange()" hour-step="1" show-meridian="false"></timepicker>
+                </div>
+                <div class="col-xs-2">
+                    <button type="button" class="btn btn-default" ng-click="query()" ng-disabled="isQuerying">Crunch Data <i ng-show="isQuerying" class="fa fa-circle-o-notch fa-spin"></i></button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <h2>{{selectedRoom.name}}</h2>
+
+                    <p>
+                        Distinct Devices seen: {{distinctDevices.length}}
+                    </p>
+
+                    <button type="button" class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Show Devices</button>
+                    <div collapse="isCollapsed">
+                <span ng-repeat="device in distinctDevices">
+                    {{ device | mac }}<br>
+                </span>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 
 </div>
+-->
