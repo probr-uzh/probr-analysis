@@ -5,5 +5,6 @@ angular.module('probrAnalysisMap', [
     'ui.bootstrap',
     'probrAnalysisCommon',
     'probrMap',
-    'probrAnalysisRoomUtilization'
+    'probrAnalysisRoomUtilization',
+    'chart.js'
 ]);
