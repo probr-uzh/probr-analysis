@@ -5,12 +5,8 @@
         <div class="col-xs-12">
             <label class="btn btn-primary pull-left" ng-model="$parent.selectedRoom" btn-radio="room" ng-repeat="room in rooms">{{room.name}}</label>
 
-            <timepicker class="pull-left" style="margin-left: 5px; margin-right: 5px" ng-model="fromDate" ng-change="fromChange()" hour-step="1" show-meridian="false"
-                        show-spinners="false"></timepicker>
-            <timepicker class="pull-left" style="margin-right: 5px" ng-model="toDate" ng-change="toChange()" hour-step="1" show-meridian="false" show-spinners="false"></timepicker>
-
-            <p class="input-group col-xs-2">
-                <input style="width: 150px" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="fromDate" ng-change="dateChange()" show-weeks="false" is-open="datepickerOpened" ng-required="true" close-text="Close"/>
+            <p class="input-group col-xs-2" style="padding-left: 15px">
+                <input style="width: 160px" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="fromDate" ng-change="dateChange()" show-weeks="false" is-open="datepickerOpened" ng-required="true" close-text="Close"/>
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-default" ng-click="datepickerOpened = !datepickerOpened"><i class="fa fa-calendar"></i></button>
                 </span>
