@@ -1,7 +1,12 @@
 'use strict';
 
+
+
 angular.module('probrAnalysisRoomUtilization')
-    .controller('UtilizationCtrl', function ($scope, $state, $stateParams, Utilization) {
+    .controller('UtilizationCtrl', function ($scope, $state, $filter, $stateParams, Utilization) {
+        var EXPECTED_PUNCHCARD_LIST_LENGTH = 7*24;
+        var HOURS_PER_DAY = 24;
+        var DAYS_PER_WEEK = 7;
 
         $scope.isSearching = false;
 
@@ -18,37 +23,27 @@ angular.module('probrAnalysisRoomUtilization')
             Utilization.query(params, function (result, err) {
 
                 var payload = [];
-                for (var dayRunner = 0; dayRunner < 7; dayRunner++) {
+                for (var dayRunner = 0; dayRunner < DAYS_PER_WEEK; dayRunner++) {
                     payload.push([]);
-                    for (var hourRunner = 0; hourRunner < 24; hourRunner++) {
+                    for (var hourRunner = 0; hourRunner < HOURS_PER_DAY; hourRunner++) {
                         payload[dayRunner].push(0);
                     }
                 }
 
-                angular.forEach(result, function (obj) {
 
-                    var key = obj._id;
-                    // since we dont start from 0
-                    var dayIndex = parseInt(key.split("-")[0], 10);
-                    dayIndex -= 1;
 
-                    var hourIndex = parseInt(key.split("-")[1], 10);
+                if (result.length != 168){
+                    console.error("Punchcard not full, hell will break loose")
+                } else {
+                    var TIMEZONE_OFFSET = 2;
+                    result=$filter('orderBy')(result, "_id");
 
-                    // timezone correction of sniffing: GMT+2
-                    if ((hourIndex - 2) <= 0) {
-                        if (dayIndex === 0) {
-                            dayIndex = 6;
-                        } else {
-                            dayIndex--;
-                        }
-                        hourIndex = (hourIndex - 2) + 24;
-                    } else {
-                        hourIndex -= 2;
+                    for(var i = 0; i<EXPECTED_PUNCHCARD_LIST_LENGTH; i++){
+                      var obj = result[i];
+                      console.log("mapping "+obj._id+" to "+((i+TIMEZONE_OFFSET)/HOURS_PER_DAY)%DAYS_PER_WEEK+"/"+(i+TIMEZONE_OFFSET)%HOURS_PER_DAY)
+                      payload[~~((i+TIMEZONE_OFFSET)/HOURS_PER_DAY)%DAYS_PER_WEEK][~~(i+TIMEZONE_OFFSET)%HOURS_PER_DAY] += obj.count;
                     }
-
-                    payload[dayIndex][hourIndex] += obj.count;
-
-                });
+                }
 
                 $scope.punchCardData = payload;
                 $scope.isSearching = false;
