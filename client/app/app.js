@@ -15,7 +15,7 @@ angular.module('probrAnalysisApp', [
     'probrAnalysisPacketsFilter',
     'probrAnalysisVendors',
     'probrAnalysisRoomUtilization',
-    'probrAnalysisMap'
+    'probrAnalysisMap',
 
 ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
@@ -51,7 +51,7 @@ angular.module('probrAnalysisApp', [
         };
     })
 
-    .run(function ($rootScope, $location, Auth) {
+    .run(function ($rootScope, $location, Auth, $window) {
 
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -62,4 +62,13 @@ angular.module('probrAnalysisApp', [
                 }
             });
         });
+
+        $rootScope.$on("updatePositions", function () {
+            if ($('.stretch').length > 0) {
+                var height = $(window).height() - $('.stretch')[0].getBoundingClientRect().top;
+                $('.stretch').css({'height': height, 'min-height': height});
+            }
+        });
+
+
     });

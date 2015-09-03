@@ -15,10 +15,6 @@ angular.module('probrPagination', [])
             templateUrl: 'components/probr/probrPagination/pagination.html',
             link: function (scope, element, attrs) {
 
-                scope.resource.count({}, function(resultObj) {
-                    scope.itemsCount = resultObj.count;
-                });
-
                 scope.isSearching = false;
 
                 scope.pageChanged = function () {
@@ -31,10 +27,15 @@ angular.module('probrPagination', [])
 
                     scope.isSearching = true;
 
-                    scope.resource.query(searchQuery, function (resultObj) {
-                        scope.items = resultObj;
-                        scope.isSearching = false;
-                    });
+                    scope.resource.count(searchQuery, function(resultObj) {
+                        scope.itemsCount = resultObj.count;
+
+                        scope.resource.query(searchQuery, function (resultObj) {
+                            scope.items = resultObj;
+                            scope.isSearching = false;
+                        });
+                    })
+
 
                 };
 
