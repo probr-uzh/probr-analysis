@@ -10,18 +10,24 @@
         </div>
     </div>
 
+    <div class="row" style="margin-top: 15px">
+        <div class="col-xs-12">
+            <small>{{ newPackets.length }} new Packets since loading.</small>
+        </div>
+    </div>
+
     <probr-pagination resource="resource" items="packets" items-count="packetsCount" page-length="pageLength" query="query">
         <div class="row">
             <div class="col-xs-12 table-responsive">
                 <table class="table table-condensed">
                     <tr>
-                        <td> Source </td>
-                        <td> Destination </td>
-                        <td> Signal Strength </td>
-                        <td> SSID </td>
-                        <td> Latitude/Longitude </td>
-                        <td> Time </td>
-                        <td> Tags </td>
+                        <td> Source</td>
+                        <td> Destination</td>
+                        <td> Signal Strength</td>
+                        <td> SSID</td>
+                        <td> Latitude/Longitude</td>
+                        <td> Time</td>
+                        <td> Tags</td>
                     </tr>
                     <tr ng-repeat="packet in packets">
                         <td>{{ packet.mac_address_src | mac }}</td>
