@@ -10,7 +10,7 @@ angular.module('probrAnalysisPacketsFilter')
         $scope.filters = {skip: 0, limit: $scope.pageLength};
 
         Socket.listenTo('packet:create', function(item) {
-            newPackets.push(item);
+            $scope.newPackets.push(item);
         });
 
         Packet.query({
