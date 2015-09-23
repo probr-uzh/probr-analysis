@@ -115,7 +115,8 @@ exports.triangulation = function (req, res) {
         return result;
     }
 
-    mapReduceOptions.query = {time: {'$gt': begin, '$lt': end}};
+    mapReduceOptions.query = {time: {'$gt': begin, '$lt': end}, signal_strength: {'$gt': -60}};
+    mapReduceOptions.sort = {time: 1};
     mapReduceOptions.out = 'utilizations';
 
     // Check if we already did this query:
@@ -123,13 +124,13 @@ exports.triangulation = function (req, res) {
         if (err) handleError(res, err);
 
         if (count > 0) {
-            return res.status(200).json([]);
+            return res.status(200).json({});
         } else {
             Packet.mapReduce(
                 mapReduceOptions,
                 function (err, result, stats) {
                     if (err) handleError(res, err);
-                    return res.status(200).json(result);
+                    return res.status(200).json(stats);
                 }
             );
         }

@@ -28,6 +28,11 @@ var socketio = require('socket.io')(server, {
   serveClient: config.env !== 'production',
   path: '/socket.io-client'
 });
+
+// SocketIO Redis
+var redis = require('socket.io-redis');
+socketio.adapter(redis({ host: 'localhost', port: 6379 }));
+
 require('./config/socketio')(socketio);
 require('./config/express')(app);
 require('./routes')(app);

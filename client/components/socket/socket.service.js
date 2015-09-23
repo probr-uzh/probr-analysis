@@ -75,6 +75,27 @@ angular.module('probrAnalysisApp')
                 });
             },
 
+            syncCreation: function(modelName, array, cb) {
+                cb = cb || angular.noop;
+
+                /**
+                 * A new item 'model:create'
+                 */
+                socket.on(modelName + ':create', function (item) {
+
+                    if (item.modelName) {
+                        var resourceService = $injector.get(item.modelName);
+                        item = new resourceService(item);
+                    }
+
+                    var event = 'created';
+                    array.push(item);
+
+                    cb(event, item, array);
+                });
+
+            },
+
             /**
              * Removes listeners for a models updates on the socket
              *

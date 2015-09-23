@@ -1,21 +1,26 @@
 'use strict';
 
 angular.module('probrAnalysisPacketsFilter')
-  .controller('PacketsCtrl', function ($scope, $state, $stateParams, Packet) {
+    .controller('PacketsCtrl', function ($scope, $state, $stateParams, Packet, Socket) {
 
-    $scope.pageLength = 50;
-    $scope.query = {};
-    $scope.resource = Packet;
-    $scope.filters = {skip: 0, limit: $scope.pageLength};
+        $scope.newPackets = [];
+        $scope.pageLength = 50;
+        $scope.query = {};
+        $scope.resource = Packet;
+        $scope.filters = {skip: 0, limit: $scope.pageLength};
 
-    Packet.query({
-        skip: 0,
-        limit: $scope.pageLength
-      }, function (resultObj) {
-        $scope.packets = resultObj.results;
-      }
-    );
+        Socket.listenTo('packet:create', function(item) {
+            $scope.newPackets.push(item);
+        });
+
+        Packet.query({
+                skip: 0,
+                limit: $scope.pageLength
+            }, function (resultObj) {
+                $scope.packets = resultObj.results;
+            }
+        );
 
 
-  });
+    });
 

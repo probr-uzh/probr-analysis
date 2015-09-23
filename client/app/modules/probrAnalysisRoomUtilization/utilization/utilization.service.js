@@ -4,7 +4,7 @@ angular.module('probrAnalysisRoomUtilization')
   .factory('Utilization', function ($resource) {
     var Utilization = $resource('api/utilization/:type', {},
       {
-        query: {method: 'GET', isArray: true},
+        query: {method: 'GET', isArray: false},
       }
     );
     return Utilization;
