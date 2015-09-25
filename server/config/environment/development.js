@@ -9,5 +9,11 @@ module.exports = {
     uri: 'mongodb://localhost/probr-core'
   },
 
+  // Redis connection options
+  redis: {
+    addr: 'localhost',
+    port: 6379
+  },
+
   seedDB: true
 };

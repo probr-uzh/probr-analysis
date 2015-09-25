@@ -2,5 +2,3 @@ node_modules
 .tmp
 .idea
 client/bower_components
-install
-install/.vagrant

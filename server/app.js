@@ -31,7 +31,7 @@ var socketio = require('socket.io')(server, {
 
 // SocketIO Redis
 var redis = require('socket.io-redis');
-socketio.adapter(redis({ host: 'localhost', port: 6379 }));
+socketio.adapter(redis({ host: config.redis.addr, port: config.redis.port }));
 
 require('./config/socketio')(socketio);
 require('./config/express')(app);

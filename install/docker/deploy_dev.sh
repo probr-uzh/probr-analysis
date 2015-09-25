@@ -3,7 +3,7 @@
 docker build -t probr_analysis .
 docker stop probr_analysis
 docker rm probr_analysis
-docker run -d --expose 8080 --name probr_analysis --link mongodb:mongodb --link redis:redis probr_analysis sh app/install/docker/node/run.sh
+docker run -d --expose 8080 --name probr_analysis --link mongodb:mongodb --link redis:redis probr_analysis sh install/docker/node/run.sh
 
 docker stop nginx
 docker rm nginx
