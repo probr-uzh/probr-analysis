@@ -9,6 +9,8 @@ module.exports = function (grunt) {
         localConfig = {};
     }
 
+    var os = require('os');
+
     // Load grunt tasks automatically, when needed
     require('jit-grunt')(grunt, {
         express: 'grunt-express-server',
@@ -248,7 +250,8 @@ module.exports = function (grunt) {
                         '<%= yeoman.dist %>/public/assets/fonts/*',
                         // fix for .js ending folder-name, see https://github.com/cbas/grunt-rev/issues/29
                         '!<%= yeoman.dist %>/public/bower_components/Chart.js',
-                        '!<%= yeoman.dist %>/public/bower_components/angular-chart.js'
+                        '!<%= yeoman.dist %>/public/bower_components/angular-chart.js',
+                        '!<%= yeoman.dist %>/public/bower_components/Leaflet.awesome-markers'
                     ]
                 }
             }
@@ -507,6 +510,7 @@ module.exports = function (grunt) {
                         filePath = filePath.replace('/.tmp/', '');
                         return '<script src="' + filePath + '"></script>';
                     },
+                    lineEnding: os.EOL,
                     starttag: '<!-- injector:js -->',
                     endtag: '<!-- endinjector -->'
                 },
@@ -515,7 +519,6 @@ module.exports = function (grunt) {
                         [
 
                             '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.js',
-
                             '!{.tmp,<%= yeoman.client %>}/app/app.js',
                             '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.spec.js',
                             '!{.tmp,<%= yeoman.client %>}/{app,components}/**/*.mock.js'
@@ -532,6 +535,7 @@ module.exports = function (grunt) {
                         filePath = filePath.replace('/client/components/', '');
                         return '@import \'' + filePath + '\';';
                     },
+                    lineEnding: os.EOL,
                     starttag: '// injector',
                     endtag: '// endinjector'
                 },
@@ -551,6 +555,7 @@ module.exports = function (grunt) {
                         filePath = filePath.replace('/.tmp/', '');
                         return '<link rel="stylesheet" href="' + filePath + '">';
                     },
+                    lineEnding: os.EOL,
                     starttag: '<!-- injector:css -->',
                     endtag: '<!-- endinjector -->'
                 },
