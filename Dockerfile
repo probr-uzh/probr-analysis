@@ -1,5 +1,11 @@
 # Pull base image
-FROM digitallyseamless/nodejs-bower-grunt:0.12
+FROM node:0.12.7
+
+# Pull Yeoman Generator
+RUN npm install -g yo grunt-cli bower generator-angular-fullstack
+
+# Prevent Build Error
+RUN npm install -g node-gyp
 
 # Define working directory
 RUN mkdir /app
