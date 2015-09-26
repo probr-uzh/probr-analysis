@@ -15,7 +15,7 @@ module.exports = {
 
     // MongoDB connection options
     mongo: {
-        uri: 'mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/probr-core' || 'mongodb://localhost/probr-core'
+        uri: 'mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/probr-core' || 'mongodb://localhost:27017/probr-core'
     },
 
     // Redis connection options
