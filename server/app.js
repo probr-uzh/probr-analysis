@@ -35,6 +35,7 @@ socketio.adapter(redis({ host: config.redis.addr, port: config.redis.port }));
 
 require('./config/socketio')(socketio);
 require('./config/express')(app);
+require('./config/cron');
 require('./routes')(app);
 
 // Start server
