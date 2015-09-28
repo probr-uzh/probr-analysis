@@ -13,14 +13,6 @@ angular.module('probrAnalysisPacketsFilter')
             $scope.newPackets.push(item);
         });
 
-        Packet.query({
-                skip: 0,
-                limit: $scope.pageLength
-            }, function (resultObj) {
-                $scope.packets = resultObj.results;
-            }
-        );
-
 
     });
 
