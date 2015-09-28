@@ -8,27 +8,52 @@ var Vendors = require('./vendor_db');
 
 var breakTime = undefined;
 
-//var map_reduce_object_incremental = {
-//
-//  map : function(){
-//    emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
-//  },
-//
-//  reduce : function(key, values) {
-//    var lastSeen = values[0].last_seen;
-//    for (i = 1; i < values.length; i++) {
-//      if (lastSeen > values[i].last_seen) {
-//        lastSeen = values[i].last_seen;
-//      }
-//    }
-//    return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
-//  },
-//
-//  out = {reduce: 'raw_devices'},
-//
 
+var getMapReduceIncremental = function(gt_timestamp){
 
+  var map_reduce_object_incremental = {
+    map : function(){
+      emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
+    },
+
+    reduce : function(key, values) {
+      var lastSeen = values[0].last_seen;
+      for (i = 1; i < values.length; i++) {
+        if (lastSeen > values[i].last_seen) {
+          lastSeen = values[i].last_seen;
+        }
+      }
+      return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+    },
+
+    out : {reduce: 'raw_devices'},
+
+    query : {inserted_at: {$gt : gt_timestamp} }
+
+  };
+
+  return map_reduce_object_incremental;
 }
+
+
+var map_reduce_object = {
+  map : function(){
+    emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
+  },
+
+  reduce : function(key, values) {
+    var lastSeen = values[0].last_seen;
+    for (i = 1; i < values.length; i++) {
+      if (lastSeen > values[i].last_seen) {
+        lastSeen = values[i].last_seen;
+      }
+    }
+    return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+  },
+
+  out : {reduce: 'raw_devices'},
+};
+
 
 
 
@@ -47,26 +72,28 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
       onTick: function () {
 
         //configure the map reduce job
-        var mapReduceOptions = {};
 
-        mapReduceOptions.map = function(){
-          emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
-        };
+        var mapReduceOptions = getMapReduceIncremental(breakTime);
+        //var mapReduceOptions = {};
 
-        mapReduceOptions.reduce = function(key, values) {
-          var lastSeen = values[0].last_seen;
-          for (i = 1; i < values.length; i++) {
-            if (lastSeen > values[i].last_seen) {
-              lastSeen = values[i].last_seen;
-            }
-          }
-          return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
-        };
-
-        mapReduceOptions.out = {reduce: 'raw_devices'};
-
-        //only the packets since breakTime (excluding the first run, where breakTime is undefined since the device collections doesn't exist yet)
-        mapReduceOptions.query = {inserted_at: {$gt : breakTime} };
+        //mapReduceOptions.map = function(){
+        //  emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
+        //};
+        //
+        //mapReduceOptions.reduce = function(key, values) {
+        //  var lastSeen = values[0].last_seen;
+        //  for (i = 1; i < values.length; i++) {
+        //    if (lastSeen > values[i].last_seen) {
+        //      lastSeen = values[i].last_seen;
+        //    }
+        //  }
+        //  return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+        //};
+        //
+        //mapReduceOptions.out = {reduce: 'raw_devices'};
+        //
+        ////only the packets since breakTime (excluding the first run, where breakTime is undefined since the device collections doesn't exist yet)
+        //mapReduceOptions.query = {inserted_at: {$gt : breakTime} };
 
         Packet.mapReduce(mapReduceOptions, function (err, results) {
           if(err){
@@ -108,23 +135,25 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
   }else{
     console.log("CRON: No raw_device collection found. First mapreduce as full run in order to create it.");
 
-    var mapReduceOptions = {};
+    var mapReduceOptions = map_reduce_object;
 
-    mapReduceOptions.map = function(){
-      emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
-    };
-
-    mapReduceOptions.reduce = function(key, values) {
-      var lastSeen = values[0].last_seen;
-      for (i = 1; i < values.length; i++) {
-        if (lastSeen > values[i].last_seen) {
-          lastSeen = values[i].last_seen;
-        }
-      }
-      return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
-    };
-
-    mapReduceOptions.out = {reduce: 'raw_devices'};
+    //var mapReduceOptions = {};
+    //
+    //mapReduceOptions.map = function(){
+    //  emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
+    //};
+    //
+    //mapReduceOptions.reduce = function(key, values) {
+    //  var lastSeen = values[0].last_seen;
+    //  for (i = 1; i < values.length; i++) {
+    //    if (lastSeen > values[i].last_seen) {
+    //      lastSeen = values[i].last_seen;
+    //    }
+    //  }
+    //  return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+    //};
+    //
+    //mapReduceOptions.out = {reduce: 'raw_devices'};
 
     Packet.mapReduce(mapReduceOptions, function (err, results) {
       if(err){
@@ -160,27 +189,29 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
                 latest_insert = doc[0].value.last_seen;
                 console.log("CRON: Found latest_insert for incremental MapReduce:  " + latest_insert);
 
+                var mapReduceOptions = getMapReduceIncremental(latest_insert);
+
                 //configure the map reduce job
-                var mapReduceOptions = {};
-
-                mapReduceOptions.map = function(){
-                  emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
-                };
-
-                mapReduceOptions.reduce = function(key, values) {
-                  var lastSeen = values[0].last_seen;
-                  for (i = 1; i < values.length; i++) {
-                    if (lastSeen > values[i].last_seen) {
-                      lastSeen = values[i].last_seen;
-                    }
-                  }
-                  return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
-                };
-
-                mapReduceOptions.out = {reduce: 'raw_devices'};
-
-                //only the packets since latest_insert
-                mapReduceOptions.query = {inserted_at: {$gt : latest_insert} }
+                //var mapReduceOptions = {};
+                //
+                //mapReduceOptions.map = function(){
+                //  emit(this.mac_address_src,{mac_address: this.mac_address_src, vendor: this.vendor, last_seen:this.inserted_at});
+                //};
+                //
+                //mapReduceOptions.reduce = function(key, values) {
+                //  var lastSeen = values[0].last_seen;
+                //  for (i = 1; i < values.length; i++) {
+                //    if (lastSeen > values[i].last_seen) {
+                //      lastSeen = values[i].last_seen;
+                //    }
+                //  }
+                //  return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+                //};
+                //
+                //mapReduceOptions.out = {reduce: 'raw_devices'};
+                //
+                ////only the packets since latest_insert
+                //mapReduceOptions.query = {inserted_at: {$gt : latest_insert} }
 
                 Packet.mapReduce(mapReduceOptions, function (err, results) {
                   if(err){
