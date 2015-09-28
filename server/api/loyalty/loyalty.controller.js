@@ -7,6 +7,9 @@ var Session = require('../session/session.model')
 exports.histogram = function (req, res) {
   var pipeline = [
     {
+      "$match": {"duration": {$ne: 0}}
+    },
+    {
       "$group": {
         "_id": "$mac_address",
         "count": {"$sum": 1}
