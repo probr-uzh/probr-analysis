@@ -6,7 +6,7 @@ var Device = require('../api/device/device.model');
 var Vendors = require('./vendor_db');
 
 
-var breakTime = undefined;
+
 
 /*
 Returns a map reduce config object with the query property set to reduce only items inserted
@@ -60,9 +60,53 @@ var map_reduce_object = {
   out : {reduce: 'raw_devices'},
 };
 
+/*
+The forEach job that flattens the raw_devices structure and looks up the vendors, and then puts it into the
+devices collection. This function checks if the corresponding device entry already exists before updating.
+*/
+var executeDeviceForEach = function(){
+  RawDevice.find().exec(function(err,docs){
+    docs.forEach(function(element, index, array){
+      Device.findOne({mac_address: element.value.mac_address}).exec(function(err,result){
+        if(err){
+          console.log("CRON: Error during forEach from raw_devices -> devices.");
+        }
+        else if(!result){ //there are no devices with the given mac address
+          var d = new Device();
+          d.mac_address = element.value.mac_address;
+          d.vendor = Vendors.vendors[element.value.mac_address.substr(0,6)];
+          d.last_seen = element.value.last_seen;
+          d.save();
+        }else{ //The device already exists in the collection --> only update the last_seen timestamp
+          if(result.last_seen < element.value.last_seen){
+            result.last_seen = element.value.last_seen;
+            result.save();
+          }
+        }
+      });
+    });
+  });
+}
 
 
+/*
+ The forEach job that flattens the raw_devices structure and looks up the vendors, and then puts it into the
+ devices collection. This function doesn't check if the corresponding device entry already exists before updating, so only use it on the first run of the cron.
+ */
 
+var initialDeviceForEach = function(){
+  RawDevice.find().exec(function(err,docs){
+    docs.forEach(function(element, index, array){
+      var d = new Device();
+      d.mac_address = element.value.mac_address;
+      d.vendor = Vendors.vendors[element.value.mac_address.substr(0,6)];
+      d.last_seen = element.value.last_seen;
+      d.save();
+    });
+  });
+}
+
+var breakTime = undefined;
 
 RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
 
@@ -80,36 +124,13 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
         //configure the map reduce job
         var mapReduceOptions = getMapReduceIncremental(breakTime);
 
-
         Packet.mapReduce(mapReduceOptions, function (err, results) {
           if(err){
             console.log("CRON: Error: " + err)
           }else{
-            console.log("CRON: Finished.");
+            console.log("CRON: Finished device cron. Starting forEach: raw_devices -> devices" );
 
-            RawDevice.find().exec(function(err,docs){
-              docs.forEach(function(element, index, array){
-                Device.findOne({mac_address: element.value.mac_address}).exec(function(err,result){
-                  if(err){
-                    console.log("CRON: Error during forEach from raw_devices -> devices.");
-                  }
-                  else if(!result){ //there are no devices with the given mac address
-                    var d = new Device();
-                    d.mac_address = element.value.mac_address;
-                    d.vendor = Vendors.vendors[element.value.mac_address.substr(0,6)];
-                    d.last_seen = element.value.last_seen;
-                    d.save();
-                    console.log("New Device: " + d);
-                  }else{ //The device already exists in the collection --> only update the last_seen timestamp
-                    if(result.last_seen < element.value.last_seen){
-                      result.last_seen = element.value.last_seen;
-                      result.save();
-                      console.log("Updated existing device: " + result);
-                    }
-                  }
-                });
-              });
-            });
+            executeDeviceForEach();
           }
         });
 
@@ -132,18 +153,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
 
         //forEach which iterates over all raw_devices and flattens their structure and adds the vendor, and puts that into
         //the final devices collection
-
-        RawDevice.find().exec(function(err,docs){
-          docs.forEach(function(element, index, array){
-            var d = new Device();
-            d.mac_address = element.value.mac_address;
-            d.vendor = Vendors.vendors[element.value.mac_address.substr(0,6)];
-            d.last_seen = element.value.last_seen;
-            d.save();
-            console.log("New Device: " + d);
-          });
-        });
-
+        initialDeviceForEach();
 
         //now start the actual cronjob to do the regular incremental mapreduce plus the foreach
         new CronJob({
@@ -159,36 +169,12 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
 
                 var mapReduceOptions = getMapReduceIncremental(latest_insert);
 
-
                 Packet.mapReduce(mapReduceOptions, function (err, results) {
                   if(err){
                     console.log("CRON: Error during incremental mapreduce: " + err)
                   }else{
-                    console.log("CRON: Finished device cron." );
-
-                    RawDevice.find().exec(function(err,docs){
-                      docs.forEach(function(element, index, array){
-                        Device.findOne({mac_address: element.value.mac_address}).exec(function(err,result){
-                          if(err){
-                            console.log("CRON: Error during forEach from raw_devices -> devices.");
-                          }
-                          else if(!result){ //there are no devices with the given mac address
-                            var d = new Device();
-                            d.mac_address = element.value.mac_address;
-                            d.vendor = Vendors.vendors[element.value.mac_address.substr(0,6)];
-                            d.last_seen = element.value.last_seen;
-                            d.save();
-                            console.log("New Device: " + d);
-                          }else{ //The device already exists in the collection --> only update the last_seen timestamp
-                            if(result.last_seen < element.value.last_seen){
-                              result.last_seen = element.value.last_seen;
-                              result.save();
-                              console.log("Updated existing device: " + result);
-                            }
-                          }
-                        });
-                      });
-                    });
+                    console.log("CRON: Finished device cron. Starting forEach: raw_devices -> devices" );
+                    executeDeviceForEach();
                   }
                 });
               }
