@@ -18,6 +18,7 @@ angular.module('probrAnalysisApp', [
   'probrAnalysisRoomUtilization',
   'probrAnalysisMap',
   'probrAnalysisMACAnalyzer',
+  'probrAnalysisSessions',
 
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
