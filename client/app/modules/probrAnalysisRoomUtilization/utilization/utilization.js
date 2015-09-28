@@ -5,7 +5,7 @@ angular.module('probrAnalysisRoomUtilization')
         $stateProvider
             .state('utilization', {
                 url: '/utilization',
-                templateUrl: 'app/modules/probrAnalysisRoomUtilization/utilization/utilization.html',
+                templateUrl: 'app/modules/probrAnalysisRoomUtilization/utilization/loyalty.html',
                 controller: 'UtilizationCtrl'
             });
         ;

@@ -23,6 +23,10 @@ angular.module('probrAnalysisCommon')
       {
         'title': 'MAC-Analyzer',
         'link': 'analyzer'
+      },
+      {
+        'title': 'Loyalty',
+        'link': 'loyalty'
       }
     ];
 
