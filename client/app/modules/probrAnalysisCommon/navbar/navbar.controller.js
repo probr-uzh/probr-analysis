@@ -18,7 +18,7 @@ angular.module('probrAnalysisCommon')
       },
       {
         'title': 'Sessions',
-        'link': 'session'
+        'link': 'sessions'
       },
       {
         'title': 'MAC-Analyzer',

@@ -1,19 +1,18 @@
 'use strict';
 
 angular.module('probrAnalysisApp')
-  .directive('probrPacketSearch', function () {
+  .directive('probrSearch', function () {
     return {
       restrict: 'E',
       scope: {
         query: '=',
         onSubmit: '&',
         pageLength: '=',
-        filters: '='
+        filters: '=',
+        fields: '='
       },
-      templateUrl: 'components/probr/probrPacketSearch/probrPacketSearch.html',
+      templateUrl: 'components/probr/probrSearch/probrSearch.html',
       link: function ($scope, element, attrs) {
-
-        $scope.fields = ['mac_address_src: ', 'mac_address_dst: ', 'lat: ', 'lon: ', 'tags: ', 'ssid: ', 'signal_strength: ', 'limit', 'skip'];
 
         $scope.submitInput = function () {
           if ($scope.typeaheadQuery.split(':', 2)[1] === undefined || $scope.typeaheadQuery.split(':', 2)[1].length <= 1) return;
