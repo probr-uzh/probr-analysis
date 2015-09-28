@@ -3,12 +3,14 @@ var Schema = mongoose.Schema;
 
 
 var deviceSchema = new Schema({
-  mac_address: String,
-  vendor: String,
-  last_seen: Date
+  value : {
+    mac_address: String,
+    vendor: String,
+    last_seen: Date
+  }
 });
 
-var Device = mongoose.model('Device',deviceSchema);
+var Device = mongoose.model('device',deviceSchema,'device');
 
 //var test = new Device({mac_address: '123456789', vendor: 'Google', last_seen: new Date()});
 //
