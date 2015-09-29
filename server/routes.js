@@ -12,6 +12,7 @@ var express = require('express');
 var PacketModel = require('./api/packet/packet.model')
 var SessionModel = require('./api/session/session.model')
 var UtilizationModel = require('./api/utilization/utilization.model')
+var DeviceModel = require('./api/device/device.model');
 
 module.exports = function (app) {
 
@@ -37,6 +38,10 @@ module.exports = function (app) {
 
   restify.serve(router, UtilizationModel, {
     lowercase: true, version: '',
+  });
+
+  restify.serve(router,DeviceModel,{
+    lowercase:true, version: '',
   });
 
   app.use(router);
