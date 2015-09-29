@@ -27,6 +27,10 @@ angular.module('probrAnalysisCommon')
       {
         'title': 'Loyalty',
         'link': 'loyalty'
+      },
+      {
+        'title':'Devices',
+        'link':'devices'
       }
     ];
 
