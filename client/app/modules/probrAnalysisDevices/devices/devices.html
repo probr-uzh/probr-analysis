@@ -5,11 +5,27 @@
   <h1>Devices</h1>
 
   <div class="row">
-    <div class="col-xs-12">
-      test
-      <p>
-        {{devices}}
-      </p>
+    <div class="col-sm-6">
+      Vendor pie chart:
+      <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
+    </div>
+    <div class="col-sm-6 table-responsive">
+      Top 15 vendors:
+      <br>
+      <table class="table table-condensed">
+        <tr>
+          <td> Rank </td>
+          <td> Vendor </td>
+          <td> Count </td>
+          <td> Percentage </td>
+        </tr>
+        <tr ng-repeat="rank in ranking">
+          <td>{{ rank.rank }}</td>
+          <td>{{ rank.vendor }}</td>
+          <td>{{ rank.count }}</td>
+          <td>{{ rank.percentage }}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
