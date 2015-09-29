@@ -64,8 +64,8 @@ var map_reduce_object = {
 The forEach job that flattens the raw_devices structure and looks up the vendors, and then puts it into the
 devices collection. This function checks if the corresponding device entry already exists before updating.
 */
-var executeDeviceForEach = function(){
-  RawDevice.find().exec(function(err,docs){
+var executeDeviceForEach = function(gt_timestamp){
+  RawDevice.find({"value.last_seen" : {$gt: gt_timestamp}}).exec(function(err,docs){
     docs.forEach(function(element, index, array){
       Device.findOne({mac_address: element.value.mac_address}).exec(function(err,result){
         if(err){
@@ -130,7 +130,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
           }else{
             console.log("CRON: Finished device cron. Starting forEach: raw_devices -> devices" );
 
-            executeDeviceForEach();
+            executeDeviceForEach(breakTime);
           }
         });
 
@@ -153,6 +153,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
 
         //forEach which iterates over all raw_devices and flattens their structure and adds the vendor, and puts that into
         //the final devices collection
+
         initialDeviceForEach();
 
         //now start the actual cronjob to do the regular incremental mapreduce plus the foreach
@@ -174,7 +175,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
                     console.log("CRON: Error during incremental mapreduce: " + err)
                   }else{
                     console.log("CRON: Finished device cron. Starting forEach: raw_devices -> devices" );
-                    executeDeviceForEach();
+                    executeDeviceForEach(latest_insert);
                   }
                 });
               }
