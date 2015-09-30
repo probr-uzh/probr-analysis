@@ -36,10 +36,6 @@ angular.module('probrAnalysisDevices')
         lastWeekDate.setDate(currentDate.getDate() - 7);
         var lastWeekDevices = [];
 
-        console.log(lastHourDate);
-        console.log(lastDayDate);
-        console.log(lastWeekDate);
-
         devices.forEach(function(element){
           var vendor = element.vendor;
           if(vendor !== undefined){
@@ -53,7 +49,6 @@ angular.module('probrAnalysisDevices')
           }
 
           var elementDate = new Date(element.last_seen);
-          console.log(elementDate);
           if(elementDate > lastHourDate){
             lastHourDevices.push(element);
           }
