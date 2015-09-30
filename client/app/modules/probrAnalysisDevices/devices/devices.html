@@ -6,11 +6,11 @@
 
   <div class="row">
     <div class="col-sm-6">
-      Vendor pie chart:
+      <h2> Vendor pie chart: </h2>
       <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
     </div>
     <div class="col-sm-6 table-responsive">
-      Top 15 vendors:
+      <h2> Top 15 vendors: </h2>
       <br>
       <table class="table table-condensed">
         <tr>
@@ -24,6 +24,59 @@
           <td>{{ rank.vendor }}</td>
           <td>{{ rank.count }}</td>
           <td>{{ rank.percentage }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+  <div class="row">
+    <div class="col-sm-4 table-responsive">
+      <h2>Devices seen last hour:</h2>
+      <br>
+      <table class="table table-condensed">
+        <tr>
+          <td> MAC </td>
+          <td> Vendor </td>
+          <td> Time </td>
+        </tr>
+        <tr ng-repeat="dev in lasthour">
+          <td>{{ dev.mac_address }}</td>
+          <td>{{ dev.vendor }}</td>
+          <td>{{ dev.last_seen }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-4 table-responsive">
+      <h2>Devices seen last day: </h2>
+      <br>
+      <table class="table table-condensed">
+        <tr>
+          <td> MAC </td>
+          <td> Vendor </td>
+          <td> Time </td>
+        </tr>
+        <tr ng-repeat="dev in lastday">
+          <td>{{ dev.mac_address }}</td>
+          <td>{{ dev.vendor }}</td>
+          <td>{{ dev.last_seen }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-sm-4 table-responsive">
+      <h2> Devices seen last week: </h2>
+      <br>
+      <table class="table table-condensed">
+        <tr>
+          <td> MAC </td>
+          <td> Vendor </td>
+          <td> Time </td>
+        </tr>
+        <tr ng-repeat="dev in lastweek">
+          <td>{{ dev.mac_address }}</td>
+          <td>{{ dev.vendor }}</td>
+          <td>{{ dev.last_seen }}</td>
         </tr>
       </table>
     </div>

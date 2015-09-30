@@ -18,10 +18,27 @@ angular.module('probrAnalysisDevices')
         var devices = $scope.devices;
 
         var vendorMap = new Object();
-
         var vendorList = [];
 
         var totalCount = 0;
+
+        var currentDate = new Date();
+
+        var lastHourDate = new Date();
+        lastHourDate.setHours(currentDate.getHours() - 1);
+        var lastHourDevices = [];
+
+        var lastDayDate = new Date();
+        lastDayDate.setDate(currentDate.getDate() - 1);
+        var lastDayDevices = [];
+
+        var lastWeekDate = new Date();
+        lastWeekDate.setDate(currentDate.getDate() - 7);
+        var lastWeekDevices = [];
+
+        console.log(lastHourDate);
+        console.log(lastDayDate);
+        console.log(lastWeekDate);
 
         devices.forEach(function(element){
           var vendor = element.vendor;
@@ -34,7 +51,26 @@ angular.module('probrAnalysisDevices')
               vendorMap[vendor] = vendorMap[vendor] + 1;
             }
           }
+
+          var elementDate = new Date(element.last_seen);
+          console.log(elementDate);
+          if(elementDate > lastHourDate){
+            lastHourDevices.push(element);
+          }
+          if(elementDate > lastDayDate){
+            lastDayDevices.push(element);
+          }
+          if(elementDate > lastWeekDate){
+            lastWeekDevices.push(element);
+          }
+
         });
+
+
+        //assign data for lasthour, lastday, lastweek lists
+        $scope.lasthour = lastHourDevices;
+        $scope.lastday = lastDayDevices;
+        $scope.lastweek = lastWeekDevices;
 
         var data = [];
 
@@ -52,7 +88,6 @@ angular.module('probrAnalysisDevices')
         //compute data for the ranking table
         var sortArray = Object.keys(inverseVendorMap);
 
-        //sortArray.sort();
         sortArray.reverse();
 
         var ranking = [];
