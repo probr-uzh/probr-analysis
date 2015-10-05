@@ -1,48 +1,48 @@
 'use strict';
 
 angular.module('probrPagination', [])
-    .directive('probrPagination', function () {
-        return {
-            restrict: 'E',
-            transclude: true,
-            scope: {
-                resource: '=',
-                items: '=',
-                itemsCount: '=',
-                pageLength: '=',
-                query: '='
-            },
-            templateUrl: 'components/probr/probrPagination/pagination.html',
-            link: function (scope, element, attrs) {
+  .directive('probrPagination', function () {
+    return {
+      restrict: 'E',
+      transclude: true,
+      scope: {
+        resource: '=',
+        items: '=',
+        itemsCount: '=',
+        pageLength: '=',
+        query: '='
+      },
+      templateUrl: 'components/probr/probrPagination/pagination.html',
+      link: function (scope, element, attrs) {
 
-                scope.isSearching = false;
+        scope.isSearching = false;
 
-                scope.pageChanged = function () {
+        scope.resource.count({}, function (resultObj) {
+          scope.itemsCount = resultObj.count;
+        });
 
-                    var searchQuery = scope.query !== undefined ? scope.query : {};
+        scope.pageChanged = function () {
 
-                    // constract query parameters
-                    searchQuery.skip = (scope.pageCurrent - 1) * scope.pageLength;
-                    searchQuery.limit = scope.pageLength;
+          var searchQuery = scope.query !== undefined ? scope.query : {};
 
-                    scope.isSearching = true;
+          // constract query parameters
+          searchQuery.skip = (scope.pageCurrent - 1) * scope.pageLength;
+          searchQuery.limit = scope.pageLength;
 
-                    scope.resource.count({}, function(resultObj) {
-                        scope.itemsCount = resultObj.count;
+          scope.isSearching = true;
 
-                        scope.resource.query(searchQuery, function (resultObj) {
-                            scope.items = resultObj;
-                            scope.isSearching = false;
-                        });
-                    })
+          scope.resource.query(searchQuery, function (resultObj) {
+            scope.items = resultObj;
+            scope.isSearching = false;
+          });
 
 
-                };
-
-                scope.$watch('query', function() {
-                    scope.pageChanged();
-                })
-
-            }
         };
-    });
+
+        scope.$watch('query', function () {
+          scope.pageChanged();
+        })
+
+      }
+    };
+  });
