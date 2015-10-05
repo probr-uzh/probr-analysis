@@ -7,7 +7,8 @@ var DeviceMapReduce = require('./device.mapreduce');
 var DeviceForEach = require('./device.foreach');
 
 
-
+//Repeat cronjob every 25 seconds
+var cronConfig = '*/25 * * * * *';
 
 var breakTime = undefined;
 
@@ -21,7 +22,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
     console.log("CRON: Starting new CronJob");
 
     new CronJob({
-      cronTime: '*/25 * * * * *',
+      cronTime: cronConfig,
       onTick: function () {
 
         //configure the map reduce job
@@ -61,7 +62,7 @@ RawDevice.find().sort("-value.last_seen").limit(1).exec( function(err, doc) {
 
         //now start the actual cronjob to do the regular incremental mapreduce plus the foreach
         new CronJob({
-          cronTime: '*/25 * * * * *',
+          cronTime: cronConfig,
           onTick: function () {
 
             var latest_insert = undefined;
