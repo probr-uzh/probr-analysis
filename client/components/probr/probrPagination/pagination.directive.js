@@ -27,7 +27,7 @@ angular.module('probrPagination', [])
 
                     scope.isSearching = true;
 
-                    scope.resource.count(searchQuery, function(resultObj) {
+                    scope.resource.count({}, function(resultObj) {
                         scope.itemsCount = resultObj.count;
 
                         scope.resource.query(searchQuery, function (resultObj) {
