@@ -8,8 +8,7 @@ angular.module('probrAnalysisPacketsFilter')
     $scope.pageLength = 100;
     $scope.resource = Packet;
     $scope.filters = {skip: 0, limit: $scope.pageLength};
-
-    $scope.query = { "sort" : "-time" };
+    $scope.query = {sort: "-time"};
 
     Socket.listenTo('packet:create', function (item) {
       $scope.newPackets.push(item);

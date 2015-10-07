@@ -13,34 +13,36 @@ angular.module('probrPagination', [])
         query: '='
       },
       templateUrl: 'components/probr/probrPagination/pagination.html',
-      link: function (scope, element, attrs) {
+      controller: function ($scope, $location) {
 
-        scope.isSearching = false;
+        $scope.isSearching = false;
+        $scope.pageChanged = function () {
 
-        scope.resource.count({}, function (resultObj) {
-          scope.itemsCount = resultObj.count;
-        });
-
-        scope.pageChanged = function () {
-
-          var searchQuery = scope.query !== undefined ? scope.query : {};
+          var searchQuery = $scope.query !== undefined ? $scope.query : {};
 
           // constract query parameters
-          searchQuery.skip = (scope.pageCurrent - 1) * scope.pageLength;
-          searchQuery.limit = scope.pageLength;
+          searchQuery.skip = ($scope.pageCurrent - 1) * $scope.pageLength;
+          searchQuery.limit = $scope.pageLength;
 
-          scope.isSearching = true;
+          $scope.isSearching = true;
 
-          scope.resource.query(searchQuery, function (resultObj) {
-            scope.items = resultObj;
-            scope.isSearching = false;
-          });
+          // update location
+          $location.path($location.path(), false).search(searchQuery);
+
+          $scope.resource.count({}, function (resultObj) {
+            $scope.itemsCount = resultObj.count;
+
+            $scope.resource.query(searchQuery, function (resultObj) {
+              $scope.items = resultObj;
+              $scope.isSearching = false;
+            });
+          })
 
 
         };
 
-        scope.$watch('query', function () {
-          scope.pageChanged();
+        $scope.$watch('query', function () {
+          $scope.pageChanged();
         })
 
       }
