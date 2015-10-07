@@ -20,6 +20,7 @@ angular.module('probrAnalysisApp', [
   'probrAnalysisMap',
   'probrAnalysisMACAnalyzer',
   'probrAnalysisSessions',
+  'probrAnalysisDevices',
 
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
