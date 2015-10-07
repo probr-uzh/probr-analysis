@@ -5,10 +5,9 @@ angular.module('probrAnalysisApp')
     return {
       restrict: 'E',
       scope: {
-        query: '=',
         onSubmit: '&',
         pageLength: '=',
-        filters: '=',
+        query: '=',
         fields: '='
       },
       templateUrl: 'components/probr/probrSearch/probrSearch.html',
@@ -21,21 +20,16 @@ angular.module('probrAnalysisApp')
           var fieldName = params[0];
           var fieldContent = $scope.typeaheadQuery.substr($scope.typeaheadQuery.indexOf(':'), $scope.typeaheadQuery.length).replace(/:/g, '').trim();
 
-          if ($scope.filters === undefined) {
-            $scope.filters = {};
-          }
-
-          $scope.filters[fieldName] = fieldContent;
+          $scope.query[fieldName] = fieldContent;
           $scope.typeaheadQuery = '';
         }
 
         $scope.removeLabel = function (key) {
-          delete $scope.filters[key];
+          delete $scope.query[key];
         }
 
         $scope.search = function () {
-          $scope.query = angular.copy($scope.filters);
-          $scope.onSubmit({query: $scope.query});
+          $scope.onSubmit({query: angular.copy($scope.query)});
         }
 
       }

@@ -22,7 +22,7 @@ angular.module('probrPagination', [])
                     var searchQuery = scope.query !== undefined ? scope.query : {};
 
                     // constract query parameters
-                    searchQuery.skip = (scope.pageCurrent - 1) * scope.pageLength;
+                    searchQuery.skip = scope.pageCurrent !== undefined ? (scope.pageCurrent - 1) * scope.pageLength : 0;
                     searchQuery.limit = scope.pageLength;
 
                     scope.isSearching = true;
@@ -34,7 +34,7 @@ angular.module('probrPagination', [])
                             scope.items = resultObj;
                             scope.isSearching = false;
                         });
-                    })
+                    });
 
 
                 };
