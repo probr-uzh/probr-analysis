@@ -18,7 +18,7 @@ function getInitialMapReduceConfig() {
             }
             return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
         },
-
+       sort: { mac_address_src: 1 },
         out: {reduce: 'raw_devices'},
     };
 }

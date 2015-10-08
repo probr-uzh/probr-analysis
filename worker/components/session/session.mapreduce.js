@@ -58,7 +58,7 @@ function getInitialMapReduceConfig() {
                 };
             });
         },
-
+        sort: { mac_address_src: 1 },
         out: {reduce: 'raw_sessions'},
     }
 }

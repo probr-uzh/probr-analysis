@@ -45,8 +45,8 @@ server.listen(config.port, config.ip, function () {
 
     // Setup Task-Queue
     var tasks = require('./components/tasks/tasks.js')(config);
-    tasks.createJob('device', {type: 'device'}, 10 * 1000);
-    tasks.createJob('session', {type: 'session'}, 30 * 1000);
+    tasks.createJob('device', {type: 'device'}, 1 * 60 * 1000);
+    tasks.createJob('session', {type: 'session'}, 1 * 60 * 1000);
 
 });
 

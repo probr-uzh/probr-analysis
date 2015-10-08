@@ -22,6 +22,21 @@ var kue = require('kue'), queue = kue.createQueue({
     }
 });
 
+// Multi-Core Support through Cluster
+var cluster = require('cluster')
+var clusterWorkerSize = require('os').cpus().length;
+
+if (cluster.isMaster) {
+    console.log("detecting " + clusterWorkerSize + " CPU. forking...");
+    for (var i = 0; i < clusterWorkerSize; i++) {
+        cluster.fork();
+    }
+} else {
+    console.log("worker up.");
+    processJob('device');
+    processJob('session');
+}
+
 function processJob(jobName) {
     queue.process(jobName, function (job, done) {
 
@@ -29,7 +44,7 @@ function processJob(jobName) {
 
         domain.on('error', function (err) {
             console.error(err);
-            done(err, {name: jobName });
+            done(err, {name: jobName});
         });
 
         domain.run(function () {
@@ -46,13 +61,10 @@ function processJob(jobName) {
     });
 }
 
-process.on('SIGINT', function(code) {
+process.on('SIGINT', function (code) {
     console.log('shutdown...');
-    queue.shutdown(1000, function(err){
-        console.error('shutdown result: ', err || 'OK' );
+    queue.shutdown(1000, function (err) {
+        console.error('shutdown result: ', err || 'OK');
         process.exit(code);
     });
 });
-
-processJob('device');
-processJob('session');

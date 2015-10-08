@@ -22,19 +22,22 @@ var executeDeviceForEach = function (gt_timestamp, cb) {
     }
 
     RawDevice.count(query, function (err, count) {
+        if (err) return cb(err);
 
         var totalDevices = count;
-        var deviceStream = RawDevice.find({"value.last_seen": {$gt: gt_timestamp}}).stream();
+        var deviceStream = RawDevice.find(query).stream();
 
         deviceStream.on('data', function (item) {
 
-            if (counter % 1000 == 0) {
-                console.log("session-Job: forEach: raw_sessions -> sessions (" + (totalDevices / counter) * 100 + "%)");
+            if (counter % 500 == 0) {
+                console.log("device-Job: forEach: raw_devices -> devices (" + Math.floor((counter / totalDevices) * 100) + "%)");
             }
+
+            counter++;
 
             Device.findOne({mac_address: item.value.mac_address}).exec(function (err, result) {
                 if (err) {
-                    callback(err);
+                    cb(err);
                 } else if (!result) {
 
                     // there are no devices with the given mac address
@@ -42,18 +45,14 @@ var executeDeviceForEach = function (gt_timestamp, cb) {
                     d.mac_address = item.value.mac_address;
                     d.vendor = Vendors.vendors[item.value.mac_address.substr(0, 6)];
                     d.last_seen = item.value.last_seen;
-                    d.save(function () {
-                        callback();
-                    });
+                    d.save();
 
                 } else {
 
                     // The device already exists in the collection --> only update the last_seen timestamp
                     if (result.last_seen < item.value.last_seen) {
                         result.last_seen = item.value.last_seen;
-                        result.save(function () {
-                            callback();
-                        });
+                        result.save();
                     }
 
                 }
