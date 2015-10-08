@@ -13,34 +13,41 @@ var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function(err) {
-	console.error('MongoDB connection error: ' + err);
-	process.exit(-1);
-	}
+mongoose.connection.on('error', function (err) {
+        console.error('MongoDB connection error: ' + err);
+        process.exit(-1);
+    }
 );
 // Populate DB with sample data
-if(config.seedDB) { require('./config/seed'); }
+if (config.seedDB) {
+    require('./config/seed');
+}
 
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
 var socketio = require('socket.io')(server, {
-  serveClient: config.env !== 'production',
-  path: '/socket.io-client'
+    serveClient: config.env !== 'production',
+    path: '/socket.io-client'
 });
 
 // SocketIO Redis
 var redis = require('socket.io-redis');
-socketio.adapter(redis({ host: config.redis.addr, port: config.redis.port }));
+socketio.adapter(redis({host: config.redis.addr, port: config.redis.port}));
 
 require('./config/socketio')(socketio);
 require('./config/express')(app);
-require('./components/devices/device.cron.js');
 require('./routes')(app);
 
 // Start server
 server.listen(config.port, config.ip, function () {
-  console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+
+    // Setup Task-Queue
+    var tasks = require('./components/tasks/tasks.js')(config);
+    tasks.createJob('device', {type: 'device'}, 10 * 1000);
+    tasks.createJob('session', {type: 'session'}, 30 * 1000);
+
 });
 
 // Expose app

@@ -7,7 +7,10 @@ var SessionSchema = new Schema({
     endTimestamp: { type: Date, index: true },
     startTimestamp: { type: Date, index: true },
     count: Number,
+    locations: {},
+    tags: [{type: String}],
+    weightedSignalStrength : Number,
     duration: Number,
 });
 
-module.exports = mongoose.model('Session', SessionSchema);
+module.exports = mongoose.model('sessions', SessionSchema, 'sessions');

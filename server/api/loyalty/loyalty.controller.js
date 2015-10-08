@@ -5,9 +5,10 @@ var Session = require('../session/session.model')
 
 // Get list of utilizations
 exports.histogram = function (req, res) {
+
   var pipeline = [
     {
-      "$match": {"duration": {$gte:1000*60*5}}
+      "$match": {"duration": {$gte:1000*60*2}}
     },
     {
       "$group": {
@@ -30,6 +31,7 @@ exports.histogram = function (req, res) {
     if (err) handleError(res, err);
     return res.status(200).json(result);
   });
+
 };
 
 
