@@ -11,10 +11,10 @@ module.exports = function (config) {
   var createJob = function (jobName, jobOptions, interval) {
 
     // Remove Jobs from this type that are not yet being processed
-    queue.active(function (err, ids) {
+    queue.inactive(function (err, ids) {
       ids.forEach(function (id) {
         kue.Job.get(id, function (err, job) {
-          if (job.type === jobOptions.type && job.started_at === undefined) {
+          if (job.type === jobOptions.type) {
             job.remove(function () {
               console.log("removed unprocessed " + jobOptions.type + " job");
             });
