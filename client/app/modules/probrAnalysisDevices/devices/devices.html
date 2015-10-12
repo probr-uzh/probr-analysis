@@ -14,10 +14,10 @@
       <br>
       <table class="table table-condensed">
         <tr>
-          <td> Rank </td>
-          <td> Vendor </td>
-          <td> Count </td>
-          <td> Percentage </td>
+          <td> Rank</td>
+          <td> Vendor</td>
+          <td> Count</td>
+          <td> Percentage</td>
         </tr>
         <tr ng-repeat="rank in ranking">
           <td>{{ rank.rank }}</td>
@@ -32,14 +32,50 @@
   <hr>
   <br>
   <div class="row">
+    <div class="col-sm-6">
+      <h2> Current Devices: </h2>
+
+      <h3 class="text-center">{{lastfivemin.length}}</h3>
+
+      <p class="text-center">unique devices spotted</p>
+    </div>
+    <div class="col-sm-6">
+      <h2> Total Devices: </h2>
+
+      <h3 class="text-center">{{devices.length}}</h3>
+
+      <p class="text-center">unique devices spotted</p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <br>
+
+  <div class="row">
+    <div class="col-sm-4 table-responsive">
+      <h2>Devices seen last 5 minutes:</h2>
+      <br>
+      <table class="table table-condensed">
+        <tr>
+          <td> MAC</td>
+          <td> Vendor</td>
+          <td> Time</td>
+        </tr>
+        <tr ng-repeat="dev in lastfivemin">
+          <td>{{ dev.mac_address }}</td>
+          <td>{{ dev.vendor }}</td>
+          <td>{{ dev.last_seen }}</td>
+        </tr>
+      </table>
+    </div>
     <div class="col-sm-4 table-responsive">
       <h2>Devices seen last hour:</h2>
       <br>
       <table class="table table-condensed">
         <tr>
-          <td> MAC </td>
-          <td> Vendor </td>
-          <td> Time </td>
+          <td> MAC</td>
+          <td> Vendor</td>
+          <td> Time</td>
         </tr>
         <tr ng-repeat="dev in lasthour">
           <td>{{ dev.mac_address }}</td>
@@ -53,9 +89,9 @@
       <br>
       <table class="table table-condensed">
         <tr>
-          <td> MAC </td>
-          <td> Vendor </td>
-          <td> Time </td>
+          <td> MAC</td>
+          <td> Vendor</td>
+          <td> Time</td>
         </tr>
         <tr ng-repeat="dev in lastday">
           <td>{{ dev.mac_address }}</td>
@@ -64,21 +100,6 @@
         </tr>
       </table>
     </div>
-    <div class="col-sm-4 table-responsive">
-      <h2> Devices seen last week: </h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> MAC </td>
-          <td> Vendor </td>
-          <td> Time </td>
-        </tr>
-        <tr ng-repeat="dev in lastweek">
-          <td>{{ dev.mac_address }}</td>
-          <td>{{ dev.vendor }}</td>
-          <td>{{ dev.last_seen }}</td>
-        </tr>
-      </table>
-    </div>
+
   </div>
 </div>

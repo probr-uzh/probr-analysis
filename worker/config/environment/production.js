@@ -6,24 +6,15 @@ var url = require('url');
 // =================================
 module.exports = {
 
-  // MongoDB connection options
-  mongo: {
-    uri:    process.env.MONGOLAB_URI ||
-            process.env.MONGOHQ_URL ||
-            process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-            'mongodb://localhost/spotr'
-  },
+    // MongoDB connection options
+    mongo: {
+        uri: 'mongodb://' + process.env.MONGODB_PORT_27017_TCP_ADDR + ':' + process.env.MONGODB_PORT_27017_TCP_PORT + '/probr-core' || 'mongodb://localhost:27017/probr-core'
+    },
 
-  // RabbitMQ connection options
-  rabbitmq: {
-    uri: process.env.CLOUDAMQP_URL || 'amqp://localhost'
-  },
-
-  // Redis
-  redis: {
-    host: url.parse(process.env.REDIS_URL).hostname || 'localhost:6379',
-    port: url.parse(process.env.REDIS_URL).port || 6379,
-    password: url.parse(process.env.REDIS_URL).auth.split(":")[1] || ''
-  },
+    // Redis connection options
+    redis: {
+        addr: process.env.REDIS_PORT_6379_TCP_ADDR || 'localhost',
+        port: process.env.REDIS_PORT_6379_TCP_PORT || 6379
+    }
 
 };

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "main": "server/app.js",
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "~1.5.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.0.1",
@@ -16,6 +17,7 @@
     "express-restify-mongoose": "dschoeni/express-restify-mongoose",
     "express-session": "~1.0.2",
     "jsonwebtoken": "^5.0.0",
+    "kue": "^0.9.6",
     "lodash": "~2.4.1",
     "method-override": "~1.0.0",
     "mongoose": "~4.0.3",

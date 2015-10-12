@@ -24,17 +24,14 @@ angular.module('probrAnalysisDevices')
 
         var currentDate = new Date();
 
-        var lastHourDate = new Date();
-        lastHourDate.setHours(currentDate.getHours() - 1);
+        var lastFiveMinDate = new Date(currentDate.getTime()-1000*60*5);
+        var lastFiveMinDevices = [];
+
+        var lastHourDate = new Date(currentDate.getTime()-1000*60*60);
         var lastHourDevices = [];
 
-        var lastDayDate = new Date();
-        lastDayDate.setDate(currentDate.getDate() - 1);
+        var lastDayDate = new Date(currentDate.getTime()-1000*60*60*24);
         var lastDayDevices = [];
-
-        var lastWeekDate = new Date();
-        lastWeekDate.setDate(currentDate.getDate() - 7);
-        var lastWeekDevices = [];
 
         devices.forEach(function(element){
           var vendor = element.vendor;
@@ -49,23 +46,25 @@ angular.module('probrAnalysisDevices')
           }
 
           var elementDate = new Date(element.last_seen);
+          if(elementDate > lastFiveMinDate){
+            lastFiveMinDevices.push(element);
+          }
           if(elementDate > lastHourDate){
             lastHourDevices.push(element);
           }
           if(elementDate > lastDayDate){
             lastDayDevices.push(element);
           }
-          if(elementDate > lastWeekDate){
-            lastWeekDevices.push(element);
-          }
+
 
         });
 
 
         //assign data for lasthour, lastday, lastweek lists
+        $scope.lastfivemin = lastFiveMinDevices;
         $scope.lasthour = lastHourDevices;
         $scope.lastday = lastDayDevices;
-        $scope.lastweek = lastWeekDevices;
+
 
         var data = [];
 

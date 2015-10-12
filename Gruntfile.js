@@ -178,7 +178,8 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: '.tmp',
+            worker: '.tmp'
         },
 
         // Add vendor prefixed styles
@@ -388,7 +389,8 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         'package.json',
-                        'server/**/*'
+                        'server/**/*',
+                        'worker/**/*'
                     ]
                 }]
             },

@@ -6,19 +6,13 @@ module.exports = {
 
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/spotr-dev'
+    uri: 'mongodb://localhost/probr-core'
   },
 
-  // RabbitMQ connection options
-  rabbitmq: {
-    uri: 'amqp://localhost'
-  },
-
-  // Redis
+  // Redis connection options
   redis: {
-    host: 'localhost',
-    port: 6379,
-    password: ''
+    addr: 'localhost',
+    port: 6379
   },
 
 };
