@@ -24,7 +24,7 @@ angular.module('probrAnalysisApp')
         cb = cb || angular.noop;
 
         socket.on(eventName, function (item) {
-          cb(item);
+          cb(JSON.parse(item));
         });
 
       },

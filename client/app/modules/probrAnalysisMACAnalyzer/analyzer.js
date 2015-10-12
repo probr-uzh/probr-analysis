@@ -4,5 +4,6 @@ angular.module('probrAnalysisMACAnalyzer', [
     'ui.router',
     'ui.bootstrap',
     'probrPagination',
-    'probrAnalysisCommon'
+    'probrAnalysisCommon',
+    'ngCookies'
 ]);
