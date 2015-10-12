@@ -27,7 +27,7 @@ var cluster = require('cluster')
 var clusterWorkerSize = require('os').cpus().length;
 
 if (cluster.isMaster) {
-    console.log("detecting " + clusterWorkerSize + " CPU. forking...");
+    console.log("detecting " + clusterWorkerSize + " CPU(s). forking...");
     for (var i = 0; i < clusterWorkerSize; i++) {
         cluster.fork();
     }
