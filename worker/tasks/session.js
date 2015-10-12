@@ -32,7 +32,7 @@ module.exports = function (job, done) {
                 console.log("session-Job: incremental map reduce done.");
                 console.log("session-Job: forEach: raw_sessions -> sessions");
 
-                SessionForEach.incremental(0, function () {
+                SessionForEach.incremental(rawSessionBreakTime, function () {
                     console.log("session-Job: forEach: raw_sessions -> sessions -> done");
                     done();
                 });

@@ -21,7 +21,7 @@
     <div class="col-xs-12 table-responsive">
       <table class="table table-condensed">
         <tr ng-repeat="address in watchedAddresses">
-          <td><a ng-click="removeMAC(address)"><span class="fa fa-trash"></span></a> {{address}}</td>
+          <td><a ng-click="removeMAC(address)"><span class="fa fa-trash"></span></a> {{address | mac}}</td>
         </tr>
       </table>
     </div>
@@ -41,7 +41,7 @@
         </tr>
 
         <tr ng-repeat="(mac_address_src, packet) in packets | groupBy: 'mac_address_src'">
-          <td colspan="7">{{mac_address_src}}</td>
+          <td colspan="7">{{packet.mac_address_src | mac}}</td>
           <td>{{ packet.mac_address_src | mac }}</td>
           <td>{{ packet.mac_address_dst | mac }}</td>
           <td>{{ packet.signal_strength }}</td>
