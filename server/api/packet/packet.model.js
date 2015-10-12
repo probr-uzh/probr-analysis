@@ -14,4 +14,6 @@ var PacketSchema = new Schema({
     location: {type: [Number], index: '2dsphere'}
 });
 
+// PacketSchema.index({ "inserted_at": 1 }, { expire: '15d' });
+
 module.exports = mongoose.model('Packet', PacketSchema);
