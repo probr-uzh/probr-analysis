@@ -12,16 +12,6 @@ var config = require('./config/environment');
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);
-// TaskQueue
-var queue = 'task_queue';
-
-// SocketIO
-var io = require('socket.io')();
-var adapter = require('socket.io-redis');
-var redis = require('redis').createClient;
-var pub = redis(config.redis.port, config.redis.host, { auth_pass: config.redis.password });
-var sub = redis(config.redis.port, config.redis.host, { detect_buffers: true, auth_pass: config.redis.password });
-io.adapter(adapter({ pubClient: pub, subClient: sub }));
 
 // Kue Job-Queue
 var kue = require('kue'), queue = kue.createQueue({
