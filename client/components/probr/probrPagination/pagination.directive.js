@@ -21,7 +21,7 @@ angular.module('probrPagination', [])
                     var searchQuery = $scope.query !== undefined ? $scope.query : {};
 
                     // constract query parameters
-                    searchQuery.skip = ($scope.pageCurrent - 1) * $scope.pageLength;
+                    searchQuery.skip = (($scope.pageCurrent - 1) * $scope.pageLength) || 0;
                     searchQuery.limit = $scope.pageLength;
 
                     $scope.isSearching = true;
@@ -29,7 +29,12 @@ angular.module('probrPagination', [])
                     // update location
                     $location.path($location.path(), false).search(searchQuery);
 
-                    $scope.resource.count({}, function (resultObj) {
+                    var countQuery = angular.copy(searchQuery);
+                    delete countQuery.skip;
+                    delete countQuery.limit;
+                    delete countQuery.sort;
+
+                    $scope.resource.count(countQuery, function (resultObj) {
                         $scope.itemsCount = resultObj.count;
 
                         $scope.resource.query(searchQuery, function (resultObj) {
