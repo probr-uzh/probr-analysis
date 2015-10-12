@@ -7,7 +7,7 @@ docker run -d --expose 8080 --name probr_analysis --link probr_mongodb_1:mongodb
 
 docker stop probr_analysis_worker
 docker rm probr_analysis_worker
-docker run -d --expose 8080 --name probr_analysis_worker --link probr_mongodb_1:mongodb --link probr_redis_1:redis probr_analysis sh install/docker/node/run.sh
+docker run -d --expose 8080 --name probr_analysis_worker --link probr_mongodb_1:mongodb --link probr_redis_1:redis probr_analysis sh install/docker/node/worker.sh
 
 docker stop nginx
 docker rm nginx
