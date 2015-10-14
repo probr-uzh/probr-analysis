@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrAnalysisMacHistory')
+angular.module('probrAnalysisMAC')
   .factory('PacketConcurrency', function ($resource) {
     var PacketConcurrency = $resource('api/packet/concurrency_count', {},
       {

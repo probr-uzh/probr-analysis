@@ -9,20 +9,12 @@ angular.module('probrAnalysisCommon')
         'link': 'packets'
       },
       {
-        'title': 'Room Utilization',
-        'link': 'utilization'
-      },
-      {
-        'title': 'Map',
-        'link': 'map'
-      },
-      {
         'title': 'Sessions',
         'link': 'sessions'
       },
       {
-        'title': 'MAC-Analyzer',
-        'link': 'analyzer'
+        'title': 'MAC',
+        'link': 'mac'
       },
       {
         'title': 'Loyalty',

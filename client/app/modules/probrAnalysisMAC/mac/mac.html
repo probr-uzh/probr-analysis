@@ -22,7 +22,7 @@
         <div class="col-xs-12 table-responsive">
             <table class="table table-condensed">
                 <tr ng-repeat="address in watchedAddresses">
-                    <td><a ng-click="removeMAC(address)"><span class="fa fa-trash"></span></a><a href="/mac/{{address}}">{{address | mac}}</a></td>
+                    <td><a ng-click="removeMAC(address)"><span class="fa fa-trash"></span></a><a href="mac/history/{{address}}">{{address | mac}}</a></td>
                 </tr>
             </table>
         </div>

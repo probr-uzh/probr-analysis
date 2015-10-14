@@ -4,7 +4,8 @@
 
 angular.module('probrAnalysisRoomUtilization')
     .controller('UtilizationCtrl', function ($scope, $state, $filter, $stateParams, Utilization) {
-        var EXPECTED_PUNCHCARD_LIST_LENGTH = 7*24;
+
+    var EXPECTED_PUNCHCARD_LIST_LENGTH = 7*24;
         var HOURS_PER_DAY = 24;
         var DAYS_PER_WEEK = 7;
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('probrAnalysisMACAnalyzer')
-    .controller('AnalyzerCtrl', function ($scope, $state, $stateParams, Socket, $cookies) {
+angular.module('probrAnalysisMAC')
+    .controller('MacCtrl', function ($scope, $state, $stateParams, Socket, $cookies) {
 
         $scope.packets = [];
         $scope.watchedAddresses = $cookies.getObject('probrMACAnalyzerAddresses') || [];

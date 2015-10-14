@@ -1,14 +1,11 @@
 'use strict';
 
-angular.module('probrAnalysisMacHistory')
-  .controller('MacHistoryCtrl', function ($scope, $state, $stateParams, PacketConcurrency) {
+angular.module('probrAnalysisMAC')
+  .controller('HistoryCtrl', function ($scope, $state, $stateParams, PacketConcurrency) {
 
     $scope.macaddress = $stateParams["macaddress"];
 
-    var queryParam = { mac_address_src : angular.copy($scope.macaddress)};
-    console.log(queryParam);
-
-    PacketConcurrency.query(queryParam,function (resultObj) {
+    PacketConcurrency.query({ mac_address_src: $scope.macaddress },function (resultObj) {
         $scope.chartOptions = {
           scaleShowGridLines: false,
           bezierCurve : false,
