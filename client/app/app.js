@@ -21,6 +21,7 @@ angular.module('probrAnalysisApp', [
   'probrAnalysisMACAnalyzer',
   'probrAnalysisSessions',
   'probrAnalysisDevices',
+  'probrAnalysisMacHistory',
 
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
