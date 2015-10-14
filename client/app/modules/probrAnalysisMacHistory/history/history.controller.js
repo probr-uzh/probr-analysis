@@ -9,8 +9,21 @@ angular.module('probrAnalysisMacHistory')
     console.log(queryParam);
 
     PacketConcurrency.query(queryParam,function (resultObj) {
-        $scope.packetCount = resultObj;
-        console.log($scope.packetCount);
+        $scope.chartOptions = {
+          scaleShowGridLines: false,
+          bezierCurve : false,
+          pointDot : false,
+          scaleShowLabels: false,
+        }
+
+        $scope.weekDataPoints = [[]];
+        $scope.weekLabels = [];
+
+        resultObj.forEach(function(entry) {
+          $scope.weekDataPoints[0].push(entry["value"]);
+          $scope.weekLabels.push(new Date(entry["_id"]*(1000 * 60 * 60)));
+        });
+
       }
     );
 
