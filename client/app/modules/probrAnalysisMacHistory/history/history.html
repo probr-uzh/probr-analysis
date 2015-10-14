@@ -2,8 +2,13 @@
 
 <div class="container-fluid">
 
-  <h1>MAC address history</h1>
+  <h1>MAC address history for {{macaddress | mac}}</h1>
 
-  <div> {{macaddress}} </div>
+  <div class="row">
+    <div class="col-md-12">
+      <canvas class="chart chart-line" data="weekDataPoints" labels="weekLabels" options="chartOptions">
+      </canvas>
+    </div>
+  </div>
 
 
