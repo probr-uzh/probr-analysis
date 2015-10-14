@@ -7,6 +7,9 @@ var Packet = require('../packet/packet.model')
 exports.concurreny_count = function (req, res) {
   var mapReduceOptions = {};
 
+  var cutOffDate = new Date();
+  cutOffDate.setDate(cutOffDate.getDate() - 7);
+
   mapReduceOptions.map = function () {
     emit(Math.floor(this.time.getTime() / (1000 * 60 * 60 )), 1);
   }
@@ -14,7 +17,11 @@ exports.concurreny_count = function (req, res) {
     return Array.sum(values);
   }
 
-  mapReduceOptions.query = req.query;
+
+  mapReduceOptions.query = {
+    mac_address_src: req.query["mac_address_src"],time : {$gt : cutOffDate}
+  };
+
 
   Packet.mapReduce(
     mapReduceOptions,
