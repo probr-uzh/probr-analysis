@@ -16,6 +16,7 @@
     "express-jwt": "^3.0.0",
     "express-restify-mongoose": "dschoeni/express-restify-mongoose",
     "express-session": "~1.0.2",
+    "json-stringify-safe": "^5.0.1",
     "jsonwebtoken": "^5.0.0",
     "kue": "^0.9.6",
     "lodash": "~2.4.1",
@@ -28,7 +29,8 @@
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
     "socket.io-redis": "^0.1.4",
-    "socketio-jwt": "^3.0.0"
+    "socketio-jwt": "^3.0.0",
+    "turf": "^2.0.2"
   },
   "devDependencies": {
     "connect-livereload": "~0.4.0",

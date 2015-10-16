@@ -35,6 +35,7 @@ if (cluster.isMaster) {
     console.log("worker up.");
     processJob('device');
     processJob('session');
+    processJob('location');
 }
 
 function processJob(jobName) {

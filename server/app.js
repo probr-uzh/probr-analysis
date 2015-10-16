@@ -43,11 +43,11 @@ require('./routes')(app);
 server.listen(config.port, config.ip, function () {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
 
-    // Setup Task-Queue
+    // Setup Task-Queueo
     var tasks = require('./components/tasks/tasks.js')(config);
     tasks.createJob('device', {type: 'device'}, 1 * 60 * 1000);
     tasks.createJob('session', {type: 'session'}, 1 * 60 * 1000);
-
+    tasks.createJob('location', {type: 'location'}, 1 * 60 * 1000);
 });
 
 // Expose app

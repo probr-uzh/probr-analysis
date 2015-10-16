@@ -10,7 +10,7 @@ var SessionSchema = new Schema({
     locations: {},
     tags: [{type: String}],
     weightedSignalStrength : Number,
-    duration: Number,
+    duration: Number
 });
 
 module.exports = mongoose.model('sessions', SessionSchema, 'sessions');
