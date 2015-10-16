@@ -17,10 +17,10 @@ function getInitialMapReduceConfig() {
       var timeRoundedToMinutes = Math.floor(this.time.getTime() / (1000 * 60));
 
       emit({
-        time: timeRoundedToMinutes * 60 * 1000,
+        time: new Date(timeRoundedToMinutes * 60 * 1000),
         mac_address: this.mac_address_src
       }, {
-        time: timeRoundedToMinutes * 60 * 1000,
+        time: new Date(timeRoundedToMinutes * 60 * 1000),
         mac_address: this.mac_address_src,
         numberOfLocations: 1,
         locations: locs
