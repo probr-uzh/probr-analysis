@@ -18,11 +18,26 @@ angular.module('probrAnalysisMAC')
 
         var lastDate;
 
+        var shouldStart = new Date();
+        shouldStart.setDate(shouldStart.getDate() - 7);
+
+
+
         resultObj.forEach(function(entry) {
-          if(lastDate === undefined){
-            $scope.weekDataPoints[0].push(entry["value"]);
-            $scope.weekLabels.push(new Date(entry["_id"]*(1000 * 60 * 60)));
+          //populate the line chart
+          if(lastDate === undefined){ //this is the first execution of the loop
             lastDate = new Date(entry["_id"]*(1000 * 60 * 60));
+
+            var startDifference = (lastDate.getTime() - shouldStart.getTime()) / (1000 * 60 * 60);
+
+            for(var i=1; i < startDifference ; i++){
+              $scope.weekDataPoints[0].push(0);
+              $scope.weekLabels.push(new Date(shouldStart.getTime() + (i * 1000 * 60 * 60)));
+            }
+
+            $scope.weekDataPoints[0].push(entry["value"]);
+            $scope.weekLabels.push(lastDate);
+
           }else{
 
             //compute how much hours to fill up with zero values
