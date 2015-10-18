@@ -1,17 +1,18 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
-  <h1>Sessions</h1>
-  <div class="row">
-    <div class="col-sm-6">
-      <h2> Last week's Sessions: </h2>
-      <canvas class="chart chart-line" data="weekDataPoints" labels="weekLabels" options="chartOptions">
-      </canvas>
+    <h1>Sessions</h1>
+
+    <div class="row">
+        <div class="col-sm-12" style="height: 300px; margin-bottom: 50px;">
+            <h2>Last week's Sessions: </h2>
+            <linechart data="dataWeek" options="optionsWeek"></linechart>
+        </div>
     </div>
-    <div class="col-sm-6">
-      <h2> Yesterday's Sessions: </h2>
-      <canvas class="chart chart-line" data="dayDataPoints" labels="dayLabels" options="chartOptions">
-      </canvas>
+    <div class="row">
+        <div class="col-sm-12" style="height: 300px; margin-bottom: 50px;">
+            <h2>Last 24h Sessions: </h2>
+            <linechart data="dataDay" options="optionsDay"></linechart>
+        </div>
     </div>
-  </div>
 </div>

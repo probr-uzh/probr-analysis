@@ -1,0 +1,9 @@
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+
+<div class="container-fluid">
+
+  <h1>MAC Location History for {{macaddress | mac}} (last 7 days)</h1>
+
+  <probr-map room="selectedRoom" overlays="overlays"></probr-map>
+
+</div>

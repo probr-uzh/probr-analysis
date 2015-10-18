@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var GeoJSONPoint = {'type': {type: String, default: "Point"}, coordinates: [{type: "Number"}]};
 
 var LocationSchema = new Schema({
-  mac_address: String,
+  mac_address: { type: String, index: true },
   time: Date,
   location: GeoJSONPoint,
   area: Number,

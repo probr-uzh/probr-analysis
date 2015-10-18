@@ -19,8 +19,10 @@ angular.module('probrAnalysisMAC')
                 $scope.packets.push(packet);
             });
 
-            $scope.watchedAddresses.push(address);
+            // remember watched addresses in cookies.
             $cookies.putObject('probrMACAnalyzerAddresses', $scope.watchedAddresses);
+
+            $scope.watchedAddresses.push(address);
             $scope.macInput = '';
 
         }

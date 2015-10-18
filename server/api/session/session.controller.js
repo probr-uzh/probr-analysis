@@ -4,51 +4,57 @@ var _ = require('lodash');
 var Session = require('../session/session.model')
 
 // Get list of utilizations
-exports.concurreny_count_week = function (req, res) {
-  var daysFactor = 7;
-  var mapReduceOptions = {};
+exports.reduce = function (req, res) {
 
-  mapReduceOptions.map = function () {
-    var daysFactor = 7;
-    emit(Math.floor(this.startTimestamp.getTime() / (1000 * 60 * 15 * daysFactor)), 1);
-  }
-  mapReduceOptions.reduce = function (key, values) {
-    return Array.sum(values);
-  }
-  mapReduceOptions.query = {startTimestamp: {$gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * daysFactor)}};
-  mapReduceOptions.sort = {id:1}
+    var mapReduceOptions = {};
+    var days = req.query["days"];
+    var mac_address = req.query["mac_address"];
+    var tags = req.query["tags"];
 
-  Session.mapReduce(
-    mapReduceOptions,
-    function (err, results, stats) {
-      if (err) handleError(res, err);
-      return res.status(200).json(results);
+    mapReduceOptions.scope = { days: days };
+    mapReduceOptions.map = function () {
+
+        var emitDate = new Date(this.startTimestamp);
+        emitDate.setMinutes(0);
+        emitDate.setSeconds(0);
+        emitDate.setMilliseconds(0);
+
+        emit(emitDate, 1);
     }
-  );
-};
 
-exports.concurreny_count_day = function (req, res) {
-  var daysFactor = 1;
-  var mapReduceOptions = {};
-  mapReduceOptions.map = function () {
-    var daysFactor = 1;
-    emit(Math.floor(this.startTimestamp.getTime() / (1000 * 60 * 15 * daysFactor)), 1);
-  }
-  mapReduceOptions.reduce = function (key, values) {
-    return Array.sum(values);
-  }
-  mapReduceOptions.query = {startTimestamp: {$gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * daysFactor)}};
-  mapReduceOptions.sort = {id:1}
-
-  Session.mapReduce(
-    mapReduceOptions,
-    function (err, results, stats) {
-      if (err) handleError(res, err);
-      return res.status(200).json(results);
+    mapReduceOptions.reduce = function (key, values) {
+        return Array.sum(values);
     }
-  );
+
+    var previousDate = new Date();
+    previousDate.setDate(previousDate.getDate() - days);
+
+    mapReduceOptions.query = {startTimestamp: {$gt: previousDate}};
+
+    if (tags !== undefined) {
+        if (_.isArray(tags)) {
+            mapReduceOptions.query.tags = {$in: tags};
+        } else {
+            mapReduceOptions.query.tags = {$in: [tags]};
+        }
+    }
+
+    if (mac_address !== undefined) {
+        mapReduceOptions.query.mac_address = mac_address;
+    }
+
+    mapReduceOptions.sort = {id: 1}
+
+    Session.mapReduce(
+        mapReduceOptions,
+        function (err, results, stats) {
+            if (err) handleError(res, err);
+            return res.status(200).json(results);
+        }
+    );
+
 };
 
 function handleError(res, err) {
-  return res.status(500).send(err);
+    return res.status(500).send(err);
 }

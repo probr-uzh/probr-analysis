@@ -14,7 +14,7 @@
     "errorhandler": "~1.0.0",
     "express": "~4.9.0",
     "express-jwt": "^3.0.0",
-    "express-restify-mongoose": "dschoeni/express-restify-mongoose",
+    "express-restify-mongoose": "^2.0.0",
     "express-session": "~1.0.2",
     "json-stringify-safe": "^5.0.1",
     "jsonwebtoken": "^5.0.0",

@@ -109,9 +109,7 @@ var executeLocationForEach = function (gt_timestamp, cb) {
         try {
           var result = multilat(item.value.locations, multiplier);
         } catch(err) {
-          console.log("error during multilateration.\n" +
-            " conflicting item was\n" +
-            jsonify(item));
+          //console.log("error during multilateration.\n conflicting item was\n" + jsonify(item));
           return;
         }
 
@@ -122,9 +120,7 @@ var executeLocationForEach = function (gt_timestamp, cb) {
           try {
             result = multilat(item.value.locations, multiplier);
           } catch(err) {
-            console.log("error during multilateration.\n" +
-              " conflicting item was\n" +
-              jsonify(item));
+            //console.log("error during multilateration.\n conflicting item was\n" + jsonify(item));
             return;
           }
           tries++
