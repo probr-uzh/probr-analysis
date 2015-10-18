@@ -4,6 +4,8 @@
 
 function getInitialMapReduceConfig() {
   return {
+    query: {"signal_strength": {$gt: -60}},
+
     map: function () {
       var locs = [];
       var loc = {
@@ -80,7 +82,8 @@ function getInitialMapReduceConfig() {
  */
 var getMapReduceIncremental = function (gt_timestamp) {
   var map_reduce_object_incremental = getInitialMapReduceConfig();
-  map_reduce_object_incremental.query = {time: {$gt: gt_timestamp}};
+  map_reduce_object_incremental.query = map_reduce_object_incremental.query || {};
+  map_reduce_object_incremental.query.time = {$gt: gt_timestamp};
   return map_reduce_object_incremental;
 };
 

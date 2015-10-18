@@ -96,7 +96,7 @@ var executeLocationForEach = function (gt_timestamp, cb) {
 
     locationStream.on('data', function (item) {
       if (counter % 500 == 0) {
-        console.log("device-Job: forEach: raw_locations -> locations (" + Math.floor((counter / totalLocations) * 100) + "%)");
+        console.log("location-Job: forEach: raw_locations -> locations (" + Math.floor((counter / totalLocations) * 100) + "%)");
       }
       counter++;
 
