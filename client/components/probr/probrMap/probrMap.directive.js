@@ -9,11 +9,14 @@ angular.module('probrMap', ['leaflet-directive'])
                 overlays: '=',
             },
             templateUrl: 'components/probr/probrMap/probrMap.html',
-            controller: function ($scope, $timeout, leafletData) {
+            controller: function ($scope, $rootScope, $timeout, leafletData) {
 
-                $timeout(function () {
-                    $scope.$emit('updatePositions');
-                });
+                leafletData.getMap().then(function (map) {
+                        $timeout(function () {
+                            $rootScope.$emit('updatePositions');
+                        });
+                    }
+                );
 
                 $scope.geojson = {
                     style: {
