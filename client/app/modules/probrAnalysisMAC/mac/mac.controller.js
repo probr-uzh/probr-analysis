@@ -1,10 +1,10 @@
 'use strict';
 
-angular.module('probrAnalysisMACAnalyzer')
-    .controller('AnalyzerCtrl', function ($scope, $state, $stateParams, Socket) {
+angular.module('probrAnalysisMAC')
+    .controller('MacCtrl', function ($scope, $state, $stateParams, Socket, $cookies) {
 
         $scope.packets = [];
-        $scope.watchedAddresses = [];
+        $scope.watchedAddresses = $cookies.getObject('probrMACAnalyzerAddresses') || [];
 
         $scope.addMAC = function () {
             var address = $scope.macInput;
@@ -20,6 +20,7 @@ angular.module('probrAnalysisMACAnalyzer')
             });
 
             $scope.watchedAddresses.push(address);
+            $cookies.putObject('probrMACAnalyzerAddresses', $scope.watchedAddresses);
             $scope.macInput = '';
 
         }
@@ -32,6 +33,8 @@ angular.module('probrAnalysisMACAnalyzer')
             }), 1);
 
             $scope.watchedAddresses.splice($scope.watchedAddresses.indexOf(address), 1);
+            $cookies.putObject('probrMACAnalyzerAddresses', $scope.watchedAddresses);
+
         }
 
     });

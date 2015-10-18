@@ -18,7 +18,7 @@ angular.module('probrAnalysisApp', [
   'probrAnalysisRoomUtilization',
   'probrAnalysisLoyalty',
   'probrAnalysisMap',
-  'probrAnalysisMACAnalyzer',
+  'probrAnalysisMAC',
   'probrAnalysisSessions',
   'probrAnalysisDevices',
 

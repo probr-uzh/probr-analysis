@@ -1,6 +1,8 @@
 angular.module('probrAnalysisCommon').filter('mac', function () {
     return function (input) {
 
+        if (input === undefined) return "";
+
         var chunk = function(str, n) {
             var ret = [];
             var len = str.length;
