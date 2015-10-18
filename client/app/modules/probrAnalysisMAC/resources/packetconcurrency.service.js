@@ -9,3 +9,13 @@ angular.module('probrAnalysisMAC')
     );
     return PacketConcurrency;
   });
+
+angular.module('probrAnalysisMAC')
+  .factory('PunchcardData', function ($resource) {
+    var PunchcardData = $resource('api/packet/punchcard_data', {},
+      {
+        query: {method: 'GET', isArray: true},
+      }
+    );
+    return PunchcardData;
+  });

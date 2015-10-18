@@ -4,9 +4,25 @@
 
   <h1>MAC address history for {{macaddress | mac}} (last 7 days)</h1>
 
-  <div class="row">
-    <div class="col-md-12">
-      <canvas class="chart chart-line" data="weekDataPoints" labels="weekLabels" options="chartOptions">
-      </canvas>
+  <div class="pagination-centered text-center">
+    <div class="row pagination-centered text-center">
+      <div class="btn-group">
+        <a href="#" class="btn btn-default" ng-click="toggleLine()">Linechart</a>
+        <a href="#" class="btn btn-default" ng-click="toggleCard()">Punchcard</a>
+      </div>
+    </div>
+
+
+    <div class="row" ng-hide="lineHidden">
+      <div class="col-md-12">
+        <canvas class="chart chart-line" data="weekDataPoints" labels="weekLabels" options="chartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="row" ng-hide="cardHidden">
+      <div class="col-md-12">
+        <div punch-card data="punchCardData" singular="occurence" plural="occurences" days="days"></div>
+      </div>
     </div>
   </div>
