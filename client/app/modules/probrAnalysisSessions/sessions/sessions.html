@@ -1,18 +1,32 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
-    <h1>Sessions</h1>
+  <h1>Sessions</h1>
 
-    <div class="row">
-        <div class="col-sm-12" style="height: 300px; margin-bottom: 50px;">
-            <h2>Last week's Sessions: </h2>
-            <linechart data="dataWeek" options="optionsWeek"></linechart>
-        </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="tags" ng-enter="query()">
+      <span class="input-group-btn">
+          <button class="btn btn-primary" ng-click="query()">Query</button>
+      </span>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12" style="height: 300px; margin-bottom: 50px;">
-            <h2>Last 24h Sessions: </h2>
-            <linechart data="dataDay" options="optionsDay"></linechart>
-        </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12" style="height: 300px; margin-bottom: 50px;">
+      <h2>Last week's Sessions: </h2>
+      <linechart data="dataWeek" options="optionsWeek"></linechart>
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12" style="height: 300px; margin-bottom: 50px;">
+      <h2>Last 24h Sessions: </h2>
+      <linechart data="dataDay" options="optionsDay"></linechart>
+    </div>
+  </div>
+
 </div>
+
