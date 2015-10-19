@@ -5,7 +5,6 @@ var controller = require('./session.controller');
 
 var router = express.Router();
 
-router.get('/concurrency_count/day', controller.concurreny_count_day);
-router.get('/concurrency_count/week', controller.concurreny_count_week);
+router.get('/concurrency_count/', controller.concurreny_count);
 
 module.exports = router;

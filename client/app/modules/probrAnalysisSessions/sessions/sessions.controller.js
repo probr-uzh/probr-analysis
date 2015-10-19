@@ -1,52 +1,45 @@
 'use strict';
 
 angular.module('probrAnalysisSessions')
-  .controller('SessionsCtrl', function ($scope, $state, $stateParams, Session, SessionConcurrency) {
+  .controller('SessionsCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency) {
 
-    $scope.pageLength = 50;
-    $scope.query = {};
-    $scope.resource = Session;
-    $scope.filters = {skip: 0, limit: $scope.pageLength};
-    SessionConcurrency.query({type:"week"}, function (result, err) {
-      $scope.chartOptions = {
-        scaleShowGridLines: false,
-        bezierCurve : false,
-        pointDot : false,
-        scaleShowLabels: false,
-      }
-      $scope.weekDataPoints = [[]];
-      $scope.weekLabels = [];
+    $scope.query = function () {
 
+      SessionConcurrency.query({daysFactor: 7, tags: $scope.tags}, function (result, err) {
 
-      result.forEach(function(entry) {
-        $scope.weekDataPoints[0].push(entry["value"]);
-        $scope.weekLabels.push(new Date(entry["_id"]*(1000 * 60 * 60)));
+        $scope.chartOptions = {
+          scaleShowGridLines: false,
+          bezierCurve: false,
+          pointDot: false,
+          scaleShowLabels: false,
+        }
+        $scope.weekDataPoints = [[]];
+        $scope.weekLabels = [];
+
+        result.forEach(function (entry) {
+          $scope.weekDataPoints[0].push(entry["value"]);
+          $scope.weekLabels.push($filter('date')(new Date(entry["_id"] * (1000 * 60 * 20 * 7)), "short"));
+        });
       });
-    });
 
-    SessionConcurrency.query({type:"day"}, function (result, err) {
-      $scope.chartOptions = {
-        scaleShowGridLines: false,
-        bezierCurve : false,
-        pointDot : false,
-        showLabels: false,
-      }
-      $scope.dayDataPoints = [[]];
-      $scope.dayLabels = [];
+      SessionConcurrency.query({daysFactor: 1, tags: $scope.tags}, function (result, err) {
+        $scope.chartOptions = {
+          scaleShowGridLines: false,
+          bezierCurve: false,
+          pointDot: false,
+          showLabels: false,
+        }
+        $scope.dayDataPoints = [[]];
+        $scope.dayLabels = [];
 
 
-      result.forEach(function(entry) {
-        $scope.dayDataPoints[0].push(entry["value"]);
-        $scope.dayLabels.push(new Date(entry["_id"]*(1000 * 60 * 5)));
+        result.forEach(function (entry) {
+          $scope.dayDataPoints[0].push(entry["value"]);
+          $scope.dayLabels.push($filter('date')(new Date(entry["_id"] * (1000 * 60 * 20 * 1)), "short"));
+        });
       });
-    });
+    };
 
-    Session.query({
-        skip: 0,
-        limit: $scope.pageLength
-      }, function (resultObj) {
-        $scope.sessions = resultObj;
-      }
-    );
+    $scope.query();
   });
 

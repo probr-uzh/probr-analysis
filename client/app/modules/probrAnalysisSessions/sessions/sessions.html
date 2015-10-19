@@ -2,13 +2,25 @@
 
 <div class="container-fluid">
   <h1>Sessions</h1>
+
   <div class="row">
-    <div class="col-sm-6">
+
+    <div class="col-lg-12">
+      <div class="input-group">
+        <input type="text" class="form-control" ng-model="tags" ng-enter="query()">
+      <span class="input-group-btn">
+          <button class="btn btn-primary" ng-click="query()">Query</button>
+      </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
       <h2> Last week's Sessions: </h2>
       <canvas class="chart chart-line" data="weekDataPoints" labels="weekLabels" options="chartOptions">
       </canvas>
     </div>
-    <div class="col-sm-6">
+    <div class="col-lg-6">
       <h2> Yesterday's Sessions: </h2>
       <canvas class="chart chart-line" data="dayDataPoints" labels="dayLabels" options="chartOptions">
       </canvas>

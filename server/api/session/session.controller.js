@@ -4,41 +4,32 @@ var _ = require('lodash');
 var Session = require('../session/session.model')
 
 // Get list of utilizations
-exports.concurreny_count_week = function (req, res) {
-  var daysFactor = 7;
+exports.concurreny_count = function (req, res) {
+  var daysFactor = req.query.daysFactor ? req.query.daysFactor : 7;
+  var tags = req.query.tags ? req.query.tags.split(",") : [];
   var mapReduceOptions = {};
 
   mapReduceOptions.map = function () {
-    var daysFactor = 7;
-    emit(Math.floor(this.startTimestamp.getTime() / (1000 * 60 * 15 * daysFactor)), 1);
-  }
+    emit(Math.floor(this.startTimestamp.getTime() / (1000 * 60 * 20 * daysFactor)), 1);
+  };
+
   mapReduceOptions.reduce = function (key, values) {
     return Array.sum(values);
-  }
-  mapReduceOptions.query = {startTimestamp: {$gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * daysFactor)}};
-  mapReduceOptions.sort = {id:1}
+  };
 
-  Session.mapReduce(
-    mapReduceOptions,
-    function (err, results, stats) {
-      if (err) handleError(res, err);
-      return res.status(200).json(results);
-    }
-  );
-};
+  mapReduceOptions.query = {
+    startTimestamp: {$gt: new Date(new Date().getTime() - (1000 * 60 * 60 * 24 * daysFactor))},
 
-exports.concurreny_count_day = function (req, res) {
-  var daysFactor = 1;
-  var mapReduceOptions = {};
-  mapReduceOptions.map = function () {
-    var daysFactor = 1;
-    emit(Math.floor(this.startTimestamp.getTime() / (1000 * 60 * 15 * daysFactor)), 1);
+  };
+
+  if(tags.length>0){
+    mapReduceOptions.query.tags = {$in: tags}
   }
-  mapReduceOptions.reduce = function (key, values) {
-    return Array.sum(values);
-  }
-  mapReduceOptions.query = {startTimestamp: {$gt: new Date(new Date().getTime() - 1000 * 60 * 60 * 24 * daysFactor)}};
-  mapReduceOptions.sort = {id:1}
+
+  mapReduceOptions.sort = {id: 1};
+  mapReduceOptions.scope = {
+    daysFactor: daysFactor
+  };
 
   Session.mapReduce(
     mapReduceOptions,
