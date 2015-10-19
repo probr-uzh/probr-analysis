@@ -3,14 +3,16 @@
 angular.module('probrAnalysisPacketsFilter')
     .controller('PacketsCtrl', function ($scope, $state, $stateParams, Packet, Socket) {
 
-        $scope.fields = ['mac_address_src: ', 'mac_address_dst: ', 'lat: ', 'lon: ', 'tags: ', 'ssid: ', 'signal_strength: ', 'limit', 'skip'];
-        $scope.newPackets = [];
+        $scope.fields = ['mac_address_src: ', 'mac_address_dst: ', 'lat: ', 'lon: ', 'tags: ', 'ssid: ', 'signal_strength: '];
+        $scope.newPackets = 0;
         $scope.pageLength = 100;
         $scope.resource = Packet;
-        $scope.query = {skip: 0, limit: $scope.pageLength, sort: "-time"};
+
+        $scope.params = {skip: 0, limit: $scope.pageLength, sort: "-time"};
+        $scope.query = {};
 
         Socket.listenTo('packet:create', function (item) {
-            $scope.newPackets.push(item);
+            $scope.newPackets++;
         });
 
         $scope.submit = function (query) {

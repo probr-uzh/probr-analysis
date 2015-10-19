@@ -41,7 +41,7 @@ angular.module('probrAnalysisSessions')
       });
 
 
-      SessionConcurrency.query({days: 1}, function (result, err) {
+      SessionConcurrency.query({days: 1, tags: $scope.tags}, function (result, err) {
         $scope.dataDay = [];
 
         result.forEach(function (entry) {
