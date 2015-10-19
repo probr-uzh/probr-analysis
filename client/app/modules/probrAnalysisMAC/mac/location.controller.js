@@ -8,7 +8,7 @@ angular.module('probrAnalysisMAC')
 
         // Room
         Room.query({}, function (rooms) {
-            $scope.selectedRoom = rooms[1] // SEAL-Lab;
+            $scope.rooms = rooms;
         });
 
         $scope.overlays = {};
