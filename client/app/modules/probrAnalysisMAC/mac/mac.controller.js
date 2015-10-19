@@ -16,7 +16,13 @@ angular.module('probrAnalysisMAC')
       }
 
       Socket.listenTo('packet:' + address, function (packet) {
-        $scope.packets.push(packet);
+        console.log(packet);
+        if($scope.packets.length < 25){
+          $scope.packets.unshift(packet);
+        }else{
+          $scope.packets.pop();
+          $scope.packets.unshift(packet);
+        }
       });
 
       // remember watched addresses in cookies.
