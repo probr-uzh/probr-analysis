@@ -1,133 +1,81 @@
-/**
- * Created by gmazlami on 30.07.15.
- */
 'use strict'
 
 angular.module('probrAnalysisMap')
-  .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Packet, Room, Utilization, Utilizations) {
+    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room, vdsMultirangeViews) {
 
-    // Chart
-    $scope.labels = ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
-      "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
-    $scope.series = ['Distinct Devices'];
-    $scope.data = [[]];
+        // MultiRange Slider
+        $scope.rangeArray = [
+            {value: 0.5, name: 'Start'},
+            {value: 0.8, name: 'End'},
+        ]
 
-    $scope.chartOptions = {
-      scaleShowGridLines: true,
-      maintainAspectRatio: false,
-      animation: false
-    }
+        $scope.views = vdsMultirangeViews.TIME;
 
-    // map
-    angular.element(document).ready(function () {
-      $rootScope.$emit("updatePositions");
-
-      angular.element(window).resize(function () {
-        $rootScope.$emit("updatePositions");
-      });
-    });
-
-    // collapse devices
-    $scope.isCollapsed = true;
-    $scope.isQuerying = false;
-    $scope.datepickerOpened = false;
-    $scope.overlays = {};
-
-    // From:
-    $scope.fromDate = new Date('2015-08-21');
-    $scope.fromDate.setHours(0);
-    $scope.fromDate.setMinutes(0);
-
-    // To:
-    $scope.toDate = new Date('2015-08-22');
-    $scope.toDate.setHours(0);
-    $scope.toDate.setMinutes(0);
-
-    $scope.dateChange = function () {
-      var toDate = angular.copy($scope.fromDate);
-      toDate.setHours($scope.fromDate.getHours() + 24)
-      $scope.toDate = toDate;
-    }
-
-    // Trigger first DateChange to Update
-    $scope.dateChange();
-
-    $scope.query = function () {
-      $scope.isQuerying = true;
-
-      // determine timeslots
-      var timeslots = [];
-
-      for (var i = 0; i < 24; i++) {
-        var fromDate = new Date($scope.fromDate);
-        fromDate.setHours(i);
-        fromDate.setMinutes(0);
-
-        var toDate = new Date($scope.fromDate);
-        toDate.setHours(i + 1);
-        toDate.setMinutes(0);
-
-        timeslots.push({query: {$and: [{_id: '>%' + fromDate.toISOString()}, {_id: '<%' + toDate.toISOString()}]}, distinct: 'value.mac_address_src'})
-      }
-
-      Utilization.query({type: 'triangulation', begin: $scope.fromDate.getTime(), end: $scope.toDate.getTime()}, function (result, err) {
-
-        // Query the 24 hours of the day :S
-        angular.forEach(timeslots, function (timeslot) {
-          Utilizations.query(timeslot, function (result, err) {
-            $scope.data[0].push(result.length);
-          });
+        // Room
+        Room.query({}, function (rooms) {
+            $scope.rooms = rooms.splice(2, 1);
         });
 
-        $scope.isQuerying = false;
+        $scope.overlays = {};
 
-        /*
-        var timeQuery = {query: {$and: [{_id: '>%' + $scope.fromDate.toISOString()}, {_id: '<%' + $scope.toDate.toISOString()}]}};
+        $scope.query = function () {
 
-        Utilizations.query(timeQuery, function (result, err) {
+            var areaCutoff = 10;
 
-          var data = [];
+            // Range Slider gives us a fraction of 24 hours. This section generates an approriate timestamp for it.
+            var today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setMilliseconds(0);
 
-          angular.forEach(result, function (obj) {
-            data.push([obj.value.location.coordinates[1], obj.value.location.coordinates[0], 0.01]);
-          })
+            var startHour = Math.floor($scope.rangeArray[0].value * 24);
+            var endHour = Math.floor($scope.rangeArray[1].value * 24);
 
-          var overlays = {
-            heatmap: {
-              name: "Heat Map",
-              type: "webGLHeatmap",
-              data: data,
-              visible: true,
-              layerOptions: {size: 0.3},
-              doRefresh: true
-            }
-          }
+            var startMinute = Math.floor(60 * ($scope.rangeArray[0].value * 24 - Math.floor($scope.rangeArray[0].value * 24)));
+            var endMinute = Math.floor(60 * ($scope.rangeArray[1].value * 24 - Math.floor($scope.rangeArray[1].value * 24)));
 
-          angular.extend($scope.overlays, overlays);
+            var startTime = new Date(today);
+            startTime.setHours(startHour);
+            startTime.setMinutes(startMinute);
 
-          $scope.isQuerying = false;
+            var endTime = new Date(today);
+            endTime.setHours(endHour);
+            endTime.setMinutes(endMinute);
 
-        });
+            Location.query({
+                query: {
+                    mac_address: { $nin: ["0002e342cce0", "2cf0ee2ab0f4"] },
+                    area: {$lte: areaCutoff},
+                    noOfCircles: {$gte: 4},
+                    time: {$gt: startTime, $lt: endTime}
+                }
+            }, function (resultObj) {
 
-        */
+                $scope.nrOfLocations = resultObj.length;
 
-      });
+                var data = [];
+                var areaSum = 0;
 
-    }
+                angular.forEach(resultObj, function (obj) {
+                    //var intensity = Math.log(areaCutoff / obj.area) / 150;
+                    areaSum = areaSum + obj.area;
+                    data.push([obj.location.coordinates[1], obj.location.coordinates[0], 0.3]);
+                });
 
-    // Get all registered Rooms
-    Room.query({}, function (rooms) {
-      $scope.rooms = rooms;
-      $scope.selectedRoom = rooms[1] // seallab;
+                var overlays = {
+                    heatmap: {
+                        name: "Heat Map",
+                        type: "webGLHeatmap",
+                        data: data,
+                        visible: true,
+                        layerOptions: { size: 1 },
+                        doRefresh: true
+                    }
+                }
+
+                angular.extend($scope.overlays, overlays);
+
+            });
+        };
+
     });
-
-    // DatePicker
-    $scope.status = {
-      opened: false
-    };
-
-    $scope.open = function ($event) {
-      $scope.status.opened = true;
-    };
-
-  });

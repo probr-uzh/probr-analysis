@@ -30,7 +30,9 @@
     "webgl-heatmap-leaflet": "*",
     "angular-i18n": "~1.4.7",
     "PruneCluster": "~1.1.0",
-    "n3-line-chart": "~1.1.12"
+    "n3-line-chart": "~1.1.12",
+    "angular-horizontal-timeline": "*",
+    "multirange": "val-samonte/angular-multirange"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",

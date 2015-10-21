@@ -1,87 +1,16 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
 
-<div class="container-fluid" style="padding-bottom: 15px">
-    <div class="row">
-        <div class="col-xs-12">
-            <label class="btn btn-primary pull-left" ng-model="$parent.selectedRoom" btn-radio="room" ng-repeat="room in rooms">{{room.name}}</label>
+<div class="container-fluid">
 
-            <p class="input-group col-xs-2" style="padding-left: 15px">
-                <input style="width: 160px" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="fromDate" ng-change="dateChange()" show-weeks="false" is-open="datepickerOpened" ng-required="true" close-text="Close"/>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="datepickerOpened = !datepickerOpened"><i class="fa fa-calendar"></i></button>
-                </span>
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="query()" ng-disabled="isQuerying">Crunch Data <i ng-show="isQuerying" class="fa fa-circle-o-notch fa-spin"></i></button>
-                </span>
-            </p>
+    <h1>Heatmap
+        <button ng-click="query()" class="btn btn-primary btn-xs">Update</button>
+    </h1>
 
-        </div>
-    </div>
+    <span>{{ nrOfLocations }} considered</span>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <canvas id="line" class="chart chart-line" data="data" labels="labels" chart-legend="true" series="series" click="onClick" options="chartOptions"></canvas>
-        </div>
-    </div>
-</div>
+    <vds-multirange ng-model="rangeArray" view="viewIndex" views="views"></vds-multirange>
 
-<probr-map room="selectedRoom" overlays="overlays"></probr-map>
-
-<!--
-    <div class="row">
-
-        <div class="col-xs-8">
-            <probr-map room="selectedRoom" overlays="overlays"></probr-map>
-        </div>
-        <div class="col-xs-4">
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="btn-group">
-                        <label class="btn btn-primary" ng-model="$parent.selectedRoom" btn-radio="room" ng-repeat="room in rooms">{{room.name}}</label>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div style="display:inline-block;">
-                        <datepicker ng-model="fromDate" ng-change="dateChange()" show-weeks="true" class="well well-sm"></datepicker>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <timepicker style="float: left; margin-right: 10px;" ng-model="fromDate" ng-change="fromChange()" hour-step="1" show-meridian="false"></timepicker>
-                    <timepicker ng-model="toDate" ng-change="toChange()" hour-step="1" show-meridian="false"></timepicker>
-                </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-default" ng-click="query()" ng-disabled="isQuerying">Crunch Data <i ng-show="isQuerying" class="fa fa-circle-o-notch fa-spin"></i></button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-4">
-                    <h2>{{selectedRoom.name}}</h2>
-
-                    <p>
-                        Distinct Devices seen: {{distinctDevices.length}}
-                    </p>
-
-                    <button type="button" class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Show Devices</button>
-                    <div collapse="isCollapsed">
-                <span ng-repeat="device in distinctDevices">
-                    {{ device | mac }}<br>
-                </span>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+    <probr-map rooms="rooms" overlays="overlays"></probr-map>
 
 
 </div>
--->
