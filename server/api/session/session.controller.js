@@ -7,29 +7,39 @@ var Session = require('../session/session.model')
 exports.reduce = function (req, res) {
 
   var mapReduceOptions = {};
-  var days = req.query.days;
+
+  var startTime = parseInt(req.query.start);
+  var endTime = parseInt(req.query.end);
+
+  // do not allow queries to range longer than a week.
+  if (endTime - startTime > (1000 * 60 * 60 * 24 * 7)) {
+    endTime = startTime + (1000 * 60 * 60 * 24 * 7);
+  }
+
+  var slotSize = 5 * 60 * 1000 // 5 minute slot-time
+
   var mac_address = req.query.mac_address;
   var tags = req.query.tags ? req.query.tags.split(",") : [];
 
-  mapReduceOptions.scope = {days: days};
+  mapReduceOptions.scope = {startTime: new Date(startTime), endTime: new Date(endTime), slotSize: slotSize};
   mapReduceOptions.map = function () {
 
-    var emitDate = new Date(this.startTimestamp);
-    emitDate.setMinutes(0);
-    emitDate.setSeconds(0);
-    emitDate.setMilliseconds(0);
+    var tmpTime = new Date(startTime);
 
-    emit(emitDate, 1);
+    while (tmpTime < endTime) {
+      if (this.startTimestamp < tmpTime && this.endTimestamp > tmpTime) {
+        emit(tmpTime, 1);
+      }
+      tmpTime = new Date(tmpTime.getTime() + slotSize);
+    }
+
   }
 
   mapReduceOptions.reduce = function (key, values) {
     return Array.sum(values);
   }
 
-  var previousDate = new Date();
-  previousDate.setDate(previousDate.getDate() - days);
-
-  mapReduceOptions.query = {startTimestamp: {$gt: previousDate}};
+  mapReduceOptions.query = {startTimestamp: {$gt: new Date(startTime)}, endTimestamp: { $lt: new Date(endTime)}};
 
   if (tags.length > 0) {
     mapReduceOptions.query.tags = {$in: tags}

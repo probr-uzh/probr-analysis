@@ -13,7 +13,7 @@ angular.module('probrAnalysisMap')
 
         // Room
         Room.query({}, function (rooms) {
-            $scope.rooms = rooms.splice(2, 1);
+            $scope.rooms = rooms;
         });
 
         $scope.overlays = {};
@@ -23,10 +23,7 @@ angular.module('probrAnalysisMap')
             var areaCutoff = 10;
 
             // Range Slider gives us a fraction of 24 hours. This section generates an approriate timestamp for it.
-            var today = new Date();
-            today.setHours(0);
-            today.setMinutes(0);
-            today.setMilliseconds(0);
+            var today = new Date(2015, 9, 21, 0, 0, 0);
 
             var startHour = Math.floor($scope.rangeArray[0].value * 24);
             var endHour = Math.floor($scope.rangeArray[1].value * 24);

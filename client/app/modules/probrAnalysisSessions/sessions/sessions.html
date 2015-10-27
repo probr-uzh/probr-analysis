@@ -15,16 +15,16 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12" style="height: 300px; margin-bottom: 50px;">
-      <h2>Last week's Sessions: </h2>
-      <linechart data="dataWeek" options="optionsWeek"></linechart>
+    <div class="col-xs-12" style="margin-top: 5px">
+      <div class="pull-right">
+        <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate" />
+      </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-xs-12" style="height: 300px; margin-bottom: 50px;">
-      <h2>Last 24h Sessions: </h2>
-      <linechart data="dataDay" options="optionsDay"></linechart>
+    <div class="col-xs-12" style="height: 500px; margin-bottom: 50px;">
+      <linechart data="data" options="options"></linechart>
     </div>
   </div>
 

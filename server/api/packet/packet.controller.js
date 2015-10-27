@@ -5,23 +5,31 @@ var Packet = require('../packet/packet.model')
 
 // Get list of utilizations
 exports.concurreny_count = function (req, res) {
+
   var mapReduceOptions = {};
 
   var cutOffDate = new Date();
   cutOffDate.setDate(cutOffDate.getDate() - 7);
 
   mapReduceOptions.map = function () {
+
+    var begin = new Date(parseInt(scope.start));
+    var end = new Date(parseInt(scope.end));
+
+    var sessionTime =
+
     emit(Math.floor(this.time.getTime() / (1000 * 60 * 60 )), 1);
   }
+
   mapReduceOptions.reduce = function (key, values) {
     return Array.sum(values);
   }
 
-
   mapReduceOptions.query = {
-    mac_address_src: req.query["mac_address_src"],time : {$gt : cutOffDate}
+    mac_address_src: req.query["mac_address_src"], time: {$gt: cutOffDate}
   };
 
+  mapReduceOptions.scope = {start: parseInt(req.query.startTime), end: parseInt(req.query.endTime)};
 
   Packet.mapReduce(
     mapReduceOptions,
@@ -33,8 +41,7 @@ exports.concurreny_count = function (req, res) {
 };
 
 
-
-exports.punchcard_data = function(req,res){
+exports.punchcard_data = function (req, res) {
   var mapReduceOptions = {};
 
   var cutOffDate = new Date();
@@ -57,7 +64,7 @@ exports.punchcard_data = function(req,res){
 
 
   mapReduceOptions.query = {
-    mac_address_src: req.query["mac_address_src"],time : {$gt : cutOffDate}
+    mac_address_src: req.query["mac_address_src"], time: {$gt: cutOffDate}
   };
 
 

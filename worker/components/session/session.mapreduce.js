@@ -5,15 +5,23 @@
 function getInitialMapReduceConfig() {
   return {
     map: function () {
+
       var result = {};
 
       result.mac_address = this.mac_address_src;
-      result.startTimestamp = this.time.getTime();
-      result.endTimestamp = this.time.getTime();
+      result.startTimestamp = this.time;
+      result.endTimestamp = this.time;
       result.tags = this.tags;
       result.count = 1;
 
-      emit(this.mac_address_src + "_" + Math.floor(this.time.getTime() / (1000 * 60 * 5)), result);
+      var slotSize = 1000 * 60 * 5;
+      var roundedTime = Math.floor(this.time.getTime() / slotSize);
+
+      emit({
+        startTimestamp: new Date(roundedTime * slotSize),
+        mac_address: this.mac_address_src
+      }, result);
+
     },
 
     reduce: function (key, values) {
@@ -30,11 +38,12 @@ function getInitialMapReduceConfig() {
         return {
           tags: mergedTags,
           mac_address: previous.mac_address,
-          startTimestamp: Math.min(previous.startTimestamp, current.startTimestamp),
-          endTimestamp: Math.max(previous.endTimestamp, current.endTimestamp),
+          startTimestamp: new Date(Math.min(previous.startTimestamp.getTime(), current.startTimestamp.getTime())),
+          endTimestamp: new Date(Math.max(previous.endTimestamp.getTime(), current.endTimestamp.getTime())),
           count: previous.count + current.count
         };
       });
+
     },
     sort: {mac_address_src: 1},
     out: {reduce: 'raw_sessions'},
