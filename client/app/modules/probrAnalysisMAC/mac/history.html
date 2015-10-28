@@ -2,26 +2,30 @@
 
 <div class="container-fluid">
 
-  <h1>MAC Address History | {{macaddress | mac}} (last 7 days)</h1>
+  <h1>MAC Address History | {{macaddress | mac}}</h1>
 
-  <div class="pagination-centered text-center">
-    <div class="row pagination-centered text-center">
+  <div class="row">
+    <div class="col-xs-12" style="margin-top: 5px">
       <div class="btn-group">
         <a href="#" class="btn btn-default" ng-click="toggleLine()">Linechart</a>
         <a href="#" class="btn btn-default" ng-click="toggleCard()">Punchcard</a>
+        <button class="btn btn-primary" ng-click="query()">Query</button>
       </div>
-    </div>
-
-
-    <div class="row" ng-hide="lineHidden">
-      <div class="col-sm-12" style="height: 300px; margin-bottom: 50px;">
-        <linechart data="dataWeek" options="optionsWeek"></linechart>
-      </div>
-    </div>
-
-    <div class="row" ng-hide="cardHidden">
-      <div class="col-sm-12">
-        <div punch-card data="punchCardData" singular="occurence" plural="occurences" days="days"></div>
+      <div class="pull-left" style="margin-right: 5px;">
+        <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate"/>
       </div>
     </div>
   </div>
+
+  <div class="row" ng-hide="lineHidden">
+    <div class="col-sm-12" style="height: 500px; margin-bottom: 50px;">
+      <linechart data="data" options="options"></linechart>
+    </div>
+  </div>
+
+  <div class="row" ng-hide="cardHidden">
+    <div class="col-sm-12">
+      <div punch-card data="punchCardData" singular="occurence" plural="occurences" days="days"></div>
+    </div>
+  </div>
+</div>

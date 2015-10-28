@@ -39,7 +39,7 @@ exports.reduce = function (req, res) {
     return Array.sum(values);
   }
 
-  mapReduceOptions.query = {startTimestamp: {$gt: new Date(startTime)}, endTimestamp: { $lt: new Date(endTime)}};
+  mapReduceOptions.query = {startTimestamp: { $lt: new Date(endTime)}, endTimestamp: { $gt: new Date(startTime)}};
 
   if (tags.length > 0) {
     mapReduceOptions.query.tags = {$in: tags}
