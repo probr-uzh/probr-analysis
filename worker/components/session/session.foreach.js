@@ -36,8 +36,6 @@ var sessionForEachIncremental = function (gt_timestamp, cb) {
         && lastSession.value.mac_address === currentSession.value.mac_address
         && new Date(lastSession.value.endTimestamp.getTime() + (1000 * 60 * 5)) >= currentSession.value.startTimestamp) {
 
-        console.log("session gets extended");
-
         lastSession["value"]["endTimestamp"] = currentSession["value"]["endTimestamp"];
         lastSession["value"]["count"] += currentSession["value"]["count"];
 
@@ -48,6 +46,7 @@ var sessionForEachIncremental = function (gt_timestamp, cb) {
 
         Session.findOneAndUpdate({mac_address: session.mac_address, startTimestamp: session.startTimestamp}, session, {upsert: true}, function (err, result) {
           if (err) {
+            console.log(err);
             cb(err);
           }
         });
