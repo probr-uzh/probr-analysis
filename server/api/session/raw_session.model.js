@@ -18,4 +18,8 @@ var RawSessionSchema = new Schema({
     }
 });
 
+// Index needed for the session forEach job, which sorts on both fields.
+// Without index, sort can't use the individual indexes and 32MB limit is hit
+RawSessionSchema.index({"_id.mac_address": 1, "_id.startTimestamp": 1});
+
 module.exports = mongoose.model('raw_sessions', RawSessionSchema, 'raw_sessions');
