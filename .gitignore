@@ -7,3 +7,4 @@ dist
 /server/config/local.env.js
 npm-debug.log
 .vagrant
+dump.rdb

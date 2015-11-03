@@ -62,83 +62,93 @@ var executeLocationForEach = function (gt_timestamp, cb) {
      *          { "centroid": <GeoJSON Point> the centoid of the intersecting polygon
      *            "noOfCircles" <Number> how many circles were intersected used (at least 3)
      *            "area" <Number> Square meters of intersecting polygin
+     *            "multiplier" <Number>
+     *            "derivedFrom": [<Location>]
      *          }
      */
-    function multilat(locs, multiplier) {
-      if (locs.length < 3) {
-        return undefined;
-      }
-      var poly = locationToCircle(locs[0], multiplier);
-      var i=1;
-      for (i=1; i<locs.length; i++) {
-        var intersect = turf.intersect( poly, locationToCircle(locs[i], multiplier));
-        if (intersect === undefined) {
-          if (i > 2) {   // No intersection, but we have already 3 circles with intersection already, that's enough
-            return {
-              "centroid": turf.centroid(poly),
-              "noOfCircles": i,
-              "area": Math.round( turf.area(poly) * 100 ) / 100
+    function multilat(locs) {
+      var availableLocations = locs.length;
+      var multiplier = 1/1.2;     // Will be multiplied by 1.2 if circles too small. 1.0 at first run.
+      var noOfTrueIntersections;
+      var circlesTooSmallForIntersection;
+      var intersection;
+      var derivedFrom = [];
+
+      do {
+        multiplier *= 1.2;
+        circlesTooSmallForIntersection = 0;
+        noOfTrueIntersections = 1;
+        derivedFrom = [];
+
+        // First intersection is just the first circle itself
+        intersection = locationToCircle(locs[0], multiplier);
+        derivedFrom.push(locs[0]);
+
+        // Loop through all available locations/circles
+        for(var i=1; i<availableLocations; i++) {
+          // Intersect previous intersection with next circle
+          var newIntersection = turf.intersect( intersection, locationToCircle(locs[i], multiplier));
+
+          if ( newIntersection !== undefined ) {
+            if ( turf.area(newIntersection) < turf.area(intersection) ) {
+              noOfTrueIntersections++;
+              intersection = newIntersection;
+              derivedFrom.push(locs[i]);
             }
-          } else
-            return undefined;    // No intersection found with at least 3 circles
+          } else {
+            circlesTooSmallForIntersection++;
+          }
         }
-        poly = intersect
-      }
+
+      } while(noOfTrueIntersections < 3 && (noOfTrueIntersections+circlesTooSmallForIntersection) >= 3);
+
       return {
-        "centroid": turf.centroid(poly),
-        "noOfCircles": i,
-        "area": Math.round( turf.area(poly) * 100 ) / 100
+        "centroid": turf.centroid(intersection),
+        "noOfCircles": noOfTrueIntersections,
+        "area": Math.round( turf.area(intersection) * 100 ) / 100,
+        "multiplier": multiplier,
+        "derivedFrom": derivedFrom
       }
+
     }
 
     var totalLocations = count;
     var locationStream = RawLocation.find(query).stream();
 
+    // Loop through all raw_locations
     locationStream.on('data', function (item) {
+
+      // Progress debug view
       if (counter % 500 == 0) {
         console.log("location-Job: forEach: raw_locations -> locations (" + Math.floor((counter / totalLocations) * 100) + "%)");
       }
       counter++;
 
-      var noOfLocations = item.value.locations.length;
+      var result;
+      try {
+        result = multilat(item.value.locations);
 
-      // Only multilaterate when we have at least 3 circles
-      if (noOfLocations >= 3) {
-        var tries = 0;    // How many times the radius was increased
-        var multiplier = 1.0;
-        try {
-          var result = multilat(item.value.locations, multiplier);
-        } catch(err) {
-          //console.log("error during multilateration.\n conflicting item was\n" + jsonify(item));
-          return;
+        // Only persist locations that have more than 3 intersected circles
+        if (result.noOfCircles >= 3) {
+
+          // Persist location
+          var d = new Location();
+          d.mac_address = item.value.mac_address;
+          d.time = item.value.time;
+          d.location = result.centroid.geometry;
+          d.area = result.area;
+          d.noOfCircles = result.noOfCircles;
+          d.multiplier = result.multiplier;
+          d.derivedFrom = result.derivedFrom;
+          d.save();
         }
-
-        // Increase circle radius until at least three intersect
-        // Must eventually succeed
-        while (result === undefined) {
-          multiplier *= 1.2;
-          try {
-            result = multilat(item.value.locations, multiplier);
-          } catch(err) {
-            //console.log("error during multilateration.\n conflicting item was\n" + jsonify(item));
-            return;
-          }
-          tries++
-        }
-
-        // Save new location
-        var d = new Location();
-        d.mac_address = item.value.mac_address;
-        d.time = item.value.time;
-        d.location = result.centroid.geometry;
-        d.area = result.area;
-        d.noOfCircles = result.noOfCircles;
-        d.multiplier = multiplier
-        d.save();
-
+      } catch(err) {
+        console.log("location-Job: error during multilateration (maybe circles too large\n\t conflicting item:" + jsonify(item) );
       }
 
+
     }).on('error', function (err) {
+      console.log("location-Job: error during location forEach. Aborting!");
       if (err) return cb(err);
     }).on('close', function () {
       cb();

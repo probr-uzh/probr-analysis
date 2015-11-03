@@ -65,6 +65,10 @@ function getInitialMapReduceConfig() {
         }
       }
 
+      locs.sort(function(a,b) {
+        return b.weightedSignal - a.weightedSignal;
+      });
+
       return {
         time: key.time,
         mac_address: key.mac_address,

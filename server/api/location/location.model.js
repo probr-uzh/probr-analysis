@@ -12,7 +12,13 @@ var LocationSchema = new Schema({
   location: GeoJSONPoint,
   area: Number,
   noOfCircles: Number,
-  multiplier: Number
+  multiplier: Number,
+  derivedFrom:  [{
+    long: Number,
+    lat: Number,
+    weightedSignal: Number,
+    cnt: Number
+  } ]
 });
 
 var Location = mongoose.model('locations',LocationSchema,'locations');
