@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('probrAnalysisMap')
-    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room, vdsMultirangeViews) {
+    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room) {
 
         // MultiRange Slider
         $scope.rangeArray = [
@@ -9,7 +9,8 @@ angular.module('probrAnalysisMap')
             {value: 0.8, name: 'End'},
         ]
 
-        $scope.views = vdsMultirangeViews.TIME;
+        // DatePicker
+        $scope.datePickerDate = {startDate: new Date().getTime(), endDate: new Date().getTime() - (1000 * 60 * 60 * 24)};
 
         // Room
         Room.query({}, function (rooms) {
@@ -23,19 +24,17 @@ angular.module('probrAnalysisMap')
             var areaCutoff = 10;
 
             // Range Slider gives us a fraction of 24 hours. This section generates an approriate timestamp for it.
-            var today = new Date(2015, 9, 21, 0, 0, 0);
-
             var startHour = Math.floor($scope.rangeArray[0].value * 24);
             var endHour = Math.floor($scope.rangeArray[1].value * 24);
 
             var startMinute = Math.floor(60 * ($scope.rangeArray[0].value * 24 - Math.floor($scope.rangeArray[0].value * 24)));
             var endMinute = Math.floor(60 * ($scope.rangeArray[1].value * 24 - Math.floor($scope.rangeArray[1].value * 24)));
 
-            var startTime = new Date(today);
+            var startTime = new Date($scope.datePickerDate.startDate);
             startTime.setHours(startHour);
             startTime.setMinutes(startMinute);
 
-            var endTime = new Date(today);
+            var endTime = new Date($scope.datePickerDate.endDate);
             endTime.setHours(endHour);
             endTime.setMinutes(endMinute);
 
@@ -65,7 +64,7 @@ angular.module('probrAnalysisMap')
                         type: "webGLHeatmap",
                         data: data,
                         visible: true,
-                        layerOptions: { size: 1 },
+                        layerOptions: {size: 1},
                         doRefresh: true
                     }
                 }

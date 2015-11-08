@@ -3,8 +3,8 @@
 angular.module('probrAnalysisMap')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('map', {
-                url: '/map',
+            .state('heatmap', {
+                url: '/heatmap',
                 templateUrl: 'app/modules/probrAnalysisMap/map/map.html',
                 controller: 'MapCtrl'
             });

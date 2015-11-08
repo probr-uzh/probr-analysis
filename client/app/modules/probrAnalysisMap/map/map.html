@@ -2,15 +2,21 @@
 
 <div class="container-fluid">
 
-    <h1>Heatmap
-        <button ng-click="query()" class="btn btn-primary btn-xs">Update</button>
-    </h1>
-
-    <span>{{ nrOfLocations }} considered</span>
+    <h1>Heatmap</h1>
 
     <vds-multirange ng-model="rangeArray" view="viewIndex" views="views"></vds-multirange>
 
-    <probr-map rooms="rooms" overlays="overlays"></probr-map>
+    <div class="row" style="margin-top: 15px">
+        <div class="col-xs-12">
+            <div class="pull-right">
+                <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate"/>
+                <button ng-click="query()" class="btn btn-primary">Update</button>
+            </div>
+        </div>
+    </div>
 
+    <div class="row" style="margin-top: 15px">
+        <probr-map rooms="rooms" overlays="overlays"></probr-map>
+    </div>
 
 </div>
