@@ -36,7 +36,7 @@ angular.module('probrAnalysisCommon')
 
         $scope.isActiveRoot = function (route) {
             var subStr = $location.path().split("/")[1];
-            return route.indexOf(subStr.substr(0, subStr.length - 1)) !== -1;
+            return route.slice(0, subStr.length) == subStr;
         };
 
     });
