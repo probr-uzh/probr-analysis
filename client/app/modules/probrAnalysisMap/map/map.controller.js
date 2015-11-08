@@ -40,7 +40,6 @@ angular.module('probrAnalysisMap')
 
             Location.query({
                 query: {
-                    mac_address: { $nin: ["0002e342cce0", "2cf0ee2ab0f4"] },
                     area: {$lte: areaCutoff},
                     noOfCircles: {$gte: 4},
                     time: {$gt: startTime, $lt: endTime}
