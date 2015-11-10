@@ -7,10 +7,11 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="input-group">
-                <input type="text" ng-model="macInput" class="form-control" ng-enter="addMAC()">
-        <span class="input-group-btn">
-            <button class="btn btn-primary" ng-click="addMAC()">Watch</button>
-        </span>
+                <input type="text" placeholder="MAC-Address (78:68:35 ...)" ng-model="macInput" class="form-control" style="width: 200px; margin-right: 5px;">
+                <input type="text" placeholder="Alias (Pete's Phone)" ng-model="alias" class="form-control" style="width: 200px">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="addMAC()">Watch</button>
+                </span>
             </div>
         </div>
     </div>
@@ -23,10 +24,10 @@
             <table class="table table-condensed">
                 <tr ng-repeat="address in watchedAddresses">
                     <td>
-                        <a class="btn btn-primary btn-xs" href="mac/location/{{address}}">Map</a>
-                        <a class="btn btn-primary btn-xs" href="mac/history/{{address}}">History</a>
+                        <a class="btn btn-primary btn-xs" href="mac/location/{{address.mac_address}}">Map</a>
+                        <a class="btn btn-primary btn-xs" href="mac/history/{{address.mac_address}}">History</a>
 
-                        <span class="btn btn-default btn-xs" style="font-family: monospace">{{address | mac}}</span>
+                        <span class="btn btn-default btn-xs" style="font-family: monospace">{{address.mac_address | mac}} ({{address.alias}})</span>
 
                         <i ng-click="removeMAC(address)" class="fa fa-trash pull-right"></i>
                     </td>

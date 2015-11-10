@@ -2,82 +2,76 @@
 
 <div class="container-fluid">
 
-    <h1>Packets</h1>
-    <br>
-    <div class="pagination-centered text-center">
-      <div class="row pagination-centered text-center">
-        <div class="btn-group">
-          <a href="#" class="btn btn-default" ng-click="toggleArchive()">Archive</a>
-          <a href="#" class="btn btn-default" ng-click="toggleLive()">Live</a>
-        </div>
-      </div>
-    </div>
-    <br>
+    <h1>Packets
+        <a href="#" class="btn btn-xs btn-primary" ng-click="toggleArchive()" ng-hide="liveHidden">Disable Live... <i class="fa fa-spin fa-cog"></i></a>
+        <a href="#" class="btn btn-xs btn-default" ng-click="toggleLive()" ng-hide="archiveHidden">Enable Live</a>
+    </h1>
+
     <div ng-hide="archiveHidden">
-      <div class="row">
-          <div class="col-xs-12">
-              <probr-search page-length="pageLength" on-submit="submit(query)" query="query" fields="fields"></probr-search>
-          </div>
-      </div>
-
-      <div class="row" style="margin-top: 15px">
-          <div class="col-xs-12">
-              <small>{{ newPackets }} new Packets since loading.</small>
-          </div>
-      </div>
-
-      <probr-pagination resource="resource" items="packets" items-count="packetsCount" page-length="pageLength" query="query" params="params">
-          <div class="row">
-              <div class="col-xs-12 table-responsive">
-                  <table class="table table-condensed">
-                      <tr>
-                          <td> Source</td>
-                          <td> Destination</td>
-                          <td> Signal Strength</td>
-                          <td> SSID</td>
-                          <td> Latitude/Longitude</td>
-                          <td> Time</td>
-                          <td> Tags</td>
-                      </tr>
-                      <tr ng-repeat="packet in packets">
-                          <td>{{ packet.mac_address_src | mac }}</td>
-                          <td>{{ packet.mac_address_dst | mac }}</td>
-                          <td>{{ packet.signal_strength }}</td>
-                          <td>{{ packet.ssid }}</td>
-                          <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
-                          <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'shortTime' }}</td>
-                          <td>{{ packet.tags }}</td>
-                      </tr>
-                  </table>
-              </div>
-          </div>
-      </probr-pagination>
-    </div>
-    <div ng-hide="liveHidden">
-      <div class="row">
-        <div class="col-xs-12 table-responsive">
-          <table class="table table-condensed">
-            <tr>
-              <td> Source</td>
-              <td> Destination</td>
-              <td> Signal Strength</td>
-              <td> SSID</td>
-              <td> Latitude/Longitude</td>
-              <td> Time</td>
-              <td> Tags</td>
-            </tr>
-            <tr ng-repeat="packet in livePackets">
-              <td>{{ packet.mac_address_src | mac }}</td>
-              <td>{{ packet.mac_address_dst | mac }}</td>
-              <td>{{ packet.signal_strength }}</td>
-              <td>{{ packet.ssid }}</td>
-              <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
-              <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'mediumTime' }}</td>
-              <td>{{ packet.tags }}</td>
-            </tr>
-          </table>
+        <div class="row">
+            <div class="col-xs-12">
+                <probr-search page-length="pageLength" on-submit="submit(query)" query="query" fields="fields"></probr-search>
+            </div>
         </div>
-      </div>
+
+        <div class="row" style="margin-top: 15px">
+            <div class="col-xs-12">
+                <small>{{ newPackets }} new Packets since loading.</small>
+            </div>
+        </div>
+
+        <probr-pagination resource="resource" items="packets" items-count="packetsCount" page-length="pageLength" query="query" params="params">
+            <div class="row">
+                <div class="col-xs-12 table-responsive">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td> Source</td>
+                            <td> Destination</td>
+                            <td> Signal Strength</td>
+                            <td> SSID</td>
+                            <td> Latitude/Longitude</td>
+                            <td> Time</td>
+                            <td> Tags</td>
+                        </tr>
+                        <tr ng-repeat="packet in packets">
+                            <td>{{ packet.mac_address_src | mac }}</td>
+                            <td>{{ packet.mac_address_dst | mac }}</td>
+                            <td>{{ packet.signal_strength }}</td>
+                            <td>{{ packet.ssid }}</td>
+                            <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
+                            <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'shortTime' }}</td>
+                            <td>{{ packet.tags }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </probr-pagination>
+    </div>
+    <div ng-hide="liveHidden" style="margin-top: 15px">
+        <div class="row">
+            <div class="col-xs-12 table-responsive">
+                <table class="table table-condensed">
+                    <tr>
+                        <td> Source</td>
+                        <td> Destination</td>
+                        <td> Signal Strength</td>
+                        <td> SSID</td>
+                        <td> Latitude/Longitude</td>
+                        <td> Time</td>
+                        <td> Tags</td>
+                    </tr>
+                    <tr ng-repeat="packet in livePackets">
+                        <td>{{ packet.mac_address_src | mac }}</td>
+                        <td>{{ packet.mac_address_dst | mac }}</td>
+                        <td>{{ packet.signal_strength }}</td>
+                        <td>{{ packet.ssid }}</td>
+                        <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
+                        <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'mediumTime' }}</td>
+                        <td>{{ packet.tags }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 
 </div>
