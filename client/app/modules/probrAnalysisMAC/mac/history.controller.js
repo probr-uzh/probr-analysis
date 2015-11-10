@@ -51,9 +51,6 @@ angular.module('probrAnalysisMAC')
           $scope.data.push({x: new Date(entry["_id"]), val_0: entry["value"]})
         });
 
-        // Fill PunchCard
-        var dayList = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        $scope.days = [];
       });
 
     }

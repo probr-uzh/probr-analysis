@@ -18,8 +18,11 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12" style="height: 500px; margin-bottom: 50px;">
+        <div class="col-xs-12" style="height: 500px;" ng-show="data.length > 0">
             <linechart data="data" options="options"></linechart>
+        </div>
+        <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="data.length > 0">
+            <p>No data for this time period.</p>
         </div>
     </div>
 
