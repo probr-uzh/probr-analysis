@@ -44,14 +44,9 @@ exports.concurreny_count = function (req, res) {
 exports.punchcard_data = function (req, res) {
   var mapReduceOptions = {};
 
-  var cutOffDate = new Date();
-  cutOffDate.setMilliseconds(0);
-  cutOffDate.setSeconds(0);
-  cutOffDate.setMinutes(0);
-  cutOffDate.setHours(0);
-  cutOffDate.setDate(cutOffDate.getDate() - 7);
+  var startDate = new Date(parseInt(req.query["start_date"]));
 
-  console.log(cutOffDate);
+  console.log(startDate);
 
   mapReduceOptions.map = function () {
     var date = new Date(this.time.getTime());
@@ -64,7 +59,7 @@ exports.punchcard_data = function (req, res) {
 
 
   mapReduceOptions.query = {
-    mac_address_src: req.query["mac_address_src"], time: {$gt: cutOffDate}
+    mac_address_src: req.query["mac_address_src"], time: {$gt: startDate}
   };
 
 
