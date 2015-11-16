@@ -6,17 +6,27 @@
 function getInitialMapReduceConfig() {
    return {
         map: function () {
-            emit(this.mac_address_src, {mac_address: this.mac_address_src, vendor: this.vendor, last_seen: this.inserted_at});
+            emit(this.mac_address_src, {
+              mac_address: this.mac_address_src,
+              vendor: this.vendor,
+              last_seen: this.inserted_at,
+              tags: this.tags});
         },
 
         reduce: function (key, values) {
             var lastSeen = values[0].last_seen;
+            var lastTags;
             for (i = 1; i < values.length; i++) {
                 if (lastSeen < values[i].last_seen) {
                     lastSeen = values[i].last_seen;
+                    lastTags = values[i].tags;
                 }
             }
-            return {mac_address: values[0].mac_address, vendor: values[0].vendor, last_seen: lastSeen};
+            return {
+              mac_address: values[0].mac_address,
+              vendor: values[0].vendor,
+              last_seen: lastSeen,
+              tags: lastTags};
         },
        sort: { mac_address_src: 1 },
         out: {reduce: 'raw_devices'},

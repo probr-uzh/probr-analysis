@@ -45,6 +45,7 @@ var executeDeviceForEach = function (gt_timestamp, cb) {
                     d.mac_address = item.value.mac_address;
                     d.vendor = Vendors.vendors[item.value.mac_address.substr(0, 6)];
                     d.last_seen = item.value.last_seen;
+                    d.tags = item.value.tags;
                     d.save();
 
                 } else {
