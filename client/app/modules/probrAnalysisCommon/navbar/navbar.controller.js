@@ -9,6 +9,10 @@ angular.module('probrAnalysisCommon')
                 'link': 'packets'
             },
             {
+              'title': 'Live',
+              'link': 'live'
+            },
+            {
               'title': 'Utilization',
               'link': 'utilization'
             },
