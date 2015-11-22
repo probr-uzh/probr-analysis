@@ -9,8 +9,8 @@ angular.module('probrAnalysisCommon')
                 'link': 'packets'
             },
             {
-                'title': 'Sessions',
-                'link': 'sessions'
+              'title': 'Utilization',
+              'link': 'utilization'
             },
             {
                 'title': 'Heatmap',

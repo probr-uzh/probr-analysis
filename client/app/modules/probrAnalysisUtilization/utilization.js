@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrAnalysisSessions', [
+angular.module('probrAnalysisUtilization', [
   'ui.router',
   'ui.bootstrap',
   'chart.js',

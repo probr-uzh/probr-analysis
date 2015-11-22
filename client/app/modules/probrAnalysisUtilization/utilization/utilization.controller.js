@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('probrAnalysisSessions')
-    .controller('SessionsCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency) {
+angular.module('probrAnalysisUtilization')
+    .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency) {
 
         $scope.fields = ['tags: '];
         $scope.query = {};

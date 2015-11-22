@@ -15,11 +15,10 @@ angular.module('probrAnalysisApp', [
   // Analysis-Module
   'probrAnalysisPacketsFilter',
   'probrAnalysisVendors',
-  'probrAnalysisRoomUtilization',
+  'probrAnalysisUtilization',
   'probrAnalysisLoyalty',
   'probrAnalysisMap',
   'probrAnalysisMAC',
-  'probrAnalysisSessions',
   'probrAnalysisDevices',
 
 ])

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('probrAnalysisSessions')
+angular.module('probrAnalysisUtilization')
     .factory('SessionConcurrency', function ($resource) {
         var SessionConcurrency = $resource('api/session/reduce/', {},
             {
