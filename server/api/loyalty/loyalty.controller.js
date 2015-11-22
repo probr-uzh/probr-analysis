@@ -8,7 +8,7 @@ exports.histogram = function (req, res) {
 
   var pipeline = [
     {
-      "$match": {"duration": {$gte:1000*60*2}}
+      "$match": {"duration": {$gte: 1000 * 60 * 2}}
     },
     {
       "$group": {
@@ -33,7 +33,6 @@ exports.histogram = function (req, res) {
   });
 
 };
-
 
 function handleError(res, err) {
   return res.status(500).send(err);

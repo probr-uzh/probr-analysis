@@ -8,38 +8,40 @@ exports.reduce = function (req, res) {
 
   var mapReduceOptions = {};
 
-  var startTime = parseInt(req.query.start);
-  var endTime = parseInt(req.query.end);
+  var startTimestamp = new Date(parseInt(req.query.startTimestamp));
+  var endTimestamp = new Date(parseInt(req.query.endTimestamp));
 
   // do not allow queries to range longer than a week.
-  if (endTime - startTime > (1000 * 60 * 60 * 24 * 7)) {
-    endTime = startTime + (1000 * 60 * 60 * 24 * 7);
+  if (endTimestamp.getTime() - startTimestamp.getTime() > (1000 * 60 * 60 * 24 * 7)) {
+    endTimestamp = new Date(startTimestamp.getTime() + (1000 * 60 * 60 * 24 * 7));
   }
 
   var slotSize = 5 * 60 * 1000 // 5 minute slot-time
-
   var mac_address = req.query.mac_address;
   var tags = req.query.tags ? req.query.tags.split(",") : [];
 
-  mapReduceOptions.scope = {startTime: new Date(startTime), endTime: new Date(endTime), slotSize: slotSize};
+  mapReduceOptions.scope = {
+    startTimestamp: startTimestamp,
+    endTimestamp: endTimestamp,
+    slotSize: slotSize
+  };
+
   mapReduceOptions.map = function () {
+    var lastTimestamp = startTimestamp;
 
-    var tmpTime = new Date(startTime);
-
-    while (tmpTime < endTime) {
-      if (this.startTimestamp < tmpTime && this.endTimestamp > tmpTime) {
-        emit(tmpTime, 1);
+    while (lastTimestamp < endTimestamp) {
+      if (this.startTimestamp < lastTimestamp && this.endTimestamp > lastTimestamp) {
+        emit(lastTimestamp, 1);
       }
-      tmpTime = new Date(tmpTime.getTime() + slotSize);
+      lastTimestamp = new Date(lastTimestamp.getTime() + slotSize);
     }
-
   }
 
   mapReduceOptions.reduce = function (key, values) {
     return Array.sum(values);
   }
 
-  mapReduceOptions.query = {startTimestamp: { $lt: new Date(endTime)}, endTimestamp: { $gt: new Date(startTime)}};
+  mapReduceOptions.query = {startTimestamp: {$lt: endTimestamp}, endTimestamp: {$gt: startTimestamp}};
 
   if (tags.length > 0) {
     mapReduceOptions.query.tags = {$in: tags}
