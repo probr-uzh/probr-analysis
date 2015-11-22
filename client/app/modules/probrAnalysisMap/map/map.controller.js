@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('probrAnalysisMap')
-    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room) {
+    .controller('MapCtrl', function ($scope, $state, $location, $stateParams, $rootScope, Location, Room) {
 
         // MultiRange Slider
         $scope.rangeArray = [
@@ -10,7 +10,7 @@ angular.module('probrAnalysisMap')
         ]
 
         // DatePicker
-        $scope.datePickerDate = {startDate: new Date().getTime(), endDate: new Date().getTime() - (1000 * 60 * 60 * 24)};
+        $scope.datePickerDate = {startDate: $location.search()["startTimestamp"], endDate: $location.search()["endTimestamp"]};
 
         // Room
         Room.query({}, function (rooms) {
