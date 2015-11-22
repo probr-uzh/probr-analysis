@@ -17,7 +17,7 @@ angular.module('probrAnalysisCommon')
               'link': 'utilization'
             },
             {
-                'title': 'Heatmap',
+                'title': 'Location',
                 'link': 'heatmap'
             },
             {
