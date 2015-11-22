@@ -5,7 +5,7 @@ angular.module('probrAnalysisCommon')
 
         $scope.menu = [
             {
-                'title': 'Packets',
+                'title': 'Log',
                 'link': 'packets'
             },
             {
@@ -25,7 +25,7 @@ angular.module('probrAnalysisCommon')
                 'link': 'mac'
             },
             {
-                'title': 'Devices',
+                'title': 'Stats',
                 'link': 'devices'
             }
         ];
