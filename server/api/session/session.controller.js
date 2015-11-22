@@ -10,6 +10,7 @@ exports.reduce = function (req, res) {
 
   var startTimestamp = new Date(parseInt(req.query.startTimestamp));
   var endTimestamp = new Date(parseInt(req.query.endTimestamp));
+  var tags = req.query.tags ? req.query.tags.split(",") : [];
 
   // do not allow queries to range longer than a week.
   if (endTimestamp.getTime() - startTimestamp.getTime() > (1000 * 60 * 60 * 24 * 7)) {
@@ -18,7 +19,6 @@ exports.reduce = function (req, res) {
 
   var slotSize = 5 * 60 * 1000 // 5 minute slot-time
   var mac_address = req.query.mac_address;
-  var tags = req.query.tags ? req.query.tags.split(",") : [];
 
   mapReduceOptions.scope = {
     startTimestamp: startTimestamp,
