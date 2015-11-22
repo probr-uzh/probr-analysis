@@ -21,7 +21,7 @@ angular.module('probrAnalysisCommon')
                 'link': 'heatmap'
             },
             {
-                'title': 'MAC',
+                'title': 'Track',
                 'link': 'mac'
             },
             {
