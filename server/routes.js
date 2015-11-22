@@ -25,6 +25,7 @@ module.exports = function (app) {
     app.use('/api/packet', require('./api/packet'));
     app.use('/api/loyalty', require('./api/loyalty'));
     app.use('/api/users', require('./api/user'));
+    app.use('/api/device', require('./api/device'));
 
     app.use('/auth', require('./auth'));
 

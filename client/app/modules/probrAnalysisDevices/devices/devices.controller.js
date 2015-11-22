@@ -5,15 +5,17 @@
 'use strict';
 
 angular.module('probrAnalysisDevices')
-  .controller('DevicesCtrl', function ($scope, $state, $stateParams, Device) {
+  .controller('DevicesCtrl', function ($scope, $location, $state, $stateParams, DeviceQuery) {
+
+    var query = $location.search();
 
     $scope.pageLength = 50;
-    $scope.query = {};
-    $scope.resource = Device;
+    $scope.resource = DeviceQuery;
 
-    Device.query({
-      }, function (resultObj) {
+    DeviceQuery.query(query, function (resultObj) {
         $scope.devices = resultObj;
+
+        console.log(resultObj);
 
         var devices = $scope.devices;
 
