@@ -5,7 +5,7 @@ angular.module('probrAnalysisCommon')
 
         $scope.menu = [
             {
-                'title': 'Log',
+                'title': 'Analysis',
                 'link': 'packets'
             },
             {
