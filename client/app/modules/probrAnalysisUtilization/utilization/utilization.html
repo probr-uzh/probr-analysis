@@ -1,30 +1,45 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
 
 <div class="container-fluid">
-    <h1>Sessions</h1>
+  <div class="row">
 
-    <div class="row">
+    <div class="col-xs-6">
+      <h1>Utilization</h1>
+
+      <div class="row">
         <div class="col-xs-12">
-            <probr-search page-length="0" on-submit="submit(query)" query="query" fields="fields"></probr-search>
+          <probr-search page-length="0" on-submit="submit(query)" query="query" fields="fields"></probr-search>
         </div>
-    </div>
+      </div>
 
-    <div class="row">
+      <div class="row">
         <div class="col-xs-12" style="margin-top: 5px">
-            <div class="pull-right">
-                <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate"/>
-            </div>
+          <div class="pull-right">
+            <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate"/>
+          </div>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12" style="height: 500px;" ng-show="data.length > 0">
+          <linechart data="data" options="options"></linechart>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="data.length > 0">
+          <p>No data for this time period.</p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-xs-12" style="height: 500px;" ng-show="data.length > 0">
-            <linechart data="data" options="options"></linechart>
-        </div>
-        <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="data.length > 0">
-            <p>No data for this time period.</p>
-        </div>
+    <div class="col-xs-6">
+      <h1>Loyalty</h1>
+      <canvas class="chart chart-bar" data="histogramDataPoints" labels="histogramLabels">
+      </canvas>
     </div>
+  </div>
 
 </div>
 

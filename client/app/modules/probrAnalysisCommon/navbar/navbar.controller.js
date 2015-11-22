@@ -21,10 +21,6 @@ angular.module('probrAnalysisCommon')
                 'link': 'mac'
             },
             {
-                'title': 'Loyalty',
-                'link': 'loyalty'
-            },
-            {
                 'title': 'Devices',
                 'link': 'devices'
             }
