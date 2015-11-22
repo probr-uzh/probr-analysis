@@ -21,15 +21,17 @@ exports.query = function (req, res) {
   }
 
   var startTimestamp = req.query["startTimestamp"];
-  startTimestamp = new Date(parseInt(startTimestamp)*1000);
 
   var endTimestamp = req.query["endTimestamp"];
-  endTimestamp = new Date(parseInt(endTimestamp)*1000);
 
 
   //if there are timestamps, put them into query
   if(startTimestamp !== undefined && endTimestamp !== undefined){
     var expression = [];
+
+    startTimestamp = new Date(parseInt(startTimestamp));
+    endTimestamp = new Date(parseInt(endTimestamp));
+
     expression.push({last_seen : {$gt: startTimestamp}});
     expression.push({last_seen : {$lt: endTimestamp}});
     query.$and = expression;
@@ -37,7 +39,6 @@ exports.query = function (req, res) {
 
 
   Device.find(query, function(err,results){
-    //console.log(results);
     if (err) handleError(res, err);
     return res.status(200).json(results);
   });

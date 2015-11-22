@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var Packet = require('../packet/packet.model')
+var Packet = require('./packet.model')
 
 // Get list of utilizations
 exports.concurreny_count = function (req, res) {
@@ -15,8 +15,6 @@ exports.concurreny_count = function (req, res) {
 
     var begin = new Date(parseInt(scope.start));
     var end = new Date(parseInt(scope.end));
-
-    var sessionTime =
 
     emit(Math.floor(this.time.getTime() / (1000 * 60 * 60 )), 1);
   }
@@ -46,7 +44,6 @@ exports.punchcard_data = function (req, res) {
 
   var startDate = new Date(parseInt(req.query["start_date"]));
 
-  console.log(startDate);
 
   mapReduceOptions.map = function () {
     var date = new Date(this.time.getTime());
@@ -71,6 +68,99 @@ exports.punchcard_data = function (req, res) {
     }
   );
 };
+
+
+exports.countquery = function(req,res){
+  var globalQuery = JSON.parse(req.query.query);
+
+  var query = {};
+
+  var tags = globalQuery["tags"];
+
+  //if there are tags, split the to an array and put into query
+  if(tags !== undefined){
+    tags = tags.split(",");
+
+    if(tags.length < 2){
+      tags = [tags];
+    }
+
+    query.tags = {$all: tags};
+  }
+
+
+  var startTimestamp = globalQuery["startTimestamp"];
+
+  var endTimestamp = globalQuery["endTimestamp"];
+
+
+
+  //if there are timestamps, put them into query
+  if(startTimestamp !== undefined && endTimestamp !== undefined){
+    var expression = [];
+
+    startTimestamp = new Date(parseInt(startTimestamp));
+    endTimestamp = new Date(parseInt(endTimestamp));
+
+    expression.push({time : {$gt: startTimestamp}});
+    expression.push({time : {$lt: endTimestamp}});
+    query.$and = expression;
+  }
+
+
+  Packet.find(query).count().exec(function(err,results){
+    if(err) handleError(res,err);
+    return res.status(200).json({count: results});
+  });
+}
+
+exports.query = function (req, res) {
+
+  var query = {};
+
+  var querySort = req.query["sort"];;
+  var queryLimit = req.query["limit"];
+  var querySkip = req.query["skip"];
+
+  var tags = req.query.query["tags"];
+
+  //if there are tags, split the to an array and put into query
+  if(tags !== undefined){
+    tags = tags.split(",");
+
+    if(tags.length < 2){
+      tags = [tags];
+    }
+
+    query.tags = {$all: tags};
+  }
+
+  var globalQuery = JSON.parse(req.query.query);
+
+  var startTimestamp = globalQuery["startTimestamp"];
+
+  var endTimestamp = globalQuery["endTimestamp"];
+
+
+
+  //if there are timestamps, put them into query
+  if(startTimestamp !== undefined && endTimestamp !== undefined){
+    var expression = [];
+
+    startTimestamp = new Date(parseInt(startTimestamp));
+    endTimestamp = new Date(parseInt(endTimestamp));
+
+    expression.push({time : {$gt: startTimestamp}});
+    expression.push({time : {$lt: endTimestamp}});
+    query.$and = expression;
+  }
+
+  Packet.find(query).sort(querySort).skip(querySkip).limit(queryLimit).exec(function(err,results){
+    if(err) handleError(res,err);
+    return res.status(200).json(results);
+  });
+}
+
 
 
 function handleError(res, err) {
