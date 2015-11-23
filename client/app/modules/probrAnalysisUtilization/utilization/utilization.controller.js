@@ -30,6 +30,9 @@ angular.module('probrAnalysisUtilization')
             tags: $location.search().tags
         };
 
+        var isLoadingSessions = true;
+        var isLoadingLoyalty = true;
+
         SessionConcurrency.query(sessionQuery, function (result, err) {
             $scope.data = [];
 
@@ -37,7 +40,8 @@ angular.module('probrAnalysisUtilization')
                 $scope.data.push({x: new Date(entry["_id"]), val_0: entry["value"]})
             });
 
-            $scope.isLoading = false;
+            isLoadingSessions = false;
+            $scope.isLoading = isLoadingSessions || isLoadingLoyalty;
 
         });
 
@@ -51,7 +55,8 @@ angular.module('probrAnalysisUtilization')
                 //console.log($scope.histogramLabels)
             });
 
-            $scope.isLoading = false;
+            isLoadingLoyalty = false;
+            $scope.isLoading = isLoadingSessions || isLoadingLoyalty;
         });
 
     });
