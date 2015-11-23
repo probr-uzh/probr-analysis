@@ -13,21 +13,9 @@ angular.module('probrAnalysisCommon')
               'link': 'live'
             },
             {
-              'title': 'Utilization',
-              'link': 'utilization'
-            },
-            {
-                'title': 'Location',
-                'link': 'heatmap'
-            },
-            {
                 'title': 'Track',
                 'link': 'mac'
             },
-            {
-                'title': 'Stats',
-                'link': 'devices'
-            }
         ];
 
         $scope.isActive = function (route) {
