@@ -10,14 +10,15 @@ angular.module('probrAnalysisPacketsFilter')
 
         $scope.params = {skip: 0, limit: $scope.pageLength, sort: "-time"};
         $scope.query = {};
-
+        $scope.query.tags = $stateParams.tags;
+        $scope.query.startTimestamp = $stateParams.startTimestamp;
+        $scope.query.endTimestamp = $stateParams.endTimestamp;
 
         $scope.submit = function (query) {
           $scope.query = query;
-          $scope.query.tags = $location.search().tags;
-          $scope.query.startTimestamp = $location.search().startTimestamp;
-          $scope.query.endTimestamp = $location.search().endTimestamp;
-
+          $scope.query.tags = $stateParams.tags;
+          $scope.query.startTimestamp = $stateParams.startTimestamp;
+          $scope.query.endTimestamp = $stateParams.endTimestamp;
         }
 
         $scope.packets = [];
