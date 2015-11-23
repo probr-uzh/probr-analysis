@@ -5,6 +5,10 @@ angular.module('probrAnalysisCommon')
 
         $scope.menu = [
             {
+              'title': 'Log',
+              'link': 'packets'
+            },
+            {
                 'title': 'Utilization',
                 'link': 'utilization'
             },
@@ -16,10 +20,6 @@ angular.module('probrAnalysisCommon')
                 'title': 'Stats',
                 'link': 'devices'
             },
-            {
-                'title': 'Log',
-                'link': 'packets'
-            }
         ];
 
         $scope.selectedTag = null;

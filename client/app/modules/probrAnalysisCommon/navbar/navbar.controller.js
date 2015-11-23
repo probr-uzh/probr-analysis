@@ -16,10 +16,6 @@ angular.module('probrAnalysisCommon')
                 'title': 'Tracking',
                 'link': 'mac'
             },
-            {
-                'title': 'Stats',
-                'link': 'devices'
-            }
         ];
 
         $scope.isActive = function (route) {
