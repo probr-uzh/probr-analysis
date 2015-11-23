@@ -1,24 +1,25 @@
 'use strict';
 
 angular.module('probrAnalysisCommon')
-    .controller('AnalysisNavbarCtrl', function ($scope, $location, Packet) {
+    .controller('AnalysisNavbarCtrl', function ($scope, $state, $stateParams, $location, Packet) {
 
+        var params = { startTimestamp: $stateParams.startTimestamp, endTimestamp: $stateParams.endTimestamp, tags: $stateParams.tags };
         $scope.menu = [
             {
-              'title': 'Log',
-              'link': 'packets'
+                'title': 'Log',
+                'link': $state.href('packets', params)
             },
             {
                 'title': 'Utilization',
-                'link': 'utilization'
+                'link': $state.href('utilization', params)
             },
             {
                 'title': 'Location',
-                'link': 'heatmap'
+                'link': $state.href('heatmap', params)
             },
             {
                 'title': 'Stats',
-                'link': 'devices'
+                'link': $state.href('devices', params)
             },
         ];
 
@@ -33,7 +34,8 @@ angular.module('probrAnalysisCommon')
         }
 
         // DatePicker
-        $scope.datePickerDate = {startDate: new Date().getTime(), endDate: new Date().getTime() - (1000 * 60 * 60 * 24)};
+        $scope.datePickerDate = {startDate: parseInt($stateParams.startTimestamp) || null, endDate: parseInt($stateParams.endTimestamp) || null};
+
         $scope.$watchGroup(['datePickerDate', 'selectedTag'], function () {
             $location.search({
                 tags: $scope.selectedTag,
@@ -41,7 +43,6 @@ angular.module('probrAnalysisCommon')
                 endTimestamp: $scope.datePickerDate.endDate.valueOf()
             });
         });
-
 
         $scope.isActive = function (route) {
             return route === $location.path();

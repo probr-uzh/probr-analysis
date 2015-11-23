@@ -1,11 +1,20 @@
 .probrLoading {
+  text-align: center;
   position: absolute;
-  height: 100%;
-  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 100px;
+  background-color: @brand-gray-light;
+  color: @brand-primary;
+  z-index: 1000;
 }
 
-.superCenter {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
 }
