@@ -1,63 +1,71 @@
 'use strict';
 
 angular.module('probrAnalysisUtilization')
-    .controller('UtilizationCtrl', function ($scope, $filter, $location, SessionConcurrency, Loyalty) {
+  .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency, Loyalty) {
 
-        $scope.options = {
-            axes: {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}},
-            stacks: [{axis: "y", series: ["id_0"]}],
-            lineMode: "cardinal",
-            series: [{
-                id: "id_0",
-                y: "val_0",
-                label: "Sessions",
-                type: "column",
-                color: "#1f77b4"
-            }]
-        };
+    $scope.sessionBarCharOptions = {
+      axes: {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}},
+      stacks: [{axis: "y", series: ["id_0"]}],
+      lineMode: "cardinal",
+      series: [{
+        id: "id_0",
+        y: "val_0",
+        label: "Sessions",
+        type: "column",
+        color: "#1f77b4"
+      }]
+    };
 
-        $scope.isLoading = true;
+    $scope.loyaltyBarCharOptions = {
+      axes: {x: {type: "linear", ticksFormat: ".0f"}},
+      stacks: [{axis: "y", series: ["id_0"]}],
+      lineMode: "cardinal",
+      series: [{
+        id: "id_0",
+        y: "val_0",
+        label: "Loyalty",
+        type: "column",
+        color: "#1f77b4"
+      }]
+    };
 
-        if ($location.search().endTimestamp - $location.search().startTimestamp < (1000 * 60 * 60 * 24)) {
-            $scope.options.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
-        } else {
-            $scope.options.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
-        }
+    $scope.isLoadingSession = true;
+    $scope.isLoadingLoyalty = true;
 
-        var sessionQuery = {
-            startTimestamp: $location.search().startTimestamp,
-            endTimestamp: $location.search().endTimestamp,
-            tags: $location.search().tags
-        };
 
-        var isLoadingSessions = true;
-        var isLoadingLoyalty = true;
+    if ($stateParams.endTimestamp - $stateParams.startTimestamp < (1000 * 60 * 60 * 24)) {
+      $scope.sessionBarCharOptions.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
+    } else {
+      $scope.sessionBarCharOptions.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
+    }
 
-        SessionConcurrency.query(sessionQuery, function (result, err) {
-            $scope.data = [];
+    var sessionQuery = {
+      startTimestamp : $stateParams.startTimestamp,
+      endTimestamp : $stateParams.endTimestamp,
+      tags : $stateParams.tags
+    };
 
-            result.forEach(function (entry) {
-                $scope.data.push({x: new Date(entry["_id"]), val_0: entry["value"]})
-            });
+    SessionConcurrency.query(sessionQuery, function (result, err) {
+      $scope.sessionData = [];
 
-            isLoadingSessions = false;
-            $scope.isLoading = isLoadingSessions || isLoadingLoyalty;
+      result.forEach(function (entry) {
+        $scope.sessionData.push({x: new Date(entry["_id"]), val_0: entry["value"]})
+      });
 
-        });
-
-        Loyalty.query(sessionQuery, function (result, err) {
-            $scope.histogramDataPoints = [[]];
-            $scope.histogramLabels = [];
-
-            result.forEach(function (entry) {
-                $scope.histogramDataPoints[0].push(entry["count"]);
-                $scope.histogramLabels.push(entry["_id"]);
-                //console.log($scope.histogramLabels)
-            });
-
-            isLoadingLoyalty = false;
-            $scope.isLoading = isLoadingSessions || isLoadingLoyalty;
-        });
+      $scope.isLoadingSession = false;
 
     });
+
+    Loyalty.query(sessionQuery, function (result, err) {
+
+      $scope.loyaltyData = [];
+
+      result.forEach(function (entry) {
+        $scope.loyaltyData.push({x: entry["_id"], val_0: entry["count"]})
+      });
+
+      $scope.isLoadingLoyalty = false;
+    });
+
+  });
 
