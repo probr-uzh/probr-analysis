@@ -13,15 +13,7 @@ angular.module('probrAnalysisCommon')
               'link': 'live'
             },
             {
-              'title': 'Utilization',
-              'link': 'utilization'
-            },
-            {
-                'title': 'Location',
-                'link': 'heatmap'
-            },
-            {
-                'title': 'MAC',
+                'title': 'Tracking',
                 'link': 'mac'
             },
             {

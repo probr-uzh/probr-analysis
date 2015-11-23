@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('probrAnalysisUtilization')
-  .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency, Loyalty) {
+  .controller('UtilizationCtrl', function ($scope, $filter, $location, SessionConcurrency, Loyalty) {
 
     $scope.options = {
       axes: {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}},
@@ -17,16 +17,16 @@ angular.module('probrAnalysisUtilization')
     };
 
     $scope.isLoading = true;
-    if ($stateParams.endTimestamp - $stateParams.startTimestamp < (1000 * 60 * 60 * 24)) {
+    if ($location.search().endTimestamp - $location.search().startTimestamp < (1000 * 60 * 60 * 24)) {
       $scope.options.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
     } else {
       $scope.options.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
     }
 
     var sessionQuery = {
-      startTimestamp : $stateParams.startTimestamp,
-      endTimestamp : $stateParams.endTimestamp,
-      tags : $stateParams.tags
+      startTimestamp : $location.search().startTimestamp,
+      endTimestamp : $location.search().endTimestamp,
+      tags : $location.search().tags
     };
 
     SessionConcurrency.query(sessionQuery, function (result, err) {

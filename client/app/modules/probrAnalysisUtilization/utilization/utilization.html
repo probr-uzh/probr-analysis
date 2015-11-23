@@ -1,6 +1,8 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
 
 <div class="container-fluid">
+  <probr-loading isLoading="isLoading"></probr-loading>
   <div class="row">
 
     <div class="col-xs-6">
@@ -22,8 +24,7 @@
 
     <div class="col-xs-6">
       <h1>Loyalty</h1>
-      <canvas class="chart chart-bar" data="histogramDataPoints" labels="histogramLabels">
-      </canvas>
+      <canvas class="chart chart-bar" data="histogramDataPoints" labels="histogramLabels"></canvas>
     </div>
   </div>
 

@@ -6,19 +6,19 @@ angular.module('probrAnalysisCommon')
         $scope.menu = [
             {
                 'title': 'Utilization',
-                'link': 'packets'
-            },
-            {
-                'title': 'Location',
-                'link': 'live'
-            },
-            {
-                'title': 'Stats',
                 'link': 'utilization'
             },
             {
-                'title': 'Log',
+                'title': 'Location',
                 'link': 'heatmap'
+            },
+            {
+                'title': 'Stats',
+                'link': 'devices'
+            },
+            {
+                'title': 'Log',
+                'link': 'packets'
             }
         ];
 
@@ -34,7 +34,7 @@ angular.module('probrAnalysisCommon')
 
         // DatePicker
         $scope.datePickerDate = {startDate: new Date().getTime(), endDate: new Date().getTime() - (1000 * 60 * 60 * 24)};
-        $scope.$watchGroup(['datePickerDate','selectedTag'], function () {
+        $scope.$watchGroup(['datePickerDate', 'selectedTag'], function () {
             $location.search({
                 tags: $scope.selectedTag,
                 startTimestamp: $scope.datePickerDate.startDate.valueOf(),

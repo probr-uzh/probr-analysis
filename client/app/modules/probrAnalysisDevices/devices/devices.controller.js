@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('probrAnalysisDevices')
-  .controller('DevicesCtrl', function ($scope, $location, $state, $stateParams, DeviceQuery) {
+  .controller('DevicesCtrl', function ($scope, $location, DeviceQuery) {
 
     var query = $location.search();
 
