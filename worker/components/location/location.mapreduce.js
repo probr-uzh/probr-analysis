@@ -25,7 +25,8 @@ function getInitialMapReduceConfig() {
         time: new Date(timeRoundedToMinutes * 60 * 1000),
         mac_address: this.mac_address_src,
         numberOfLocations: 1,
-        locations: locs
+        locations: locs,
+        tags: this.tags
       });
     },
 
@@ -42,6 +43,7 @@ function getInitialMapReduceConfig() {
       };
 
       var locs = [];
+      var tags = [];
       var numberOfLocations = 0;
 
       for (var i=0; i<values.length; i++) {
@@ -62,7 +64,9 @@ function getInitialMapReduceConfig() {
             numberOfLocations++;
             locs.push(loc);
           }
+
         }
+        tags.push.apply(tags, value.tags);
       }
 
       locs.sort(function(a,b) {
@@ -73,7 +77,8 @@ function getInitialMapReduceConfig() {
         time: key.time,
         mac_address: key.mac_address,
         numberOfLocations: numberOfLocations,
-        locations: locs
+        locations: locs,
+        tags: tags
       };
     },
     out: {reduce: 'raw_locations'}

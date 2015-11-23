@@ -3,7 +3,7 @@
 angular.module('probrAnalysisUtilization')
   .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency, Loyalty) {
 
-    $scope.sessionBarCharOptions = {
+    $scope.sessionBarChartOptions = {
       axes: {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}},
       stacks: [{axis: "y", series: ["id_0"]}],
       lineMode: "cardinal",
@@ -16,7 +16,7 @@ angular.module('probrAnalysisUtilization')
       }]
     };
 
-    $scope.loyaltyBarCharOptions = {
+    $scope.loyaltyBarChartOptions = {
       axes: {x: {type: "linear", ticksFormat: ".0f"}},
       stacks: [{axis: "y", series: ["id_0"]}],
       lineMode: "cardinal",
@@ -25,7 +25,7 @@ angular.module('probrAnalysisUtilization')
         y: "val_0",
         label: "Loyalty",
         type: "column",
-        color: "#1f77b4"
+        color: "#771fb4"
       }]
     };
 
@@ -34,9 +34,9 @@ angular.module('probrAnalysisUtilization')
 
 
     if ($stateParams.endTimestamp - $stateParams.startTimestamp < (1000 * 60 * 60 * 24)) {
-      $scope.sessionBarCharOptions.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
+      $scope.sessionBarChartOptions.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
     } else {
-      $scope.sessionBarCharOptions.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
+      $scope.sessionBarChartOptions.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
     }
 
     var sessionQuery = {
