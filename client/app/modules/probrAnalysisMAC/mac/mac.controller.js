@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('probrAnalysisMAC')
-    .controller('MacCtrl', function ($scope, $state, $stateParams, Socket, $cookies) {
+    .controller('MacCtrl', function ($scope, $state, $stateParams, Socket, $cookies, Session) {
 
         $scope.packets = [];
         $scope.watchedAddresses = $cookies.getObject('probrMACAnalyzerAddresses') || [];
@@ -41,6 +41,7 @@ angular.module('probrAnalysisMAC')
 
             $cookies.putObject('probrMACAnalyzerAddresses', $scope.watchedAddresses);
 
+            updateSessions();
 
         }
 
@@ -54,7 +55,35 @@ angular.module('probrAnalysisMAC')
             $scope.watchedAddresses.splice($scope.watchedAddresses.indexOf(address), 1);
             $cookies.putObject('probrMACAnalyzerAddresses', $scope.watchedAddresses);
 
+            updateSessions();
+
         }
+
+
+
+
+        //Swimlane related controller code:
+
+        var constructQueryObject = function(mac_address_list){
+          var sessionQueryDisjunctionList = [];
+
+          for(var i = 0 ; i < mac_address_list.length ; i++){
+            sessionQueryDisjunctionList.push({mac_address: mac_address_list[i].mac_address});
+          }
+
+          return {query: {$or : sessionQueryDisjunctionList}};
+        }
+
+        $scope.swimlaneSessions = [];
+
+        var updateSessions = function(){
+          var query = constructQueryObject($scope.watchedAddresses);
+          Session.query(query, function(results){
+            $scope.swimlaneSessions = results;
+          });
+        }
+
+
 
     });
 
