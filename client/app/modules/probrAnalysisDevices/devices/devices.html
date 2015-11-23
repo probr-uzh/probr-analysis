@@ -4,46 +4,49 @@
 
 <div class="container-fluid">
 
-  <h1>Stats</h1>
+    <probr-loading isLoading="isLoading"></probr-loading>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <h2> Vendor pie chart: </h2>
-      <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
-    </div>
-    <div class="col-sm-6 table-responsive">
-      <h2> Top 15 vendors: </h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> Rank</td>
-          <td> Vendor</td>
-          <td> Count</td>
-          <td> Percentage</td>
-        </tr>
-        <tr ng-repeat="rank in ranking">
-          <td>{{ rank.rank }}</td>
-          <td>{{ rank.vendor }}</td>
-          <td>{{ rank.count }}</td>
-          <td>{{ rank.percentage }}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <br>
-  <hr>
-  <br>
-  <div class="row">
-    <div class="col-sm-12">
-      <h2> Total Devices: </h2>
+    <h1>Stats</h1>
 
-      <h3 class="text-center">{{devices.length}}</h3>
-
-      <p class="text-center">unique devices spotted</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2> Vendor pie chart: </h2>
+            <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
+        </div>
+        <div class="col-sm-6 table-responsive">
+            <h2> Top 15 vendors: </h2>
+            <br>
+            <table class="table table-condensed">
+                <tr>
+                    <td> Rank</td>
+                    <td> Vendor</td>
+                    <td> Count</td>
+                    <td> Percentage</td>
+                </tr>
+                <tr ng-repeat="rank in ranking">
+                    <td>{{ rank.rank }}</td>
+                    <td>{{ rank.vendor }}</td>
+                    <td>{{ rank.count }}</td>
+                    <td>{{ rank.percentage }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
-  <br>
-  <hr>
-  <br>
+    <br>
+    <hr>
+    <br>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h2> Total Devices: </h2>
+
+            <h3 class="text-center">{{devices.length}}</h3>
+
+            <p class="text-center">unique devices spotted</p>
+        </div>
+    </div>
+    <br>
+    <hr>
+    <br>
 
 </div>

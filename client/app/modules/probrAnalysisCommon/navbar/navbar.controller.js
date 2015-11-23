@@ -6,14 +6,17 @@ angular.module('probrAnalysisCommon')
         $scope.menu = [
             {
                 'title': 'Analysis',
+                'active': ['packets', 'utilization', 'heatmap', 'devices'],
                 'link': 'packets'
             },
             {
-              'title': 'Live',
-              'link': 'live'
+                'title': 'Live',
+                'active': ['live'],
+                'link': 'live'
             },
             {
                 'title': 'Tracking',
+                'active': ['mac'],
                 'link': 'mac'
             },
         ];
@@ -23,8 +26,14 @@ angular.module('probrAnalysisCommon')
         };
 
         $scope.isActiveRoot = function (route) {
-            var subStr = $location.path().split("/")[1];
-            return route.slice(0, subStr.length) == subStr;
+            var isActive = false;
+            angular.forEach(route, function (route) {
+                var subStr = $location.path().split("/")[1];
+                if (route.slice(0, subStr.length) == subStr) {
+                    isActive = true;
+                }
+            });
+            return isActive;
         };
 
     });

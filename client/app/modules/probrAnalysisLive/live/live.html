@@ -1,4 +1,16 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+<div class="navbar-analysis">
+    <div class="navbar navbar-default navbar-static-top">
+
+        <div>
+            <p class="navbar-text"><i class="fa fa-circle" ng-class="{ 'blink_me' : livePackets.length > 0, 'recording' : livePackets.length > 0 }"></i>
+                <span ng-show="livePackets.length === 0">No Packets received yet.</span>
+                <span ng-show="livePackets.length > 0">Receiving...</span>
+            </p>
+        </div>
+
+    </div>
+</div>
 
 <div class="container-fluid">
     <!-- Packets -->

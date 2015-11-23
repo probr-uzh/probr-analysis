@@ -8,18 +8,22 @@ angular.module('probrAnalysisCommon')
         $scope.menu = [
             {
                 'title': 'Log',
+                'active': 'packets/',
                 'link': $state.href('packets', params)
             },
             {
                 'title': 'Utilization',
+                'active': 'utilization/',
                 'link': $state.href('utilization', params)
             },
             {
                 'title': 'Location',
+                'active': 'heatmap/',
                 'link': $state.href('heatmap', params)
             },
             {
                 'title': 'Stats',
+                'active': 'devices/',
                 'link': $state.href('devices', params)
             },
         ];
@@ -30,6 +34,10 @@ angular.module('probrAnalysisCommon')
 
         $scope.selectTag = function (tag) {
             $scope.selectedTag = tag;
+        }
+
+        $scope.removeTag = function() {
+            $scope.selectedTag = null;
         }
 
         // DatePicker
@@ -49,6 +57,7 @@ angular.module('probrAnalysisCommon')
         };
 
         $scope.isActiveRoot = function (route) {
+            route = route.toLowerCase();
             var subStr = $location.path().split("/")[1];
             return route.slice(0, subStr.length) == subStr;
         };

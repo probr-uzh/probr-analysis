@@ -1,7 +1,7 @@
 <div class="navbar-analysis">
     <div class="navbar navbar-default navbar-static-top" ng-controller="AnalysisNavbarCtrl">
         <ul class="nav navbar-nav">
-            <li ng-repeat="item in menu" ng-class="{active: isActiveRoot(item.link)}">
+            <li ng-repeat="item in menu" ng-class="{active: isActiveRoot(item.active)}">
                 <a ng-href="{{item.link}}">{{ item.title }}</a>
             </li>
             <li ng-show="isAdmin()" ng-class="{active: isActiveRoot('/admin')}"><a href="/admin">Admin</a></li>
@@ -13,6 +13,8 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="tag in tags"><a ng-click="selectTag(tag)">{{tag}}</a></li>
+                <li class="divider"></li>
+                <li><a ng-click="removeTag()"><i class="fa fa-remove"></i> Clear</a></li>
             </ul>
         </div>
 
