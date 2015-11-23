@@ -4,6 +4,7 @@ angular.module('probrAnalysisCommon')
     .controller('AnalysisNavbarCtrl', function ($scope, $state, $stateParams, $location, Packet) {
 
         var params = { startTimestamp: $stateParams.startTimestamp, endTimestamp: $stateParams.endTimestamp, tags: $stateParams.tags };
+
         $scope.menu = [
             {
                 'title': 'Log',
@@ -23,8 +24,6 @@ angular.module('probrAnalysisCommon')
             },
         ];
 
-        $scope.selectedTag = null;
-
         Packet.query({distinct: 'tags'}, function (resultObj) {
             $scope.tags = resultObj;
         });
@@ -35,12 +34,13 @@ angular.module('probrAnalysisCommon')
 
         // DatePicker
         $scope.datePickerDate = {startDate: parseInt($stateParams.startTimestamp) || null, endDate: parseInt($stateParams.endTimestamp) || null};
+        $scope.selectedTag = $stateParams.tags || null;
 
         $scope.$watchGroup(['datePickerDate', 'selectedTag'], function () {
             $location.search({
                 tags: $scope.selectedTag,
-                startTimestamp: $scope.datePickerDate.startDate.valueOf(),
-                endTimestamp: $scope.datePickerDate.endDate.valueOf()
+                startTimestamp: $scope.datePickerDate.startDate == undefined ? new Date().getTime() - 60 * 24 * 24 : $scope.datePickerDate.startDate.valueOf(),
+                endTimestamp: $scope.datePickerDate.endDate == undefined ? new Date().getTime() : $scope.datePickerDate.endDate.valueOf()
             });
         });
 
