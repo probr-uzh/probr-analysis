@@ -14,14 +14,17 @@ angular.module('probrAnalysisApp')
       templateUrl: 'components/probr/probrSessionSwimlane/probrSessionSwimlane.html',
       link: function (scope, element, attrs) {
 
-        var svg = d3.select(element[0]).append("svg")
-          .attr('viewBox', '0 0 1000 1000')
-          .attr('preserveAspectRatio', 'xMidYMid')
-          .attr('shape-rendering', 'crispEdges')
-          .style('width', '100%');
 
         scope.$watch('sessions', function (newVal, oldVal) {
           var sessions = newVal;
+
+          d3.selectAll("svg").remove();
+
+          var svg = d3.select(element[0]).append("svg")
+            .attr('viewBox', '0 0 1000 1000')
+            .attr('preserveAspectRatio', 'xMidYMid')
+            .attr('shape-rendering', 'crispEdges')
+            .style('width', '100%');
 
           // Sessions are undefined at first run
           if (sessions == undefined) {
