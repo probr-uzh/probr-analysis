@@ -9,8 +9,7 @@ angular.module('probrAnalysisMap')
             {value: 0.8, name: 'End'},
         ]
 
-        // DatePicker
-        $scope.datePickerDate = {startDate: $location.search()["startTimestamp"], endDate: $location.search()["endTimestamp"]};
+        $scope.datePickerDate = {startDate: $stateParams.startTimestamp, endDate: $stateParams.endTimestamp};
 
         // Room
         Room.query({}, function (rooms) {
