@@ -3,9 +3,7 @@
 angular.module('probrAnalysisLive')
   .controller('LiveCtrl', function ($scope, Socket, Device) {
 
-
     //Packets
-
     $scope.livePackets = [];
 
     Socket.listenTo('packet:create', function (packet) {
@@ -18,8 +16,6 @@ angular.module('probrAnalysisLive')
 
       }
     });
-
-
 
     // Devices
 
