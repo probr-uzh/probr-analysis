@@ -89,8 +89,10 @@ angular.module('probrAnalysisDevices')
         var ranking = [];
 
         for(var i=0; i < 15 ; i++){
-          var percent = Number(((sortArray[i] / totalCount) * 100).toFixed(1));
-          ranking.push({rank: i+1, vendor: inverseVendorMap[sortArray[i]] , count: sortArray[i], percentage: (percent + " %")});
+          if(sortArray[i] !== undefined){
+            var percent = Number(((sortArray[i] / totalCount) * 100).toFixed(1));
+            ranking.push({rank: i+1, vendor: inverseVendorMap[sortArray[i]] , count: sortArray[i], percentage: (percent + " %")});
+          }
         }
 
         $scope.ranking = ranking;
