@@ -118,13 +118,18 @@ exports.query = function (req, res) {
 
   var query = {};
 
+  //pagination params
   var querySort = req.query["sort"];;
   var queryLimit = req.query["limit"];
   var querySkip = req.query["skip"];
 
-  var tags = req.query.query["tags"];
+  //filter query
+  var globalQuery = JSON.parse(req.query.query);
 
-  //if there are tags, split the to an array and put into query
+
+  var tags = globalQuery["tags"];
+
+  //if there are tags, split to an array and put into query
   if(tags !== undefined){
     tags = tags.split(",");
 
@@ -135,7 +140,6 @@ exports.query = function (req, res) {
     query.tags = {$all: tags};
   }
 
-  var globalQuery = JSON.parse(req.query.query);
 
   var startTimestamp = globalQuery["startTimestamp"];
 
