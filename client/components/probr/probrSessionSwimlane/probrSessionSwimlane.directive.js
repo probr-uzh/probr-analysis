@@ -325,13 +325,17 @@ angular.module('probrAnalysisApp')
               xMainAxisTop.ticks(d3.days, 1);
               xMainAxisBottom.ticks(d3.time.hours, 1);
             }
-            else if ((maxExtent - minExtent) > 10800000) { // > 3 hours
+            else if ((maxExtent - minExtent) > 10800000) {    // (3-8] hours
               xMainAxisTop.ticks(d3.days, 1);
               xMainAxisBottom.ticks(d3.time.minutes, 30);
             }
-            else {
-              xMainAxisTop.ticks(d3.days, 1);
+            else if ((maxExtent - minExtent) > 3600000) {     // (1-3] hours
+              xMainAxisTop.ticks(d3.hours, 1);
               xMainAxisBottom.ticks(d3.time.minutes, 10);
+            }
+            else if ((maxExtent - minExtent) > 0) {           // (0-1] hour
+              xMainAxisTop.ticks(d3.hours, 1);
+              xMainAxisBottom.ticks(d3.time.minutes, 5);
             }
 
 
