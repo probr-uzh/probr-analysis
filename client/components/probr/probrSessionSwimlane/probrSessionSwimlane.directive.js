@@ -275,7 +275,7 @@ angular.module('probrAnalysisApp')
           // Space for later main rectangles
           // Clipping for rects that overlap graph plot area
           var itemRects = main.append('g')
-            .attr('clip-path', 'url(#clip)');
+            .attr('clip-path', 'url(' + location.href + '#clip)');
 
           // Selection area (invisible)
           mini.append('rect')
