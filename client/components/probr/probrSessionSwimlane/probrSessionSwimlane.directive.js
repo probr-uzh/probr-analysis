@@ -49,9 +49,9 @@ angular.module('probrAnalysisApp')
                     var mainLaneHeight = 40
                         , miniLaneHeight = 15
                         , spaceBetweenGraphs = 60
-                        , textColumnWidth = 100;
+                        , textColumnWidth = 60;
 
-                    var margin = {top: 100, right: 15, bottom: 50, left: 15}
+                    var margin = {top: 20, right: 15, bottom: 30, left: 15}
                         , width = 1000 - margin.left - margin.right
                         , graphWidth = width - textColumnWidth
                         , mainHeight = devices.length * mainLaneHeight
