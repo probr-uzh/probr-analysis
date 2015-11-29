@@ -48,10 +48,10 @@ angular.module('probrAnalysisApp')
                     // 1000 corresponds to full width of SVG
                     var mainLaneHeight = 40
                         , miniLaneHeight = 15
-                        , spaceBetweenGraphs = 60
+                        , spaceBetweenGraphs = 100
                         , textColumnWidth = 60;
 
-                    var margin = {top: 20, right: 15, bottom: 30, left: 15}
+                    var margin = {top: 30, right: 15, bottom: 30, left: 15}
                         , width = 1000 - margin.left - margin.right
                         , graphWidth = width - textColumnWidth
                         , mainHeight = devices.length * mainLaneHeight
@@ -151,75 +151,64 @@ angular.module('probrAnalysisApp')
                         .attr('stroke', 'lightgray')
                         .attr('class', 'laneLines');
 
+                    var axisTickFormatTop = d3.time.format.multi([
+                        [".%L", function(d) { return d.getMilliseconds(); }],
+                        [":%S", function(d) { return d.getSeconds(); }],
+                        ["%H:%M", function(d) { return d.getMinutes(); }],
+                        ["%H:00", function(d) { return d.getHours(); }],
+                        ["%d.%m", function(d) { return d.getDate() != 1; }],
+                        ["%B", function(d) { return d.getMonth(); }],
+                        ["%Y", function() { return true; }]
+                    ]);
+
+                    var axisTickFormatBottom = d3.time.format.multi([
+                        [".%L", function(d) { return d.getMilliseconds(); }],
+                        [":%S", function(d) { return d.getSeconds(); }],
+                        ["%H:%M", function(d) { return d.getMinutes(); }],
+                        ["%H:00", function(d) { return d.getHours(); }],
+                        ["%a", function(d) { return d.getDate() != 1; }],
+                        ["%B", function(d) { return d.getMonth(); }],
+                        ["%Y", function() { return true; }]
+                    ]);
+
                     // Axis for mini graph
                     var xMiniAxisTop = d3.svg.axis()
                         .scale(miniX)
                         .orient('top')
-                        .ticks(d3.time.weeks, 1)
-                        .tickFormat(d3.time.format('%b  W%W'))
-                        .tickSize(12, 0, 0);
+                        .tickFormat(axisTickFormatTop)
+                        .tickSize(12, 0);
                     mini.append('g')
-                        .attr('class', 'mini axis weeks')
-                        .call(xMiniAxisTop)
-                        .selectAll('text')
-                        .attr('y', -6) // half of ticksize
-                        .attr('dy', 0)
-                        .attr('x', 5)
-                        .attr('dominant-baseline', 'middle')
-                        .style('text-anchor', 'start');
-                    var xMiniAxisBottomDays = d3.svg.axis()
+                        .attr('class', 'mini axis top')
+                        .call(xMiniAxisTop);
+
+                    var xMiniAxisBottom = d3.svg.axis()
                         .scale(miniX)
                         .orient('bottom')
-                        .ticks(d3.time.days, 1)
-                        .tickFormat(d3.time.format('%d'))
-                        .tickSize(12, 0, 0);
+                        .tickFormat(axisTickFormatBottom)
+                        .tickSize(12, 0);
                     mini.append('g')
-                        .attr('class', 'mini axis days')
+                        .attr('class', 'mini axis bottom')
                         .attr('transform', 'translate(0,' + miniHeight + ')')
-                        .call(xMiniAxisBottomDays)
-                        .selectAll('text')
-                        .attr('y', 6) // half of ticksize
-                        .attr('dy', 0)
-                        .attr('x', function(d) {
-                            var now = new Date();
-                            return miniX(now) - miniX(d3.time.hour.offset(now, -12));
-                        })
-                        .attr('dominant-baseline', 'middle');
-                    var xMiniAxisBottomMonths = d3.svg.axis()
-                        .scale(miniX)
-                        .orient('bottom')
-                        .ticks(d3.time.months, 1)
-                        .tickFormat(d3.time.format('%b'))
-                        .tickSize(25, 0, 0);
-                    mini.append('g')
-                        .attr('class', 'mini axis months')
-                        .attr('transform', 'translate(0,' + miniHeight + ')')
-                        .call(xMiniAxisBottomMonths)
-                        .selectAll('text')
-                        .attr('x', 5)
-                        .attr('y', 25) // ticksize
-                        .attr('dy', 0)
-                        .attr('dominant-baseline', 'alphabetic')
-                        .style('text-anchor', 'start');
+                        .call(xMiniAxisBottom)
 
                     // Axis for main graph
                     var xMainAxisTop = d3.svg.axis()
                         .scale(mainX)
                         .orient('top')
-                        .ticks(d3.time.days, 1)
-                        .tickFormat(d3.time.format('%a %d'))
-                        .tickSize(6, 0, 0);
+                        .tickFormat(axisTickFormatTop)
+                        .tickSize(12, 1);
                     main.append('g')
-                        .attr('class', 'main axis days')
+                        .attr('class', 'main axis top')
                         .call(xMainAxisTop);
+
                     var xMainAxisBottom = d3.svg.axis()
                         .scale(mainX)
                         .orient('bottom')
-                        .ticks(d3.time.hours, 3)
-                        .tickFormat(d3.time.format('%H:%M'))
-                        .tickSize(6, 0, 0);
+                        .tickFormat(axisTickFormatBottom)
+                        .ticks(20)
+                        .tickSize(12, 0);
                     main.append('g')
-                        .attr('class', 'main axis hours')
+                        .attr('class', 'main axis bottom')
                         .attr('transform', 'translate(0,' + mainHeight + ')')
                         .call(xMainAxisBottom);
 
@@ -274,38 +263,12 @@ angular.module('probrAnalysisApp')
                         // Snap to hours
                         mini.select('.brush').call(brush.extent([minExtent, maxExtent]));
 
-                        if ((maxExtent - minExtent) >= 259200000) { // > 3 days
-                            xMainAxisTop.ticks(d3.days, 1);
-                            xMainAxisBottom.ticks(d3.time.hours, 6);
-                        }
-                        else if ((maxExtent - minExtent) >= 86400000) { // > 1 day
-                            xMainAxisTop.ticks(d3.days, 1);
-                            xMainAxisBottom.ticks(d3.time.hours, 3);
-                        }
-                        else if ((maxExtent - minExtent) > 28800000) { // > 8 hours
-                            xMainAxisTop.ticks(d3.days, 1);
-                            xMainAxisBottom.ticks(d3.time.hours, 1);
-                        }
-                        else if ((maxExtent - minExtent) > 10800000) {    // (3-8] hours
-                            xMainAxisTop.ticks(d3.days, 1);
-                            xMainAxisBottom.ticks(d3.time.minutes, 30);
-                        }
-                        else if ((maxExtent - minExtent) > 3600000) {     // (1-3] hours
-                            xMainAxisTop.ticks(d3.hours, 1);
-                            xMainAxisBottom.ticks(d3.time.minutes, 10);
-                        }
-                        else if ((maxExtent - minExtent) > 0) {           // (0-1] hour
-                            xMainAxisTop.ticks(d3.hours, 1);
-                            xMainAxisBottom.ticks(d3.time.minutes, 5);
-                        }
-
-
                         // Update scale
                         mainX.domain([minExtent, maxExtent]);
 
                         // Update axis
-                        main.select('.main.axis.days').call(xMainAxisTop);
-                        main.select('.main.axis.hours').call(xMainAxisBottom);
+                        main.select('.main.axis.top').call(xMainAxisTop);
+                        main.select('.main.axis.bottom').call(xMainAxisBottom);
 
                         // upate the item rects
                         var rects = itemRects.selectAll('rect')
