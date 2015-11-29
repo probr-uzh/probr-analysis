@@ -107,46 +107,6 @@ angular.module('probrAnalysisApp')
                         + (mainHeight + spaceBetweenGraphs) + ')')
                         .attr('class', 'mini');
 
-                    // Debug rects
-                    /*
-                     svg.append("rect")
-                     .attr("x", 0)
-                     .attr("y", 0)
-                     .attr("width", margin.left)
-                     .attr("height", height + margin.top + margin.bottom)
-                     .attr("fill", "red");
-                     svg.append("rect")
-                     .attr("x", 0)
-                     .attr("y", 0)
-                     .attr("width", width + margin.left + margin.top)
-                     .attr("height", margin.top)
-                     .attr("fill", "red");
-                     svg.append("rect")
-                     .attr("x", margin.left + width)
-                     .attr("y", 0)
-                     .attr("width", margin.right)
-                     .attr("height", height + margin.top + margin.bottom)
-                     .attr("fill", "red");
-                     svg.append("rect")
-                     .attr("x", 0)
-                     .attr("y", margin.top + height)
-                     .attr("width", width + margin.left + margin.top)
-                     .attr("height", margin.bottom)
-                     .attr("fill", "red");
-                     main.append("rect")
-                     .attr("x", 0)
-                     .attr("y", 0)
-                     .attr("width", graphWidth)
-                     .attr("height", mainHeight)
-                     .attr("fill", "yellow");
-                     mini.append("rect")
-                     .attr("x", 0)
-                     .attr("y", 0)
-                     .attr("width", graphWidth)
-                     .attr("height", miniHeight)
-                     .attr("fill", "green");
-                     */
-
                     // Draw mac addresses for main graph
                     main.append('g').selectAll('.laneText')
                         .data(devices)
