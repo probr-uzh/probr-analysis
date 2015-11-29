@@ -5,12 +5,15 @@
 
     <h1>Heatmap</h1>
 
-    <vds-multirange ng-model="rangeArray" view="viewIndex" views="views"></vds-multirange>
+    <vds-multirange ng-model="rangeArray" views="views"></vds-multirange>
 
     <div class="row" style="margin-top: 15px">
         <div class="col-xs-12">
             <div class="pull-right">
-                <button ng-click="query()" class="btn btn-primary">Update</button>
+                <button ng-click="query()" class="btn btn-primary" ng-disabled="isLoading">
+                    Update
+                    <i ng-show="isLoading" class="fa fa-circle-o fa-spin"></i>
+                </button>
             </div>
         </div>
     </div>
