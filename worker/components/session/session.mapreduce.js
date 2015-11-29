@@ -2,64 +2,75 @@
  * Created by gmazlami on 05.10.15.
  */
 
-function getInitialMapReduceConfig() {
-  return {
-    map: function () {
+exports.mapReduceConfig = function (options) {
 
-      var result = {};
-
-      result.mac_address = this.mac_address_src;
-      result.startTimestamp = this.time;
-      result.endTimestamp = this.time;
-      result.tags = this.tags;
-      result.count = 1;
-
-      var slotSize = 1000 * 60 * 5;
-      var roundedTime = Math.floor(this.time.getTime() / slotSize);
-
-      emit({
-        startTimestamp: new Date(roundedTime * slotSize),
-        mac_address: this.mac_address_src
-      }, result);
-
-    },
-
-    reduce: function (key, values) {
-      return values.reduce(function (previous, current, index, array) {
-
-        var mergedTags = previous.tags
-        for (var tagIndex in current.tags) {
-          var tag = current.tags[tagIndex]
-          if (mergedTags.indexOf(tag) == -1) {
-            mergedTags.push(tag);
-          }
-        }
-
-        return {
-          tags: mergedTags,
-          mac_address: previous.mac_address,
-          startTimestamp: new Date(Math.min(previous.startTimestamp.getTime(), current.startTimestamp.getTime())),
-          endTimestamp: new Date(Math.max(previous.endTimestamp.getTime(), current.endTimestamp.getTime())),
-          count: previous.count + current.count
+    var map = function() {
+        var key = this.mac_address_src;
+        var value = {
+            "sessions": [{
+                address: this.mac_address_src,
+                startTimestamp: this.time,      // Single packate produces zero
+                endTimestamp: this.time,        // length session
+                count: 1,
+                tags: this.tags,
+                weightedSignalStrength: this.signal_strength,
+                duration: 0                     // In seconds
+            }],
+            "noOfSessions": 1
         };
-      });
 
-    },
-    sort: {mac_address_src: 1},
-    out: {reduce: 'raw_sessions'},
-  }
-}
+        emit(key, value);
+    };
 
+    var reduce = function(k, values) {
+        // Values: [ {"sessions": [<session>, <session>, ...]} ]
+        var merged = [].concat.apply([],values.map(function(s){return s.sessions}));
+        var sorted = merged.sort(function(a,b) {return a.startTimestamp - b.startTimestamp;});
 
-/*
- Returns a map reduce config object with the query property set to reduce only items inserted
- after the parameter gt_timestamp
- */
-var getMapReduceIncremental = function (gt_timestamp) {
-  var map_reduce_object_incremental = getInitialMapReduceConfig();
-  map_reduce_object_incremental.query = {inserted_at: {$gt: gt_timestamp}};
-  return map_reduce_object_incremental;
-}
+        var res = [];
+        var prev = sorted[0];
+        for (var i=1; i<sorted.length; i++) {
+            var curr = sorted[i];
 
-exports.mapReduceConfig = getInitialMapReduceConfig();
-exports.getIncrementalMapReduceConfig = getMapReduceIncremental;
+            // Merge if the session is 5min close to previous session
+            if (curr.startTimestamp.valueOf() <= prev.endTimestamp.valueOf() + 1000*60*5) {
+                prev.endTimestamp = curr.endTimestamp;
+                prev.duration = Math.floor((prev.endTimestamp.valueOf() - prev.startTimestamp.valueOf()) / 1000);
+                prev.weightedSignalStrength = Math.floor((prev.weightedSignalStrength*prev.count + curr.weightedSignalStrength)/(prev.count+1));
+                for(tag in curr.tags) {
+                    if(prev.tags.indexOf(curr.tags[tag]) === -1) {
+                        prev.tags.push(curr.tags[tag]);
+                    }
+                }
+                prev.count = prev.count + 1;
+            } else {
+                res.push(prev);
+                prev = curr;
+            }
+        }
+        // Handle last element
+        res.push(prev);
+
+        return {"sessions": res, "noOfSessions": res.length};
+    };
+
+    // Default opts
+    var mrOpts = {
+        mapReduce: "packets",
+        map: map,
+        reduce: reduce,
+        out: {reduce: "raw_sessions"},
+        query: { }
+    };
+
+    // Add/override custom options
+    if (options) {
+        for(o in options) {
+            if(options.hasOwnProperty(o))
+                mrOpts[o] = options[o];
+        }
+    }
+
+    return mrOpts;
+};
+
