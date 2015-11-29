@@ -219,10 +219,12 @@ angular.module('probrAnalysisApp')
                         .offset([-10, 0])
                         .html(function(d) {
                             var tags = d.tags;
-                            return "<p>From:</p> <p class='right'>" + timeFormat(d.startTimestamp)  + "</p>" +
-                                   "<p>Until:</p> <p class='right'>" + timeFormat(d.endTimestamp) + "</p>" +
-                                   "<p>Duration:</p> <p class='right'>" + d.duration + " seconds</p>" +
-                                   "<p>Tags:</p> <p class='right'>" + d.tags.join(', ') + "</p>";
+                            return  "<p>From:</p> <p class='right'>" + timeFormat(d.startTimestamp)  + "</p>" +
+                                    "<p>Until:</p> <p class='right'>" + timeFormat(d.endTimestamp) + "</p>" +
+                                    "<p>Duration:</p> <p class='right'>" + d.duration + " seconds</p>" +
+                                    "<p>Packets:</p> <p class='right'>" + d.count + "</p>" +
+                                    "<p>Avg RSS:</p> <p class='right'>" + d.weightedSignalStrength + "db</p>" +
+                                    "<p>Tags:</p> <p class='right'>" + d.tags.join(', ') + "</p>";
                         });
                     plot.call(tip);
 
