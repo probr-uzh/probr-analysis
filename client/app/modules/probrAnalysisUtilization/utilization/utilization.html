@@ -8,6 +8,10 @@
     <div class="col-xs-6">
       <h1>Utilization</h1>
 
+      <p>
+        Number of sessions during a specific time-period.
+      </p>
+
       <div class="row">
         <div class="col-xs-12" style="height: 500px;" ng-show="sessionData.length > 0">
           <linechart data="sessionData" options="sessionBarChartOptions"></linechart>
@@ -24,6 +28,10 @@
 
     <div class="col-xs-6">
       <h1>Loyalty</h1>
+
+      <p>
+        Number of devices that have been seen a specific number of times.
+      </p>
 
       <div class="row">
         <div class="col-xs-12" style="height: 500px;" ng-show="loyaltyData.length > 0">
