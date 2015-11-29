@@ -212,6 +212,20 @@ angular.module('probrAnalysisApp')
                         .attr('transform', 'translate(0,' + mainHeight + ')')
                         .call(xMainAxisBottom);
 
+                    // Tooltips
+                    var timeFormat = d3.time.format('%x %X');
+                    var tip = d3.tip()
+                        .attr('class', 'd3-tip')
+                        .offset([-10, 0])
+                        .html(function(d) {
+                            var tags = d.tags;
+                            return "<p>From:</p> <p class='right'>" + timeFormat(d.startTimestamp)  + "</p>" +
+                                   "<p>Until:</p> <p class='right'>" + timeFormat(d.endTimestamp) + "</p>" +
+                                   "<p>Duration:</p> <p class='right'>" + d.duration + " seconds</p>" +
+                                   "<p>Tags:</p> <p class='right'>" + d.tags.join(', ') + "</p>";
+                        });
+                    plot.call(tip);
+
                     // Draw rectangles for mini graph
                     mini.append('g').selectAll('miniItems')
                         .data(sessions)
@@ -281,7 +295,9 @@ angular.module('probrAnalysisApp')
                             .attr('y', function(d) { return mainYPadded(d.mac_address); })
                             .attr('width', function(d) { return mainX(d.endTimestamp) - mainX(d.startTimestamp); })
                             .attr('height', function(d) { return mainYPadded.rangeBand(); })
-                            .attr('class', 'mainItem');
+                            .attr('class', 'mainItem')
+                            .on('mouseover', tip.show)
+                            .on('mouseout', tip.hide);
 
                         rects.exit().remove();
 
