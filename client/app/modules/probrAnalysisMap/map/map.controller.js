@@ -56,4 +56,12 @@ angular.module('probrAnalysisMap')
 
         $scope.query();
 
+        angular.element(document).ready(function () {
+            $rootScope.$emit("updatePositions");
+
+            angular.element(window).resize(function () {
+                $rootScope.$emit("updatePositions");
+            });
+        });
+
     });
