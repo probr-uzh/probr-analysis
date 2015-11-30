@@ -34,7 +34,7 @@ angular.module('probrAnalysisMAC')
             var newTarget = new Target();
             newTarget.mac_address = $scope.macInput.replace(/:/g, "");
             newTarget.alias = $scope.alias;
-            newTarget.$save(function (err, resultObj) {
+            newTarget.$save(function (resultObj) {
                 $scope.watchedAddresses.push(resultObj);
                 listenTo(resultObj);
                 $scope.macInput = '';
@@ -45,8 +45,7 @@ angular.module('probrAnalysisMAC')
 
         $scope.removeMAC = function (targetObj) {
 
-            targetObj.$delete(function (err, resultObj) {
-
+            targetObj.$delete(function () {
                 Socket.unlistenTo('packet:' + targetObj.mac_address);
 
                 $scope.packets.splice(_.findIndex($scope.packets, function (packet) {
