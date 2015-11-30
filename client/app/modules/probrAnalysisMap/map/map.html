@@ -2,24 +2,7 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
 
 <div class="container-fluid">
-
-    <h1>Heatmap</h1>
-
-    <vds-multirange ng-model="rangeArray" views="views"></vds-multirange>
-
-    <div class="row" style="margin-top: 15px">
-        <div class="col-xs-12">
-            <div class="pull-right">
-                <button ng-click="query()" class="btn btn-primary" ng-disabled="isLoading">
-                    Update
-                    <i ng-show="isLoading" class="fa fa-circle-o fa-spin"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="row" style="margin-top: 15px">
+    <div class="row stretch" style="margin-top: -15px;">
         <probr-map rooms="rooms" overlays="overlays"></probr-map>
     </div>
-
 </div>

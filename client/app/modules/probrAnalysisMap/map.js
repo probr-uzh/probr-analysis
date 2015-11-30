@@ -5,6 +5,5 @@ angular.module('probrAnalysisMap', [
     'ui.bootstrap',
     'probrAnalysisCommon',
     'probrAnalysisUtilization',
-    'probrMap',
-    'vds.multirange'
+    'probrMap'
 ]);

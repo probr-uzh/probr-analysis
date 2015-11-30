@@ -73,5 +73,4 @@ angular.module('probrAnalysisApp', [
       }
     });
 
-
   });
