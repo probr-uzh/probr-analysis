@@ -6,19 +6,14 @@ angular.module('probrAnalysisCommon')
         $scope.menu = [
             {
                 'title': 'Analysis',
-                'active': ['packets', 'utilization', 'heatmap', 'devices'],
+                'active': ['packets', 'utilization', 'heatmap', 'devices', 'mac'],
                 'link': 'packets'
             },
             {
                 'title': 'Live',
                 'active': ['live'],
                 'link': 'live'
-            },
-            {
-                'title': 'Tracking',
-                'active': ['mac'],
-                'link': 'mac'
-            },
+            }
         ];
 
         $scope.isActive = function (route) {

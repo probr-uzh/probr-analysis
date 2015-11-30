@@ -16,7 +16,7 @@ angular.module('probrAnalysisMAC')
                     $scope.packets.unshift(packet);
                 }
             });
-        }
+        };
 
         angular.forEach($scope.watchedAddresses, function (watchedAddress) {
             listenTo(watchedAddress);
@@ -31,7 +31,7 @@ angular.module('probrAnalysisMAC')
                     $scope.macInput = '';
                     return;
                 }
-            })
+            });
 
             listenTo(address);
 
@@ -59,24 +59,33 @@ angular.module('probrAnalysisMAC')
 
         }
 
-
-
-
         //Swimlane related controller code:
 
-        var constructQueryObject = function(mac_address_list){
+        var constructQueryObject = function (mac_address_list) {
             var sessionQueryDisjunctionList = [];
 
-            for(var i = 0 ; i < mac_address_list.length ; i++){
+            for (var i = 0; i < mac_address_list.length; i++) {
                 sessionQueryDisjunctionList.push({mac_address: mac_address_list[i].mac_address});
             }
 
-            return {query: {$or : sessionQueryDisjunctionList}};
+            return {
+                query: {
+                    $and: [
+                        {
+                            $or: sessionQueryDisjunctionList
+                        },
+                        {
+                            startTimestamp: {$gte: $stateParams.startTimestamp, $lte: $stateParams.endTimestamp},
+                            endTimestamp: {$gte: $stateParams.startTimestamp, $lte: $stateParams.endTimestamp}
+                        }
+                    ]
+                }
+            };
         }
 
         $scope.swimlaneSessions = [];
 
-        var updateSessions = function(){
+        var updateSessions = function () {
             if ($scope.watchedAddresses.length > 0) {
                 var query = constructQueryObject($scope.watchedAddresses);
                 Session.query(query, function (results) {
@@ -87,7 +96,6 @@ angular.module('probrAnalysisMAC')
             }
         };
         updateSessions();
-
 
 
     });
