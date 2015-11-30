@@ -10,10 +10,9 @@ var PacketSchema = new Schema({
     time: { type: Date, index: true },
     signal_strength: Number,
     ssid: { type: String, index: true },
-    tags: [{type: String, index: true }],
+    tags: {type: [String], index: true },
     location: {type: [Number], index: '2dsphere'}
 });
 
 // PacketSchema.index({ "inserted_at": 1 }, { expire: '15d' });
-
 module.exports = mongoose.model('Packet', PacketSchema);
