@@ -9,7 +9,8 @@ angular.module('probrAnalysisApp')
         return {
             restrict: 'E',
             scope: {
-                sessions: '='
+                sessions: '=',
+                aliases: '='
             },
             templateUrl: 'components/probr/probrSessionSwimlane/probrSessionSwimlane.html',
             link: function (scope, element, attrs) {
@@ -59,6 +60,10 @@ angular.module('probrAnalysisApp')
                     return "rgb(" + mixedColor.join(',') + ")"
                 };
 
+                var macaddressesFromAliases = function(aliasArray){
+                    return aliasArray.map(function(element){return element.mac_address});
+                }
+
                 scope.$watch('sessions', function (newVal, oldVal) {
                     var sessions = newVal;
 
@@ -83,9 +88,11 @@ angular.module('probrAnalysisApp')
                     });
 
                     // Get array of unique devices
-                    var devices = d3.set(sessions.map(function(s) {
-                        return s.mac_address;
-                    })).values();
+                    //var devices = d3.set(sessions.map(function(s) {
+                    //    return s.mac_address;
+                    //})).values();
+
+                    var devices = scope.aliases;
 
                     // Margin and sizes
                     // Not pixel based, since use uf ViewBox
@@ -93,7 +100,7 @@ angular.module('probrAnalysisApp')
                     var mainLaneHeight = 40
                         , miniLaneHeight = 15
                         , spaceBetweenGraphs = 100
-                        , textColumnWidth = 60;
+                        , textColumnWidth = 100;
 
                     var margin = {top: 30, right: 15, bottom: 30, left: 15}
                         , width = 1000 - margin.left - margin.right
@@ -121,18 +128,18 @@ angular.module('probrAnalysisApp')
                         ])
                         .range([0, graphWidth]);
                     var miniY = d3.scale.ordinal()
-                        .domain(devices)
+                        .domain(macaddressesFromAliases(devices))
                         .rangeBands([0, miniHeight], 0, 0);
                     var miniYPadded = d3.scale.ordinal()
-                        .domain(devices)
+                        .domain(macaddressesFromAliases(devices))
                         .rangeBands([0, miniHeight], 0.4, 0.2);
 
                     var mainX = d3.time.scale().range([0, graphWidth]);
                     var mainY = d3.scale.ordinal()
-                        .domain(devices)
+                        .domain(macaddressesFromAliases(devices))
                         .rangeBands([0, mainHeight]);
                     var mainYPadded = d3.scale.ordinal()
-                        .domain(devices)
+                        .domain(macaddressesFromAliases(devices))
                         .rangeBands([0, mainHeight], 0.4, 0.2);
 
                     // Group for margin
@@ -155,9 +162,9 @@ angular.module('probrAnalysisApp')
                     main.append('g').selectAll('.laneText')
                         .data(devices)
                         .enter().append('text')
-                        .text(function(d) { return d; })
+                        .text(function(d) { return d.alias + " (" + d.mac_address + ") "; })
                         .attr('x', -10)
-                        .attr('y', function(d) { return mainY(d) + mainY.rangeBand()/2 })
+                        .attr('y', function(d) { return mainY(d.mac_address) + mainY.rangeBand()/2 })
                         .attr('text-anchor', 'end')
                         .attr('dominant-baseline', 'middle')
                         .attr('class', 'laneText');
@@ -177,9 +184,9 @@ angular.module('probrAnalysisApp')
                     mini.append('g').selectAll('.laneText')
                         .data(devices)
                         .enter().append('text')
-                        .text(function(d) { return d; })
+                        .text(function(d) { return d.alias + " (" + d.mac_address + ") "; })
                         .attr('x', -10)
-                        .attr('y', function(d) { return miniY(d) + miniY.rangeBand()/2; })
+                        .attr('y', function(d) { return miniY(d.mac_address) + miniY.rangeBand()/2; })
                         .attr('text-anchor', 'end')
                         .attr('dominant-baseline', 'middle')
                         .attr('class', 'laneText');
