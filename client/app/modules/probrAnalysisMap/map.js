@@ -4,7 +4,6 @@ angular.module('probrAnalysisMap', [
     'ui.router',
     'ui.bootstrap',
     'probrAnalysisCommon',
-    'probrMap',
-    'probrAnalysisRoomUtilization',
-    'vds.multirange'
+    'probrAnalysisUtilization',
+    'probrMap'
 ]);

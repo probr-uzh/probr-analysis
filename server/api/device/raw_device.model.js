@@ -6,7 +6,8 @@ var rawDeviceSchema = new Schema({
   value : {
     mac_address: String,
     vendor: String,
-    last_seen: Date
+    last_seen: Date,
+    tags: [{type: String}]
   }
 });
 

@@ -6,9 +6,18 @@ var Session = require('../session/session.model')
 // Get list of utilizations
 exports.histogram = function (req, res) {
 
+  var startTimestamp = new Date(parseInt(req.query.startTimestamp));
+  var endTimestamp = new Date(parseInt(req.query.endTimestamp));
+  var tags = req.query.tags ? req.query.tags.split(",") : [];
+  var query = {startTimestamp: {$lt: endTimestamp}, endTimestamp: {$gt: startTimestamp}};
+
+  if (tags.length > 0) {
+    query.tags = {$in: tags}
+  }
+
   var pipeline = [
     {
-      "$match": {"duration": {$gte:1000*60*2}}
+      "$match": query
     },
     {
       "$group": {
@@ -33,7 +42,6 @@ exports.histogram = function (req, res) {
   });
 
 };
-
 
 function handleError(res, err) {
   return res.status(500).send(err);

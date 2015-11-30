@@ -15,11 +15,10 @@ angular.module('probrAnalysisApp', [
   // Analysis-Module
   'probrAnalysisPacketsFilter',
   'probrAnalysisVendors',
-  'probrAnalysisRoomUtilization',
-  'probrAnalysisLoyalty',
+  'probrAnalysisUtilization',
   'probrAnalysisMap',
+  'probrAnalysisLive',
   'probrAnalysisMAC',
-  'probrAnalysisSessions',
   'probrAnalysisDevices',
 
 ])
@@ -73,6 +72,5 @@ angular.module('probrAnalysisApp', [
         $('.stretch').css({'height': height, 'min-height': height});
       }
     });
-
 
   });

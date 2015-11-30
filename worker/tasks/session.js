@@ -1,68 +1,94 @@
 /**
- * Session Task to identify Sessions from Raw-Data
+ * Session Task
+ *
+ * Merges any packets from one device, that are within 5min
+ * of each other to sessions together.
+ *
  */
-
-var async = require('async');
 
 var Packet = require('./../../server/api/packet/packet.model.js');
 var RawSession = require('./../../server/api/session/raw_session.model.js');
 var Session = require('./../../server/api/session/session.model.js');
+var Log = require('../model/log.model');
 
-var SessionForEach = require('../components/session/session.foreach');
 var SessionMapReduce = require('../components/session/session.mapreduce');
 
 module.exports = function (job, done) {
 
-    // Check if raw_session exists, and job has already run once.
-    RawSession.find().sort("-value.endTimestamp").limit(1).exec(function (err, rawSessionDocs) {
-
-        // raw_session have been generated, at least once.
-        if (rawSessionDocs[0] !== undefined) {
-
-            var rawSessionBreakTime = rawSessionDocs[0].value.endTimestamp;
-            console.log("session-Job: found raw_sessions collection and rawSessionBreakTime for incremental MapReduce");
-
-            Packet.mapReduce(SessionMapReduce.getIncrementalMapReduceConfig(rawSessionBreakTime), function (err, results) {
-
-                if (err) {
-                    console.log("session-Job: Error: " + err)
-                    return done();
-                }
-
-                console.log("session-Job: incremental map reduce done.");
-                console.log("session-Job: forEach: raw_sessions -> sessions");
-
-                SessionForEach.incremental(rawSessionBreakTime, function () {
-                    console.log("session-Job: forEach: raw_sessions -> sessions -> done");
-                    done();
-                });
-
-            });
-
-        } else {
-
-            console.log("session-Job: no raw_sessions found. full map-reduce run to create it.");
-
-            Packet.mapReduce(SessionMapReduce.mapReduceConfig, function (err, results) {
-
-                if (err) {
-                    console.log("session-Job: Error: " + err)
-                    return done();
-                }
-
-                console.log("session-Job: full map reduce done.");
-                console.log("session-Job: forEach: raw_sessions -> sessions");
-
-                // forEach which iterates over all raw_devices and flattens their structure and adds the vendor, and puts that into the final devices collection
-                SessionForEach.incremental(0, function () {
-                    console.log("session-Job: forEach: raw_sessions -> sessions -> done");
-                    done();
-                });
-
-            });
-
+    // Find time from which to start incremental map/reduce
+    // by looking at the last successful run of the session job
+    Log.find({
+        job: 'session',
+        type: 'finished',
+        "data.until": {$exists: true}
+    }).sort('-inserted_at').limit(1).exec(function(err, resultsLastLog) {
+        if (err) {
+            throw('logs.find() error: ' + err);
         }
 
-    });
+        // Start at the time of the latest packet processed by the previous job (if exists)
+        var lastLog = resultsLastLog[0];
+        if (lastLog && lastLog.data && lastLog.data.until) {
+            var startTime = resultsLastLog[0].data.until;
+            var opts = { query: { inserted_at: { $gte: startTime } } }
+        }
 
-}
+        // Get the time of the last packet we are about to process
+        // This value will be saved in the log after a successful run and used by the
+        // next job as a starting time.
+        Packet.find().sort('-inserted_at').limit(1).exec(function(err, resultsLastPacket) {
+            if (err) {
+                throw('packets.find() error: ' + err);
+            }
+
+            // If there are no packets, graceful end job.
+            if (resultsLastPacket.length > 0) {
+                var endTime = resultsLastPacket[0].inserted_at;
+            } else {
+                return done('No packets found.')
+            }
+
+            // Start map/reduce
+            var mrConfig = SessionMapReduce.mapReduceConfig(opts);
+            Packet.mapReduce(mrConfig, function (err, resultsMapReduce) {
+                if (err) {
+                    throw('map/reduce error: ' + err);
+                }
+
+                // Unwind sessions_raw -> sessions
+                RawSession.aggregate([
+                    {$match: {"value.sessions.duration": {$gte: 60}}},
+                    {$unwind: "$value.sessions"},
+                    {$match: {"value.sessions.duration": {$gte: 60}}},
+                    {$project: {
+                        _id: 0,
+                        mac_address: "$value.sessions.address",
+                        startTimestamp: "$value.sessions.startTimestamp",
+                        endTimestamp: "$value.sessions.endTimestamp",
+                        count: "$value.sessions.count",
+                        tags: "$value.sessions.tags",
+                        weightedSignalStrength: "$value.sessions.weightedSignalStrength",
+                        locations: {},
+                        duration: "$value.sessions.duration"}
+                    },
+                    {$out: "sessions"}
+                ], function(err, resultsAggregate) {
+                    if (err) {
+                        throw('aggregate error: ' + err);
+                    }
+
+                    var returnValue = { until: endTime }
+                    if (startTime)
+                        returnValue.from = startTime;
+
+                    return done(returnValue);
+                });
+
+
+            });
+        });
+    });
+};
+
+
+

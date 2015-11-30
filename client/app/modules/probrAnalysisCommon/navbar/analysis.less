@@ -1,0 +1,61 @@
+.navbar-analysis {
+
+  .date-picker {
+    color: @brand-gray-light;
+    display: inline-block;
+    width: 350px;
+    text-align: center;
+    background-color: @brand-primary;
+    border-bottom: none;
+    border: 1px solid darken(@brand-primary, 5%);
+  }
+
+  .navbar {
+
+    margin-bottom: 10px;
+    background-color: @brand-accent;
+
+    .active {
+      color: @brand-gray-light;
+      background-color: @brand-accent;
+    }
+
+    .navbar-nav > .active > a, a:hover, a:focus {
+      color: @brand-gray-light;
+      background-color: @brand-primary;
+    }
+
+    .navbar-nav {
+
+      li {
+        a {
+          color: @brand-gray-light;
+          background-color: @brand-accent;
+        }
+
+        a:hover, a:focus {
+          color: @brand-gray-light;
+          background-color: @brand-primary;
+        }
+
+      }
+
+    }
+
+    .navbar-toggle {
+      border: none;
+      background-color: transparent;
+
+      .icon-bar {
+        background-color: @brand-accent;
+      }
+
+    }
+
+    .btn {
+      margin: 8px;
+    }
+
+  }
+
+}

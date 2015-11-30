@@ -18,7 +18,8 @@ var LocationSchema = new Schema({
     lat: Number,
     weightedSignal: Number,
     cnt: Number
-  } ]
+  } ],
+  tags: [{type: String}]
 });
 
 var Location = mongoose.model('locations',LocationSchema,'locations');

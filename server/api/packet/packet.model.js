@@ -10,7 +10,7 @@ var PacketSchema = new Schema({
     time: { type: Date, index: true },
     signal_strength: Number,
     ssid: { type: String, index: true },
-    tags: [{type: String}],
+    tags: [{type: String, index: true }],
     location: {type: [Number], index: '2dsphere'}
 });
 

@@ -1,13 +1,11 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
 
 <div class="container-fluid">
 
-    <h1>Packets
-        <a href="#" class="btn btn-xs btn-primary" ng-click="toggleArchive()" ng-hide="liveHidden">Disable Live... <i class="fa fa-spin fa-cog"></i></a>
-        <a href="#" class="btn btn-xs btn-default" ng-click="toggleLive()" ng-hide="archiveHidden">Enable Live</a>
-    </h1>
+    <h1>Log</h1>
 
-    <div ng-hide="archiveHidden">
+    <div>
         <div class="row">
             <div class="col-xs-12">
                 <probr-search page-length="pageLength" on-submit="submit(query)" query="query" fields="fields"></probr-search>
@@ -47,31 +45,4 @@
             </div>
         </probr-pagination>
     </div>
-    <div ng-hide="liveHidden" style="margin-top: 15px">
-        <div class="row">
-            <div class="col-xs-12 table-responsive">
-                <table class="table table-condensed">
-                    <tr>
-                        <td> Source</td>
-                        <td> Destination</td>
-                        <td> Signal Strength</td>
-                        <td> SSID</td>
-                        <td> Latitude/Longitude</td>
-                        <td> Time</td>
-                        <td> Tags</td>
-                    </tr>
-                    <tr ng-repeat="packet in livePackets">
-                        <td>{{ packet.mac_address_src | mac }}</td>
-                        <td>{{ packet.mac_address_dst | mac }}</td>
-                        <td>{{ packet.signal_strength }}</td>
-                        <td>{{ packet.ssid }}</td>
-                        <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
-                        <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'mediumTime' }}</td>
-                        <td>{{ packet.tags }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
 </div>

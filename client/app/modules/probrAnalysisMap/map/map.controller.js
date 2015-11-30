@@ -3,15 +3,6 @@
 angular.module('probrAnalysisMap')
     .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room) {
 
-        // MultiRange Slider
-        $scope.rangeArray = [
-            {value: 0.5, name: 'Start'},
-            {value: 0.8, name: 'End'},
-        ]
-
-        // DatePicker
-        $scope.datePickerDate = {startDate: new Date().getTime(), endDate: new Date().getTime() - (1000 * 60 * 60 * 24)};
-
         // Room
         Room.query({}, function (rooms) {
             $scope.rooms = rooms;
@@ -21,28 +12,17 @@ angular.module('probrAnalysisMap')
 
         $scope.query = function () {
 
+            $scope.isLoading = true;
             var areaCutoff = 10;
 
-            // Range Slider gives us a fraction of 24 hours. This section generates an approriate timestamp for it.
-            var startHour = Math.floor($scope.rangeArray[0].value * 24);
-            var endHour = Math.floor($scope.rangeArray[1].value * 24);
-
-            var startMinute = Math.floor(60 * ($scope.rangeArray[0].value * 24 - Math.floor($scope.rangeArray[0].value * 24)));
-            var endMinute = Math.floor(60 * ($scope.rangeArray[1].value * 24 - Math.floor($scope.rangeArray[1].value * 24)));
-
-            var startTime = new Date($scope.datePickerDate.startDate);
-            startTime.setHours(startHour);
-            startTime.setMinutes(startMinute);
-
-            var endTime = new Date($scope.datePickerDate.endDate);
-            endTime.setHours(endHour);
-            endTime.setMinutes(endMinute);
+            var startTimestamp = parseInt($stateParams.startTimestamp);
+            var endTimestamp = parseInt($stateParams.endTimestamp);
 
             Location.query({
                 query: {
                     area: {$lte: areaCutoff},
                     noOfCircles: {$gte: 4},
-                    time: {$gt: startTime, $lt: endTime}
+                    time: {$gt: startTimestamp, $lt: endTimestamp}
                 }
             }, function (resultObj) {
 
@@ -69,8 +49,19 @@ angular.module('probrAnalysisMap')
                 }
 
                 angular.extend($scope.overlays, overlays);
+                $scope.isLoading = false;
 
             });
         };
+
+        $scope.query();
+
+        angular.element(document).ready(function () {
+            $rootScope.$emit("updatePositions");
+
+            angular.element(window).resize(function () {
+                $rootScope.$emit("updatePositions");
+            });
+        });
 
     });

@@ -5,10 +5,10 @@
 
 angular.module('probrAnalysisCommon')
   .factory('Device', function ($resource) {
-    var Session = $resource('api/devices/:packetId/', {packetId: '@_id'},
+    var Device = $resource('api/devices/:packetId/', {packetId: '@_id'},
       {
         count: {method: 'GET', url: 'api/devices/count', isArray: false},
       }
     );
-    return Session;
+    return Device;
   });

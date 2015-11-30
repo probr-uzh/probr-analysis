@@ -11,6 +11,9 @@
 @brand-primary-light: lighten(@brand-primary, 20%);
 @brand-primary-dark: darken(@brand-primary, 5%);
 @brand-accent: @brand-primary-light;
+
+@brand-gray-accent: #e7e7e7;
+
 @brand-gray-dark: rgb(75, 75, 75);
 @brand-gray-light: rgb(250, 250, 250);
 
@@ -108,7 +111,11 @@ text {
 // injector
 @import 'bootstrap-adaptions.less';
 @import 'mixins.less';
+@import 'modules/probrAnalysisCommon/navbar/analysis.less';
+@import 'modules/probrAnalysisLive/live/live.less';
 @import 'modules/probrAnalysisMap/map/map.less';
 @import 'navbar.less';
 @import 'modal/modal.less';
+@import 'probr/probrLoading/loading.less';
+@import 'probr/probrSessionSwimlane/probrSessionSwimlane.less';
 // endinjector

@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="bower_components/angular-punch-card/dist/punch-card.css" />
     <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
     <link rel="stylesheet" href="bower_components/angular-horizontal-timeline/angular-horizontal-timeline.css" />
-    <link rel="stylesheet" href="bower_components/multirange/multirange.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -87,6 +86,7 @@
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-websocket/angular-websocket.min.js"></script>
 <script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/d3-tip/index.js"></script>
 <script src="bower_components/leaflet-plugins/control/Distance.js"></script>
 <script src="bower_components/leaflet-plugins/control/Layers.Load.js"></script>
 <script src="bower_components/leaflet-plugins/control/Permalink.js"></script>
@@ -113,7 +113,6 @@
 <script src="bower_components/n3-line-chart/build/line-chart.min.js"></script>
 <script src="bower_components/moment-range/lib/moment-range.js"></script>
 <script src="bower_components/angular-horizontal-timeline/angular-horizontal-timeline.js"></script>
-<script src="bower_components/multirange/multirange.js"></script>
 <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
 <!-- endbower -->
@@ -131,6 +130,7 @@
 <!-- injector:js -->
 <script src="app/modules/probrAnalysisCommon/common.js"></script>
 <script src="app/modules/probrAnalysisCommon/filters/mac.filter.js"></script>
+<script src="app/modules/probrAnalysisCommon/navbar/analysis.controller.js"></script>
 <script src="app/modules/probrAnalysisCommon/navbar/navbar.controller.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/device.service.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/location.service.js"></script>
@@ -138,14 +138,15 @@
 <script src="app/modules/probrAnalysisCommon/resources/resource.socket.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/room.service.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/session.service.js"></script>
+<script src="app/modules/probrAnalysisCommon/resources/target.service.js"></script>
 <script src="app/modules/probrAnalysisCommon/resources/utilization.service.js"></script>
 <script src="app/modules/probrAnalysisDevices/devices.js"></script>
 <script src="app/modules/probrAnalysisDevices/devices/devices.controller.js"></script>
 <script src="app/modules/probrAnalysisDevices/devices/devices.js"></script>
-<script src="app/modules/probrAnalysisLoyalty/loyalty.js"></script>
-<script src="app/modules/probrAnalysisLoyalty/loyalty/loyalty.controller.js"></script>
-<script src="app/modules/probrAnalysisLoyalty/loyalty/loyalty.js"></script>
-<script src="app/modules/probrAnalysisLoyalty/loyalty/loyalty.service.js"></script>
+<script src="app/modules/probrAnalysisDevices/devices/devices.service.js"></script>
+<script src="app/modules/probrAnalysisLive/live.js"></script>
+<script src="app/modules/probrAnalysisLive/live/live.controller.js"></script>
+<script src="app/modules/probrAnalysisLive/live/live.js"></script>
 <script src="app/modules/probrAnalysisMAC/mac.js"></script>
 <script src="app/modules/probrAnalysisMAC/mac/history.controller.js"></script>
 <script src="app/modules/probrAnalysisMAC/mac/location.controller.js"></script>
@@ -157,14 +158,11 @@
 <script src="app/modules/probrAnalysisPacketsFilter/packets.js"></script>
 <script src="app/modules/probrAnalysisPacketsFilter/packets/packets.controller.js"></script>
 <script src="app/modules/probrAnalysisPacketsFilter/packets/packets.js"></script>
-<script src="app/modules/probrAnalysisRoomUtilization/utilization.js"></script>
-<script src="app/modules/probrAnalysisRoomUtilization/utilization/utilization.controller.js"></script>
-<script src="app/modules/probrAnalysisRoomUtilization/utilization/utilization.js"></script>
-<script src="app/modules/probrAnalysisRoomUtilization/utilization/utilization.service.js"></script>
-<script src="app/modules/probrAnalysisSessions/sessions.js"></script>
-<script src="app/modules/probrAnalysisSessions/sessions/sessions.controller.js"></script>
-<script src="app/modules/probrAnalysisSessions/sessions/sessions.js"></script>
-<script src="app/modules/probrAnalysisSessions/sessions/sessions.service.js"></script>
+<script src="app/modules/probrAnalysisPacketsFilter/packets/packets.service.js"></script>
+<script src="app/modules/probrAnalysisUtilization/utilization.js"></script>
+<script src="app/modules/probrAnalysisUtilization/utilization/utilization.controller.js"></script>
+<script src="app/modules/probrAnalysisUtilization/utilization/utilization.js"></script>
+<script src="app/modules/probrAnalysisUtilization/utilization/utilization.service.js"></script>
 <script src="app/modules/probrAnalysisVendors/vendors.js"></script>
 <script src="app/modules/probrAnalysisVendors/vendors/vendors.controller.js"></script>
 <script src="app/modules/probrAnalysisVendors/vendors/vendors.js"></script>
@@ -173,9 +171,11 @@
 <script src="components/auth/user.service.js"></script>
 <script src="components/modal/modal.service.js"></script>
 <script src="components/mongoose-error/mongoose-error.directive.js"></script>
+<script src="components/probr/probrLoading/loading.directive.js"></script>
 <script src="components/probr/probrMap/probrMap.directive.js"></script>
 <script src="components/probr/probrPagination/pagination.directive.js"></script>
 <script src="components/probr/probrSearch/probrSearch.directive.js"></script>
+<script src="components/probr/probrSessionSwimlane/probrSessionSwimlane.directive.js"></script>
 <script src="components/socket/socket.service.js"></script>
 <!-- endinjector -->
 <!-- endbuild -->

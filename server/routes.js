@@ -9,9 +9,10 @@ var path = require('path');
 var restify = require('express-restify-mongoose');
 var express = require('express');
 
-var PacketModel = require('./api/packet/packet.model')
-var SessionModel = require('./api/session/session.model')
-var UtilizationModel = require('./api/utilization/utilization.model')
+var TargetModel = require('./api/target/target.model');
+var PacketModel = require('./api/packet/packet.model');
+var SessionModel = require('./api/session/session.model');
+var UtilizationModel = require('./api/utilization/utilization.model');
 var DeviceModel = require('./api/device/device.model');
 var LocationModel = require('./api/location/location.model');
 
@@ -25,11 +26,16 @@ module.exports = function (app) {
     app.use('/api/packet', require('./api/packet'));
     app.use('/api/loyalty', require('./api/loyalty'));
     app.use('/api/users', require('./api/user'));
+    app.use('/api/device', require('./api/device'));
 
     app.use('/auth', require('./auth'));
 
     // Restify-Routes
     var router = express.Router();
+
+    restify.serve(router, TargetModel, {
+        lowercase: true, version: '',
+    });
 
     restify.serve(router, PacketModel, {
         lowercase: true, version: '',

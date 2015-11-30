@@ -1,105 +1,69 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
+
 
 <div class="container-fluid">
 
-  <h1>Devices</h1>
+    <probr-loading isLoading="isLoading"></probr-loading>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <h2> Vendor pie chart: </h2>
-      <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
-    </div>
-    <div class="col-sm-6 table-responsive">
-      <h2> Top 15 vendors: </h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> Rank</td>
-          <td> Vendor</td>
-          <td> Count</td>
-          <td> Percentage</td>
-        </tr>
-        <tr ng-repeat="rank in ranking">
-          <td>{{ rank.rank }}</td>
-          <td>{{ rank.vendor }}</td>
-          <td>{{ rank.count }}</td>
-          <td>{{ rank.percentage }}</td>
-        </tr>
-      </table>
-    </div>
-  </div>
-  <br>
-  <hr>
-  <br>
-  <div class="row">
-    <div class="col-sm-6">
-      <h2> Current Devices: </h2>
+    <h1>Stats</h1>
 
-      <h3 class="text-center">{{lastfivemin.length}}</h3>
-
-      <p class="text-center">unique devices spotted</p>
+    <div class="row">
+        <div class="col-sm-6">
+            <h2> Vendor pie chart: </h2>
+            <canvas class="chart chart-pie" data="pieData" labels="pieLabels">
+        </div>
+        <div class="col-sm-6 table-responsive">
+            <h2> Top 15 vendors: </h2>
+            <br>
+            <table class="table table-condensed">
+                <tr>
+                    <td> Rank</td>
+                    <td> Vendor</td>
+                    <td> Count</td>
+                    <td> Percentage</td>
+                </tr>
+                <tr ng-repeat="rank in ranking">
+                    <td>{{ rank.rank }}</td>
+                    <td>{{ rank.vendor }}</td>
+                    <td>{{ rank.count }}</td>
+                    <td>{{ rank.percentage }}</td>
+                </tr>
+            </table>
+        </div>
     </div>
-    <div class="col-sm-6">
-      <h2> Total Devices: </h2>
+    <br>
+    <hr>
+    <br>
 
-      <h3 class="text-center">{{devices.length}}</h3>
+    <div class="row">
+        <div class="col-sm-3">
+            <h2>Total Devices:</h2>
 
-      <p class="text-center">unique devices spotted</p>
-    </div>
-  </div>
-  <br>
-  <hr>
-  <br>
+            <h3 class="text-center">{{devices.length}}</h3>
 
-  <div class="row">
-    <div class="col-sm-4 table-responsive">
-      <h2>Devices seen last 5 minutes:</h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> MAC</td>
-          <td> Vendor</td>
-          <td> Time</td>
-        </tr>
-        <tr ng-repeat="dev in lastfivemin">
-          <td>{{ dev.mac_address }}</td>
-          <td>{{ dev.vendor }}</td>
-          <td>{{ dev.last_seen }}</td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-sm-4 table-responsive">
-      <h2>Devices seen last hour:</h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> MAC</td>
-          <td> Vendor</td>
-          <td> Time</td>
-        </tr>
-        <tr ng-repeat="dev in lasthour">
-          <td>{{ dev.mac_address }}</td>
-          <td>{{ dev.vendor }}</td>
-          <td>{{ dev.last_seen }}</td>
-        </tr>
-      </table>
-    </div>
-    <div class="col-sm-4 table-responsive">
-      <h2>Devices seen last day: </h2>
-      <br>
-      <table class="table table-condensed">
-        <tr>
-          <td> MAC</td>
-          <td> Vendor</td>
-          <td> Time</td>
-        </tr>
-        <tr ng-repeat="dev in lastday">
-          <td>{{ dev.mac_address }}</td>
-          <td>{{ dev.vendor }}</td>
-          <td>{{ dev.last_seen }}</td>
-        </tr>
-      </table>
-    </div>
+            <p class="text-center">unique devices spotted</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>Non-Randomized Devices:</h2>
 
-  </div>
+            <h3 class="text-center">{{devices.length - randomizedDevices.length}}</h3>
+
+            <p class="text-center">random devices</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>Randomized Devices:</h2>
+
+            <h3 class="text-center">{{randomizedDevices.length}}</h3>
+
+            <p class="text-center">random devices spotted</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>Randomized Ratio:</h2>
+
+            <h3 class="text-center">{{ ((randomizedDevices.length*1.0)/(devices.length*1.0))*100.0 | number:0 }}%</h3>
+
+            <p class="text-center">random devices</p>
+        </div>
+    </div>
 </div>

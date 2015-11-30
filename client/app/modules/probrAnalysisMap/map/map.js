@@ -4,7 +4,7 @@ angular.module('probrAnalysisMap')
     .config(function ($stateProvider) {
         $stateProvider
             .state('heatmap', {
-                url: '/heatmap',
+                url: '/heatmap?:startTimestamp&:endTimestamp&:tags',
                 templateUrl: 'app/modules/probrAnalysisMap/map/map.html',
                 controller: 'MapCtrl'
             });

@@ -1,0 +1,24 @@
+<div class="navbar-analysis">
+    <div class="navbar navbar-default navbar-static-top" ng-controller="AnalysisNavbarCtrl">
+        <ul class="nav navbar-nav">
+            <li ng-repeat="item in menu" ng-class="{active: isActiveRoot(item.active)}">
+                <a ng-href="{{item.link}}">{{ item.title }}</a>
+            </li>
+            <li ng-show="isAdmin()" ng-class="{active: isActiveRoot('/admin')}"><a href="/admin">Admin</a></li>
+        </ul>
+
+        <div class="btn-group" dropdown>
+            <button type="button" class="btn btn-primary" dropdown-toggle>
+                {{selectedTag || 'Filter by Tag'}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="tag in tags"><a ng-click="selectTag(tag)">{{tag}}</a></li>
+                <li class="divider"></li>
+                <li><a ng-click="removeTag()"><i class="fa fa-remove"></i> Clear</a></li>
+            </ul>
+        </div>
+
+        <input date-range-picker class="form-control date-picker" type="text" ng-model="datePickerDate" options="{timePicker: true, timePicker24Hour: true, timePickerIncrement: 5, locale: {format:'MM/DD/YYYY h:mm A'}}"/>
+
+    </div>
+</div>
