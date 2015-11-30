@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('probrAnalysisCommon')
-    .factory('Packet', function ($resource) {
-        var Packet = $resource('api/packets/:packetId/', {packetId: '@_id'},
+    .factory('Target', function ($resource) {
+        var Target = $resource('api/targets/:targetId/', {packetId: '@_id'},
             {
-                count: {method: 'GET', url: 'api/packets/count', isArray: false},
+                count: {method: 'GET', url: 'api/targets/count', isArray: false},
             }
         );
-        return Packet;
+        return Target;
     });
