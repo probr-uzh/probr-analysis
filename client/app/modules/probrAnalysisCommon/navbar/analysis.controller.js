@@ -26,6 +26,11 @@ angular.module('probrAnalysisCommon')
                 'active': 'devices/',
                 'link': $state.href('devices', params)
             },
+            {
+                'title': 'Tracking',
+                'active': 'mac/',
+                'link': $state.href('mac', params)
+            },
         ];
 
         Packet.query({distinct: 'tags'}, function (resultObj) {

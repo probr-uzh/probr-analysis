@@ -14,6 +14,50 @@ angular.module('probrAnalysisApp')
             templateUrl: 'components/probr/probrSessionSwimlane/probrSessionSwimlane.html',
             link: function (scope, element, attrs) {
 
+                var wordColor = (function(){
+                    var MAGIC_NUMBER = 5;
+                    var COLOR_LIMITE = 242;
+
+                    function getRGB(word) {
+                        word = word.replace(/^\s+(.*)\s+$/g, '$1');
+                        var rgb = [0, 0, 0];
+                        for (var i = 0; i < word.length; i++) {
+                            var level = parseInt(i / rgb.length);
+                            rgb[i % 3] += parseInt(getAHashNum(word[i]) / getRatio(level));
+                        }
+                        for (var j = 0; j < rgb.length; j++) {
+                            if (rgb[j] > 255) {
+                                rgb[j] = 255;
+                            }
+                        }
+                        return rgb;
+                    }
+
+                    function getRatio(level) {
+                        return Math.pow(MAGIC_NUMBER, level);
+                    }
+
+                    function getAHashNum(char) {
+                        return parseInt((char.charCodeAt() << MAGIC_NUMBER) % COLOR_LIMITE);
+                    }
+
+                    return getRGB;
+                })();
+
+                var colorFromWordArray = function(words) {
+                    var mixedColor = [0, 0 , 0];
+                    angular.forEach(words, function(word) {
+                        var color = wordColor(word);
+                        mixedColor[0] += color[0];
+                        mixedColor[1] += color[1];
+                        mixedColor[2] += color[2];
+                    });
+                    mixedColor[0] = Math.floor(mixedColor[0]/words.length);
+                    mixedColor[1] = Math.floor(mixedColor[1]/words.length);
+                    mixedColor[2] = Math.floor(mixedColor[2]/words.length);
+
+                    return "rgb(" + mixedColor.join(',') + ")"
+                };
 
                 scope.$watch('sessions', function (newVal, oldVal) {
                     var sessions = newVal;
@@ -103,8 +147,8 @@ angular.module('probrAnalysisApp')
                     // Mini Graph
                     var mini = plot.append('g')
                         .attr('transform', 'translate('
-                        + textColumnWidth + ','
-                        + (mainHeight + spaceBetweenGraphs) + ')')
+                            + textColumnWidth + ','
+                            + (mainHeight + spaceBetweenGraphs) + ')')
                         .attr('class', 'mini');
 
                     // Draw mac addresses for main graph
@@ -220,11 +264,11 @@ angular.module('probrAnalysisApp')
                         .html(function(d) {
                             var tags = d.tags;
                             return  "<p>From:</p> <p class='right'>" + timeFormat(d.startTimestamp)  + "</p>" +
-                                    "<p>Until:</p> <p class='right'>" + timeFormat(d.endTimestamp) + "</p>" +
-                                    "<p>Duration:</p> <p class='right'>" + d.duration + " seconds</p>" +
-                                    "<p>Packets:</p> <p class='right'>" + d.count + "</p>" +
-                                    "<p>Avg RSS:</p> <p class='right'>" + d.weightedSignalStrength + "db</p>" +
-                                    "<p>Tags:</p> <p class='right'>" + d.tags.join(', ') + "</p>";
+                                "<p>Until:</p> <p class='right'>" + timeFormat(d.endTimestamp) + "</p>" +
+                                "<p>Duration:</p> <p class='right'>" + d.duration + " seconds</p>" +
+                                "<p>Packets:</p> <p class='right'>" + d.count + "</p>" +
+                                "<p>Avg RSS:</p> <p class='right'>" + d.weightedSignalStrength + "db</p>" +
+                                "<p>Tags:</p> <p class='right'>" + d.tags.join(', ') + "</p>";
                         });
                     plot.call(tip);
 
@@ -236,7 +280,9 @@ angular.module('probrAnalysisApp')
                         .attr('x', function(d) { return miniX(d.startTimestamp); })
                         .attr('y', function(d) { return miniYPadded(d.mac_address); })
                         .attr('width', function(d) { return miniX(d.endTimestamp)-miniX(d.startTimestamp); })
-                        .attr('height', function(d) { return miniYPadded.rangeBand(); });
+                        .attr('height', function(d) { return miniYPadded.rangeBand(); })
+                        .attr('fill', function(d) { return colorFromWordArray(d.tags); } );
+
 
                     // Space for later main rectangles
                     // Clipping for rects that overlap graph plot area
@@ -298,6 +344,7 @@ angular.module('probrAnalysisApp')
                             .attr('width', function(d) { return mainX(d.endTimestamp) - mainX(d.startTimestamp); })
                             .attr('height', function(d) { return mainYPadded.rangeBand(); })
                             .attr('class', 'mainItem')
+                            .attr('fill', function(d) { return colorFromWordArray(d.tags); } )
                             .on('mouseover', tip.show)
                             .on('mouseout', tip.hide);
 
