@@ -15,6 +15,9 @@
       <div class="row">
         <div class="col-xs-12" style="height: 500px;" ng-show="sessionData.length > 0">
           <linechart data="sessionData" options="sessionBarChartOptions"></linechart>
+            <div style="position: relative; left: 350px; bottom: 46px;">
+                    Date
+            </div>
         </div>
       </div>
 
@@ -36,6 +39,9 @@
       <div class="row">
         <div class="col-xs-12" style="height: 500px;" ng-show="loyaltyData.length > 0">
           <linechart data="loyaltyData" options="loyaltyBarChartOptions"></linechart>
+            <div style="position: relative; left: 350px; bottom: 46px;">
+                Number of times seen
+            </div>
         </div>
       </div>
 
