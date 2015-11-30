@@ -12,7 +12,7 @@ angular.module('probrAnalysisUtilization')
             series: [{
                 id: "id_0",
                 y: "val_0",
-                label: "Sessions",
+                label: "Number of sessions",
                 type: "column",
                 color: "#1f77b4"
             }]
@@ -25,7 +25,7 @@ angular.module('probrAnalysisUtilization')
             series: [{
                 id: "id_0",
                 y: "val_0",
-                label: "Loyalty",
+                label: "Number of devices",
                 type: "column",
                 color: "#771fb4"
             }]
