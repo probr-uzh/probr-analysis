@@ -1,61 +1,73 @@
 'use strict';
 
 angular.module('probrPagination', [])
-  .directive('probrPagination', function () {
-    return {
-      restrict: 'E',
-      transclude: true,
-      scope: {
-        resource: '=',
-        items: '=',
-        itemsCount: '=',
-        pageLength: '=',
-        query: '=',
-        params: '='
-      },
-      templateUrl: 'components/probr/probrPagination/pagination.html',
-      controller: function ($scope, $location) {
+    .directive('probrPagination', function () {
+            return {
+                restrict: 'E',
+                transclude: true,
+                scope: {
+                    resource: '=',
+                    items: '=',
+                    itemsCount: '=',
+                    pageLength: '=',
+                    query: '=',
+                    params: '='
+                },
+                templateUrl: 'components/probr/probrPagination/pagination.html',
+                controller: function ($scope, $location) {
 
-        $scope.isSearching = false;
-        $scope.pageChanged = function () {
+                    $scope.isSearching = false;
+                    $scope.pageChanged = function () {
 
-          var query = $scope.query !== undefined ? $scope.query : {};
-          var params = $scope.params !== undefined ? $scope.params : {};
+                        var query = $scope.query !== undefined ? $scope.query : {};
+                        var copiedQuery = angular.copy(query);
 
-          var searchQuery = angular.extend(angular.copy(params), {query: JSON.stringify(query)});
+                        var params = $scope.params !== undefined ? $scope.params : {};
 
-          // constract query parameters
-          searchQuery.skip = (($scope.pageCurrent - 1) * $scope.pageLength) || 0;
-          searchQuery.limit = $scope.pageLength;
+                        // converting the start/endtimestamp thing
+                        if (copiedQuery.startTimestamp && copiedQuery.endTimestamp) {
+                            var expression = [];
+                            expression.push({time: {$gt: copiedQuery.startTimestamp}});
+                            expression.push({time: {$lt: copiedQuery.endTimestamp}});
+                            copiedQuery.$and = expression;
+                            delete(copiedQuery.startTimestamp);
+                            delete(copiedQuery.endTimestamp);
+                        }
 
-          $scope.isSearching = true;
+                        var searchQuery = angular.extend(angular.copy(params), {query: JSON.stringify(copiedQuery)});
 
-          // update location
-          var locationParams = angular.copy(searchQuery);
-          delete locationParams.query;
-          $location.path($location.path(), false).search(angular.extend(angular.copy(locationParams), query));
+                        // constract query parameters
+                        searchQuery.skip = (($scope.pageCurrent - 1) * $scope.pageLength) || 0;
+                        searchQuery.limit = $scope.pageLength;
 
-          var countQuery = angular.copy(searchQuery);
-          delete countQuery.skip;
-          delete countQuery.limit;
-          delete countQuery.sort;
+                        $scope.isSearching = true;
 
-          $scope.resource.count(countQuery, function (resultObj) {
-            $scope.itemsCount = resultObj.count;
+                        // update location
+                        var locationParams = angular.copy(searchQuery);
+                        delete locationParams.query;
+                        //$location.path($location.path(), false).search(angular.extend(angular.copy(locationParams), query));
 
-            $scope.resource.query(searchQuery, function (resultObj) {
-              $scope.items = resultObj;
-              $scope.isSearching = false;
-            });
-          });
+                        var countQuery = angular.copy(searchQuery);
+                        delete countQuery.skip;
+                        delete countQuery.limit;
+                        delete countQuery.sort;
 
+                        $scope.resource.count(countQuery, function (resultObj) {
+                            $scope.itemsCount = resultObj.count;
+                            console.log(searchQuery)
+                            $scope.resource.query(searchQuery, function (resultObj) {
+                                $scope.items = resultObj;
+                                $scope.isSearching = false;
+                            });
+                        });
+
+                    }
+
+                    $scope.$watch('query', function () {
+                        $scope.pageChanged();
+                    });
+
+                }
+            }
         }
-
-        $scope.$watch('query', function () {
-          $scope.pageChanged();
-        });
-
-      }
-    }
-  }
-);
+    );
