@@ -3,21 +3,6 @@
 angular.module('probrAnalysisMap')
     .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room) {
 
-        // MultiRange Slider
-        $scope.rangeArray = [
-            {value: 6 / 24, name: 'Start'},
-            {value: 18 / 24, name: 'End'},
-        ]
-
-        // StepSize
-        $scope.views = [{
-            zoom: 0.95, step: 1 / 48, units: [{
-                value: 1 / 24, labeller: function (n) {
-                    return "" + Math.floor(n * 24) + ":00";
-                }
-            }, {value: 1}]
-        }];
-
         // Room
         Room.query({}, function (rooms) {
             $scope.rooms = rooms;
@@ -32,10 +17,6 @@ angular.module('probrAnalysisMap')
 
             var startTimestamp = parseInt($stateParams.startTimestamp);
             var endTimestamp = parseInt($stateParams.endTimestamp);
-
-            // Add Seconds of Range
-            startTimestamp = startTimestamp + ($scope.rangeArray[0].value * 24) * 3600 * 1000;
-            endTimestamp = endTimestamp + ($scope.rangeArray[1].value * 24) * 3600 * 1000;
 
             Location.query({
                 query: {
@@ -72,5 +53,7 @@ angular.module('probrAnalysisMap')
 
             });
         };
+
+        $scope.query();
 
     });
