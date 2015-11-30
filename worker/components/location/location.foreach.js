@@ -140,7 +140,7 @@ var executeLocationForEach = function (gt_timestamp, cb) {
           d.noOfCircles = result.noOfCircles;
           d.multiplier = result.multiplier;
           d.derivedFrom = result.derivedFrom;
-          d.tags = result.tags;
+          d.tags = item.value.tags;
           d.save();
         }
       } catch(err) {
