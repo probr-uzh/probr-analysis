@@ -7,6 +7,7 @@
 angular.module('probrAnalysisDevices', [
   'ui.router',
   'ui.bootstrap',
+  'chart.js',
   'probrPagination',
   'probrAnalysisCommon'
 ]);
