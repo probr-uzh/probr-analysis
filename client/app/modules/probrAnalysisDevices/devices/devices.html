@@ -37,16 +37,33 @@
     <br>
 
     <div class="row">
-        <div class="col-sm-12">
-            <h2> Total Devices: </h2>
+        <div class="col-sm-3">
+            <h2>Total Devices:</h2>
 
             <h3 class="text-center">{{devices.length}}</h3>
 
             <p class="text-center">unique devices spotted</p>
         </div>
-    </div>
-    <br>
-    <hr>
-    <br>
+        <div class="col-sm-3">
+            <h2>Non-Randomized Devices:</h2>
 
+            <h3 class="text-center">{{devices.length - randomizedDevices.length}}</h3>
+
+            <p class="text-center">random devices</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>Randomized Devices:</h2>
+
+            <h3 class="text-center">{{randomizedDevices.length}}</h3>
+
+            <p class="text-center">random devices spotted</p>
+        </div>
+        <div class="col-sm-3">
+            <h2>Randomized Ratio:</h2>
+
+            <h3 class="text-center">{{ ((randomizedDevices.length*1.0)/(devices.length*1.0))*100.0 | number:0 }}%</h3>
+
+            <p class="text-center">random devices</p>
+        </div>
+    </div>
 </div>

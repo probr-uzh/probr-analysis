@@ -18,6 +18,7 @@ angular.module('probrAnalysisDevices')
         $scope.isLoading = true;
         DeviceQuery.query(query, function (resultObj) {
                 $scope.devices = resultObj;
+                $scope.randomizedDevices = [];
 
                 console.log(resultObj);
 
@@ -40,6 +41,11 @@ angular.module('probrAnalysisDevices')
                 var lastDayDevices = [];
 
                 devices.forEach(function (element) {
+
+                    if(element.mac_address.match(/.(2|3|6|7|a|b|e|f).{10}/i)){
+                        $scope.randomizedDevices.push(element);
+                    }
+
                     var vendor = element.vendor;
                     if (vendor !== undefined) {
                         totalCount++;
