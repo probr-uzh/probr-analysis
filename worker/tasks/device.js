@@ -4,63 +4,83 @@
 
 var async = require('async');
 var Packet = require('./../../server/api/packet/packet.model.js');
-var RawDevice = require('./../../server/api/device/raw_device.model.js');
 var Device = require('./../../server/api/device/device.model.js');
+var Vendors = require('../../server/config/vendor_db');
+var Log = require('../model/log.model');
 
-var DeviceForEach = require('../components/device/device.foreach');
-var DeviceMapReduce = require('../components/device/device.mapreduce');
 
 module.exports = function (job, done) {
-
-  // Check if collection exists
-  RawDevice.find().sort("-value.last_seen").limit(1).exec(function (err, doc) {
-
-    // It does, so start job directly
-    if (doc[0] !== undefined) {
-
-      var rawDeviceBreakTime = doc[0].value.last_seen;
-      console.log("device-Job: found raw_device collection and breakTime for incremental MapReduce");
-
-      //configure the map reduce job
-      var mapReduceOptions = DeviceMapReduce.getIncrementalMapReduceConfig(rawDeviceBreakTime);
-
-      Packet.mapReduce(mapReduceOptions, function (err, results) {
+    Log.find({
+        job: 'device',
+        type: 'finished',
+        "data.until": {$exists: true}
+    }).sort('-time').limit(1).exec(function(err, resultsLastLog) {
         if (err) {
-          console.log("device-Job: Error: " + err)
-          done();
-        } else {
-          console.log("device-Job: forEach: raw_devices -> devices");
-          Device.find().sort("-last_seen").limit(1).exec(function (err, devices) {
-            var deviceBreakTime = devices[0].last_seen;
-            DeviceForEach.incremental(deviceBreakTime, function () {
-              console.log("device-Job: forEach: raw_devices -> devices -> done");
-              done();
+            throw('logs.find() error: ' + err);
+        }
+
+        // Get the time of the last packet we are about to process
+        // This value will be saved in the log after a successful run and used by the
+        // next job as a starting time.
+        Packet.find().sort('-inserted_at').limit(1).exec(function(err, resultsLastPacket) {
+            if (err) {
+                throw('packets.find() error: ' + err);
+            }
+
+            // If there are no packets, graceful end job.
+            if (resultsLastPacket.length > 0) {
+                var endTime = resultsLastPacket[0].inserted_at;
+            } else {
+                return done('No packets found.')
+            }
+
+            var pipeline = [];
+
+            // Start at the time of the latest packet processed by the previous job (if exists)
+            var lastLog = resultsLastLog[0];
+            if (lastLog && lastLog.data && lastLog.data.until) {
+                var startTime = resultsLastLog[0].data.until;
+                pipeline.push({$match: {'inserted_at': {$gte: startTime, $lte: endTime}}});
+            }
+
+            pipeline.push({$unwind: "$tags"});
+            pipeline.push({
+                $group: {
+                    _id: "$mac_address_src",
+                    "last_seen": {$max: "$time"},
+                    "tags": {$addToSet: "$tags"}
+                }
             });
-          });
-        }
-      });
 
-    } else {
-      console.log("device-Job: no raw_device found. full map-reduce run to create it.");
+            var cursor = Packet.aggregate(pipeline)
+                .cursor({batchSize: 1000})
+                .exec();
 
-      Packet.mapReduce(DeviceMapReduce.mapReduceConfig, function (err, results) {
-        if (err) {
-          console.log("device-Job: Error: " + err)
-          done();
-        } else {
-          console.log("device-Job: full map reduce done.");
-          console.log("device-Job: forEach: raw_devices -> devices");
-          // forEach which iterates over all raw_devices and flattens their structure and adds the vendor, and puts that into the final devices collection
-          DeviceForEach.incremental(0, function () {
-            console.log("device-Job: forEach: raw_devices -> devices -> done");
-            done();
-          });
+            cursor.each(function (err, d) {
 
-        }
-      });
+                // At end of data
+                if (!d) {
+                    var returnValue = { until: endTime };
+                    if (startTime)
+                        returnValue.from = startTime;
+                    return done(returnValue);
+                }
 
-    }
+                Device.findOneAndUpdate({_id: d._id},
+                    {
+                        mac_address: d._id,
+                        vendor: Vendors.vendors[d._id.substr(0, 6)],
+                        last_seen: d.last_seen,
+                        $addToSet: {tags: {$each: d.tags}}
+                    },
+                    {upsert: true},
+                    function (err, result) {
+                        if (err) {
+                            throw('upsert error: ' + err);
+                        }
+                    });
 
-  });
-
-}
+            });
+        });
+    });
+};
