@@ -66,7 +66,11 @@ function getInitialMapReduceConfig() {
                     }
 
                 }
-                tags.push.apply(tags, value.tags);
+                for(tag in value.tags) {
+                    if(tags.indexOf(value.tags[tag]) === -1) {
+                        tags.push(value.tags[tag]);
+                    }
+                }
             }
 
             locs.sort(function(a,b) {
