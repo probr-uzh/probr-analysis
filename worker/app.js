@@ -57,7 +57,7 @@ function processJob(jobName) {
         // Log any error thrown in the domain and end the job.
         domain.on('error', function (err) {
             done(err, {name: jobName});
-            logAndPrint('error', err);
+            logAndPrint('error', err, {error: err});
         });
 
         // Run job in domain (to catch errors)
