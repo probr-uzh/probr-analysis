@@ -21,7 +21,7 @@ module.exports = function (job, done) {
         job: 'session',
         type: 'finished',
         "data.until": {$exists: true}
-    }).sort('-inserted_at').limit(1).exec(function(err, resultsLastLog) {
+    }).sort('-time').limit(1).exec(function(err, resultsLastLog) {
         if (err) {
             throw('logs.find() error: ' + err);
         }
