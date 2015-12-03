@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var LocationSchema = new Schema({
   mac_address: { type: String, index: true },
   time: { type: Date, index: true},
-  location: { type: {"type": {type: String, default: "Point"}, coordinates: { type: [Number], index: '2dsphere'} } },
+  location: mongoose.Schema.Types.Mixed,
   area: { type: Number, index: true },
   noOfCircles: { type: Number, index: true},
   multiplier: Number,
