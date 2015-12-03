@@ -75,7 +75,7 @@ var executeLocationForEach = function (gt_timestamp, cb) {
       var derivedFrom = [];
 
       do {
-        multiplier *= 1.2;
+        multiplier *= 1.05;
         circlesTooSmallForIntersection = 0;
         noOfTrueIntersections = 1;
         derivedFrom = [];

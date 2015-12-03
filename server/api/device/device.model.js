@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 
 var DeviceSchema = new Schema({
+    _id: String,        // mac_address
     mac_address: String,
     vendor: String,
     last_seen: Date,

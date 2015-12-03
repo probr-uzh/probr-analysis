@@ -2,6 +2,8 @@
 
 angular.module('probrAnalysisUtilization')
     .controller('UtilizationCtrl', function ($scope, $state, $stateParams, $filter, Session, SessionConcurrency, Loyalty) {
+        $scope.isLoadingSession = true;
+        $scope.isLoadingLoyalty = true;
 
         $scope.sessionBarChartOptions = {
             axes: {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}},
@@ -10,7 +12,7 @@ angular.module('probrAnalysisUtilization')
             series: [{
                 id: "id_0",
                 y: "val_0",
-                label: "Sessions",
+                label: "Number of sessions",
                 type: "column",
                 color: "#1f77b4"
             }]
@@ -23,14 +25,11 @@ angular.module('probrAnalysisUtilization')
             series: [{
                 id: "id_0",
                 y: "val_0",
-                label: "Loyalty",
+                label: "Number of devices",
                 type: "column",
                 color: "#771fb4"
             }]
         };
-
-        $scope.isLoadingSession = true;
-        $scope.isLoadingLoyalty = true;
 
 
         if ($stateParams.endTimestamp - $stateParams.startTimestamp < (1000 * 60 * 60 * 24)) {

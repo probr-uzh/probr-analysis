@@ -2,56 +2,64 @@
 <div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
 
 <div class="container-fluid">
-  <probr-loading isLoading="isLoading"></probr-loading>
-  <div class="row">
+    <probr-loading isLoading="isLoading"></probr-loading>
+    <div class="row">
 
-    <div class="col-xs-6">
-      <h1>Utilization</h1>
+        <div class="col-xs-6">
+            <h1>Utilization</h1>
 
-      <p>
-        Number of sessions during a specific time-period.
-      </p>
+            <p>
+                Number of sessions during a specific time-period.
+            </p>
 
-      <div class="row">
-        <div class="col-xs-12" style="height: 500px;" ng-show="sessionData.length > 0">
-          <linechart data="sessionData" options="sessionBarChartOptions"></linechart>
-            <div style="position: relative; left: 350px; bottom: 46px;">
-                    Date
+            <div ng-show="isLoadingSession" class="col-xs-12 text-center loading">
+                <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" style="height: 500px;" ng-show="sessionData.length > 0">
+                    <linechart data="sessionData" options="sessionBarChartOptions"></linechart>
+                    <div style="position: relative; left: 350px; bottom: 46px;">
+                        Date
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="sessionData.length > 0 || isLoadingSession">
+                    <p>No data for this time period.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-xs-6">
+            <h1>Loyalty</h1>
+
+            <p>
+                Number of devices that have been seen a specific number of times.
+            </p>
+
+            <div ng-show="isLoadingLoyalty" class="col-xs-12 text-center loading">
+                <i class="fa fa-circle-o-notch fa-spin fa-2x"></i>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12" style="height: 500px;" ng-show="loyaltyData.length > 0">
+                    <linechart data="loyaltyData" options="loyaltyBarChartOptions"></linechart>
+                    <div style="position: relative; left: 350px; bottom: 46px;">
+                        Number of times seen
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="loyaltyData.length > 0 || isLoadingLoyalty">
+                    <p>No data for this time period.</p>
+                </div>
             </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="sessionData.length > 0">
-          <p>No data for this time period.</p>
-        </div>
-      </div>
-
     </div>
-
-    <div class="col-xs-6">
-      <h1>Loyalty</h1>
-
-      <p>
-        Number of devices that have been seen a specific number of times.
-      </p>
-
-      <div class="row">
-        <div class="col-xs-12" style="height: 500px;" ng-show="loyaltyData.length > 0">
-          <linechart data="loyaltyData" options="loyaltyBarChartOptions"></linechart>
-            <div style="position: relative; left: 350px; bottom: 46px;">
-                Number of times seen
-            </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-12 text-center" style="margin-top: 200px;" ng-hide="loyaltyData.length > 0">
-          <p>No data for this time period.</p>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </div>
 

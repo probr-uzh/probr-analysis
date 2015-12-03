@@ -4,9 +4,13 @@
 
 function getInitialMapReduceConfig() {
     return {
-        query: {"signal_strength": {$gt: -60}},
+        //query: {"signal_strength": {$gt: -60}},
+        query: {},
 
         map: function () {
+            if (this.signal_strength <= -60)
+                return;
+
             var locs = [];
             var loc = {
                 long: this.location.coordinates[0],
@@ -16,7 +20,7 @@ function getInitialMapReduceConfig() {
             };
             locs.push(loc);
 
-            var timeRoundedToMinutes = Math.floor(this.time.getTime() / (1000 * 60));
+            var timeRoundedToMinutes = Math.floor(this.time.getTime() / (1000 * 60 * 1));
 
             emit({
                 time: new Date(timeRoundedToMinutes * 60 * 1000),
@@ -66,7 +70,11 @@ function getInitialMapReduceConfig() {
                     }
 
                 }
-                tags.push.apply(tags, value.tags);
+                for(tag in value.tags) {
+                    if(tags.indexOf(value.tags[tag]) === -1) {
+                        tags.push(value.tags[tag]);
+                    }
+                }
             }
 
             locs.sort(function(a,b) {

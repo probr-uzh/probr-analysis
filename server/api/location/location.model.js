@@ -4,14 +4,13 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var GeoJSONPoint = {'type': {type: String, default: "Point"}, coordinates: [{type: "Number"}]};
 
 var LocationSchema = new Schema({
   mac_address: { type: String, index: true },
-  time: Date,
-  location: GeoJSONPoint,
-  area: Number,
-  noOfCircles: Number,
+  time: { type: Date, index: true},
+  location: mongoose.Schema.Types.Mixed,
+  area: { type: Number, index: true },
+  noOfCircles: { type: Number, index: true},
   multiplier: Number,
   derivedFrom:  [{
     long: Number,
@@ -19,7 +18,7 @@ var LocationSchema = new Schema({
     weightedSignal: Number,
     cnt: Number
   } ],
-  tags: [{type: String}]
+  tags: {type: [String], index: true }
 });
 
 var Location = mongoose.model('locations',LocationSchema,'locations');
