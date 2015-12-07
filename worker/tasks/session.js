@@ -58,6 +58,7 @@ module.exports = function (job, done) {
                 // Unwind sessions_raw -> sessions
                 RawSession.aggregate([
                     {$match: {"value.sessions.duration": {$gte: 60}}},
+                    {$match: {mac_address: {$not: /.(2|3|6|7|a|b|e|f).{10}/i}}},
                     {$unwind: "$value.sessions"},
                     {$match: {"value.sessions.duration": {$gte: 60}}},
                     {$project: {
