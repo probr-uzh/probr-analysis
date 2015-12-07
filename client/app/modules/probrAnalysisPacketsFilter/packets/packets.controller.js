@@ -3,7 +3,7 @@
 angular.module('probrAnalysisPacketsFilter')
     .controller('PacketsCtrl', function ($scope, $state, $location, $stateParams, PacketQuery) {
 
-        $scope.fields = ['mac_address_src: ', 'mac_address_dst: ', 'lat: ', 'lon: ', 'tags: ', 'ssid: ', 'signal_strength: '];
+        $scope.fields = ['mac_address_src: ', 'mac_address_dst: ', 'lat: ', 'lon: ', 'ssid: ', 'signal_strength: '];
         $scope.newPackets = 0;
         $scope.pageLength = 100;
         $scope.resource = PacketQuery;
