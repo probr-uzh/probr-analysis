@@ -30,6 +30,7 @@ angular.module('probrAnalysisApp')
 
         $scope.removeLabel = function (key) {
           delete $scope.query[key];
+          $scope.search();
         }
 
         $scope.search = function () {

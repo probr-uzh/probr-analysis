@@ -32,13 +32,23 @@
                             <td> Tags</td>
                         </tr>
                         <tr ng-repeat="packet in packets">
-                            <td>{{ packet.mac_address_src | mac }}</td>
+                            <td>
+                                <a ui-sref="mac-detail({mac_address: packet.mac_address_src})">
+                                    <i class="fa fa-search"></i>
+                                </a>
+                                <a ng-click="setFilter({type: 'mac_address_src', value: packet.mac_address_src })" href="#">{{ packet.mac_address_src | mac }}</a>
+                            </td>
                             <td>{{ packet.mac_address_dst | mac }}</td>
                             <td>{{ packet.signal_strength }}</td>
-                            <td>{{ packet.ssid }}</td>
+                            <td><a ng-click="setFilter({type: 'ssid', value: packet.ssid })" href="#">{{ packet.ssid }}</a></td>
                             <td>{{ packet.location.coordinates[1] }} / {{ packet.location.coordinates[0] }}</td>
                             <td>{{ packet.time | date : 'shortDate' }}, {{ packet.time | date : 'shortTime' }}</td>
-                            <td>{{ packet.tags }}</td>
+                            <td>[
+                                <a ng-repeat="tag in packet.tags" ng-click="setFilter({type: 'tags', value: tag })">
+                                    {{tag}}<span ng-hide="$index == packet.tags.length - 1">,</span>
+                                </a>
+                                ]
+                            </td>
                         </tr>
                     </table>
                 </div>

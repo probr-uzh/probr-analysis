@@ -1,0 +1,21 @@
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/navbar.html'"></div>
+<div ng-include="'app/modules/probrAnalysisCommon/navbar/analysis.html'"></div>
+
+<div class="container-fluid">
+
+    <h1>
+        {{ target.mac_address | mac }}
+    </h1>
+
+    <div class="row vertical-center" ng-show="swimlaneSessions.length == 0">
+        <div class="col-xs-12 text-center">
+            <p style="margin-bottom: 20px">
+                No sessions for this MAC-Address during the specified range of time.
+            </p>
+            <i class="fa fa-4x fa-frown-o"></i>
+        </div>
+    </div>
+
+    <probr-session-swimlane sessions="swimlaneSessions" aliases="aliases"></probr-session-swimlane>
+
+</div>
