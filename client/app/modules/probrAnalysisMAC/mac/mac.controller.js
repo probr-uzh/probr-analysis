@@ -6,6 +6,11 @@ angular.module('probrAnalysisMAC')
         $scope.packets = [];
         $scope.watchedAddresses = [];
 
+        $scope.mapHref = function (mac_address) {
+            var params = {mac_address: mac_address, startTimestamp: $stateParams.startTimestamp, endTimestamp: $stateParams.endTimestamp};
+            return $state.href('heatmap', params);
+        }
+
         var listenTo = function (targetobj) {
             Socket.listenTo('packet:' + targetobj.mac_address_src, function (packet) {
                 console.log(packet);

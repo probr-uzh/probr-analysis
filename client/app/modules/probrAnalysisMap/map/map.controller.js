@@ -18,12 +18,22 @@ angular.module('probrAnalysisMap')
             var startTimestamp = parseInt($stateParams.startTimestamp);
             var endTimestamp = parseInt($stateParams.endTimestamp);
 
+            var query = {
+                area: {$lte: areaCutoff},
+                noOfCircles: {$gte: 4},
+                time: {$gt: startTimestamp, $lt: endTimestamp}
+            };
+
+            if ($stateParams.mac_address) {
+                query.mac_address = $stateParams.mac_address;
+            }
+
+            if ($stateParams.tags) {
+                query.tags = $stateParams.tags;
+            }
+
             Location.query({
-                query: {
-                    area: {$lte: areaCutoff},
-                    noOfCircles: {$gte: 4},
-                    time: {$gt: startTimestamp, $lt: endTimestamp}
-                }
+                query: query
             }, function (resultObj) {
 
                 $scope.nrOfLocations = resultObj.length;

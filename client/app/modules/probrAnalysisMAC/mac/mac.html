@@ -22,9 +22,7 @@
             <table class="table table-condensed">
                 <tr ng-repeat="target in watchedAddresses">
                     <td>
-                        <a class="btn btn-primary btn-xs" href="mac/location/{{target.mac_address}}">Map</a>
-                        <a class="btn btn-primary btn-xs" href="mac/history/{{target.mac_address}}">History</a>
-
+                        <a class="btn btn-primary btn-xs" ng-href="{{mapHref(target.mac_address)}}"><i class="fa fa-map-marker"></i></a>
                         <span class="btn btn-default btn-xs" style="font-family: monospace">{{target.mac_address | mac}} ({{target.alias}})</span>
 
                         <i ng-click="removeMAC(target)" class="fa fa-trash pull-right"></i>
