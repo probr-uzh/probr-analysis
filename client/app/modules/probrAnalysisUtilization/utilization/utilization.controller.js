@@ -51,6 +51,7 @@ angular.module('probrAnalysisUtilization')
                 $scope.sessionData.push({x: new Date(entry["_id"]), val_0: entry["value"]})
             });
 
+            window.dispatchEvent(new Event('resize'));
             $scope.isLoadingSession = false;
 
         });
