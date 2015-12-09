@@ -54,7 +54,7 @@ angular.module('probrAnalysisApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth, $window) {
+  .run(function ($rootScope, $location, Auth, $window, $state, $stateParams) {
 
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {

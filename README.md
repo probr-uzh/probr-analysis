@@ -1,5 +1,7 @@
 # probr-analysis: analysis webapp for probr
 
+[![Build Status master](https://travis-ci.org/probr/probr-analysis.svg?branch=master)](https://travis-ci.org/probr/probr-analysis)
+
 This is the analysis application for the [probr WiFi tracking system](https://github.com/probr)
 
 It is a master student research project at the [Communication Systems Group](http://www.csg.uzh.ch) of the  [Department of Informatics](http://www.ifi.uzh.ch), at the [University of Zurich](http://www.uzh.ch), Switzerland.

@@ -42,10 +42,8 @@ angular.module('probrPagination', [])
 
                         $scope.isSearching = true;
 
-                        // update location
-                        var locationParams = angular.copy(searchQuery);
-                        delete locationParams.query;
-                        //$location.path($location.path(), false).search(angular.extend(angular.copy(locationParams), query));
+                        var locationParams = angular.extend(query, {startTimestamp: query.startTimestamp, endTimestamp: query.endTimestamp});
+                        $location.search(locationParams);
 
                         var countQuery = angular.copy(searchQuery);
                         delete countQuery.skip;
@@ -65,7 +63,7 @@ angular.module('probrPagination', [])
 
                     $scope.$watch('query', function () {
                         $scope.pageChanged();
-                    });
+                    }, true);
 
                 }
             }

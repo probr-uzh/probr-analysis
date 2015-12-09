@@ -50,11 +50,11 @@ angular.module('probrAnalysisCommon')
         $scope.selectedTag = $stateParams.tags || null;
 
         $scope.$watchGroup(['datePickerDate', 'selectedTag'], function () {
-            $location.search({
+            $location.search(angular.extend($location.search(), {
                 tags: $scope.selectedTag,
                 startTimestamp: $scope.datePickerDate.startDate == undefined ? new Date().getTime() - 60 * 24 * 24 : $scope.datePickerDate.startDate.valueOf(),
                 endTimestamp: $scope.datePickerDate.endDate == undefined ? new Date().getTime() : $scope.datePickerDate.endDate.valueOf()
-            });
+            }));
         });
 
         $scope.isActive = function (route) {

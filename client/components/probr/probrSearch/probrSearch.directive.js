@@ -20,12 +20,17 @@ angular.module('probrAnalysisApp')
           var fieldName = params[0];
           var fieldContent = $scope.typeaheadQuery.substr($scope.typeaheadQuery.indexOf(':'), $scope.typeaheadQuery.length).replace(/:/g, '').trim();
 
+          if(fieldName === 'tags'){
+            return;
+          }
+
           $scope.query[fieldName] = fieldContent;
           $scope.typeaheadQuery = '';
         }
 
         $scope.removeLabel = function (key) {
           delete $scope.query[key];
+          $scope.search();
         }
 
         $scope.search = function () {

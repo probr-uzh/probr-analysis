@@ -34,6 +34,8 @@
     "turf": "^2.0.2"
   },
   "devDependencies": {
+    "async": "^1.5.0",
+    "chai": "^3.4.1",
     "connect-livereload": "~0.4.0",
     "grunt": "~0.4.4",
     "grunt-angular-templates": "^0.5.4",
@@ -83,6 +85,7 @@
     "karma-phantomjs-launcher": "~0.1.4",
     "karma-requirejs": "~0.2.1",
     "karma-script-launcher": "~0.1.0",
+    "mocha": "^2.3.4",
     "open": "~0.0.4",
     "requirejs": "~2.1.11",
     "should": "~3.3.1",
