@@ -55,7 +55,10 @@ describe("/api/session/reduce endpoint", function() {
     before(function(done) {
         mongoose.connect(dbURI, function(err) {
             if(err) return done(err);
-            done();
+            Session.remove({}, function(err, removed) {
+                if (err) return done(err);
+                done();
+            });
         })
     });
 
