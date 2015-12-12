@@ -31,12 +31,21 @@ angular.module('probrAnalysisUtilization')
             }]
         };
 
-
         if ($stateParams.endTimestamp - $stateParams.startTimestamp < (1000 * 60 * 60 * 24)) {
             $scope.sessionBarChartOptions.axes = {x: {type: "date", ticksFormat: "%H:%M", ticks: 24, ticksInterval: d3.time.hour}};
         } else {
             $scope.sessionBarChartOptions.axes = {x: {type: "date", ticksFormat: "%a %d, %H:%M", ticks: 7, ticksInterval: d3.time.day}};
         }
+
+        var endTime = new Date(parseInt($stateParams.endTimestamp));
+        var startTime = new Date(parseInt($stateParams.startTimestamp));
+        Session.query({
+            query: {
+                startTimestamp: {$lt: endTime, $gt: startTime},
+                tags: $stateParams.tags
+            }}, function(res,err) {
+            $scope.sessions = res;
+        } );
 
         var sessionQuery = {
             startTimestamp: $stateParams.startTimestamp,

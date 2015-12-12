@@ -88,11 +88,19 @@ angular.module('probrAnalysisApp')
                     });
 
                     // Get array of unique devices
-                    //var devices = d3.set(sessions.map(function(s) {
-                    //    return s.mac_address;
-                    //})).values();
-
-                    var devices = scope.aliases;
+                    if (scope.aliases)
+                        var devices = scope.aliases;
+                    else {
+                        var devices = d3.set(sessions.map(function(s) {
+                            return s.mac_address;
+                        })).values().map(function(s) {
+                            return {
+                                mac_address: s,
+                                alias: ""
+                            }
+                        });
+                    }
+                    console.log(devices[0]);
 
                     // Margin and sizes
                     // Not pixel based, since use uf ViewBox
