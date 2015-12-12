@@ -2,7 +2,7 @@
  * Created by seebi on 09.12.15.
  */
 
-var dbURI    = 'mongodb://localhost/probr-core-test'
+var dbURI    = 'mongodb://127.0.0.1/probr-core-test'
     , Chai = require('chai')
     , expect   = Chai.expect
     , mongoose = require('mongoose')
