@@ -331,8 +331,8 @@ angular.module('probrAnalysisApp')
                     display();
 
                     function display () {
-                        var minExtent = d3.time.hour(brush.extent()[0])
-                            , maxExtent = d3.time.hour(brush.extent()[1]);
+                        var minExtent = d3.time.minute(brush.extent()[0])
+                            , maxExtent = d3.time.minute(brush.extent()[1]);
                         var visibleSessions = sessions.filter(function (d) {
                             return (d.startTimestamp > minExtent && d.startTimestamp < maxExtent)
                                 ||     (d.endTimestamp > minExtent && d.endTimestamp < maxExtent)
