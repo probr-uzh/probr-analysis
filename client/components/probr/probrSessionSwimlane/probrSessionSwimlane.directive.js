@@ -129,10 +129,13 @@ angular.module('probrAnalysisApp')
                         .attr('height', mainHeight);
 
                     // Scales
+
+                    var firstSession = d3.min(sessions, function(d){return d.startTimestamp});
+                    var lastSession = d3.max(sessions, function(d){return d.endTimestamp});
                     var miniX = d3.time.scale()
-                        .domain([d3.time.sunday(
-                            d3.min(sessions, function(d){return d.startTimestamp})),
-                            d3.max(sessions, function(d){return d.endTimestamp})
+                        .domain([
+                            firstSession,
+                            lastSession
                         ])
                         .range([0, graphWidth]);
                     var miniY = d3.scale.ordinal()
@@ -156,14 +159,14 @@ angular.module('probrAnalysisApp')
 
                     // Main Graph
                     var main = plot.append('g')
-                        .attr('transform', 'translate(' + textColumnWidth + ',0)')
+                        .attr('transform', 'translate(' + textColumnWidth + ','
+                            + (miniHeight + spaceBetweenGraphs) + ')')
                         .attr('class', 'main');
 
                     // Mini Graph
                     var mini = plot.append('g')
                         .attr('transform', 'translate('
-                            + textColumnWidth + ','
-                            + (mainHeight + spaceBetweenGraphs) + ')')
+                            + textColumnWidth + ',0)')
                         .attr('class', 'mini');
 
                     // Draw mac addresses for main graph
@@ -182,9 +185,9 @@ angular.module('probrAnalysisApp')
                         .data(devices)
                         .enter().append('line')
                         .attr('x1', 0)
-                        .attr('y1', function(d) { return mainY(d); })
+                        .attr('y1', function(d) { return mainY(d.mac_address); })
                         .attr('x2', graphWidth)
-                        .attr('y2', function(d) { return mainY(d); })
+                        .attr('y2', function(d) { return mainY(d.mac_address); })
                         .attr('stroke', 'lightgray')
                         .attr('class', 'laneLines');
 
@@ -204,9 +207,9 @@ angular.module('probrAnalysisApp')
                         .data(devices)
                         .enter().append('line')
                         .attr('x1', 0)
-                        .attr('y1', function(d) { return miniY(d); })
+                        .attr('y1', function(d) { return miniY(d.mac_address); })
                         .attr('x2', graphWidth)
-                        .attr('y2', function(d) { return miniY(d); })
+                        .attr('y2', function(d) { return miniY(d.mac_address); })
                         .attr('stroke', 'lightgray')
                         .attr('class', 'laneLines');
 
