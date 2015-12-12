@@ -46,26 +46,28 @@ angular.module('probrAnalysisDevices')
                         $scope.randomizedDevices.push(element);
                     }
 
-                    var vendor = element.vendor;
-                    if (vendor !== undefined) {
-                        totalCount++;
-                        if (vendorMap[vendor] === undefined) { //vendor not yet encountered --> add new entry to map
-                            vendorMap[vendor] = 1;
-                            vendorList.push(vendor);
-                        } else { //vendor already encountered --> increase count for that vendor
-                            vendorMap[vendor] = vendorMap[vendor] + 1;
+                    if( (element.hasOwnProperty('vendor')) && (element.vendor !== undefined) && (element.vendor !== null) ){ //only consider for ranking if it has a vendor
+                        var vendor = element.vendor;
+                        if (vendor !== undefined) {
+                            totalCount++;
+                            if (vendorMap[vendor] === undefined) { //vendor not yet encountered --> add new entry to map
+                                vendorMap[vendor] = 1;
+                                vendorList.push(vendor);
+                            } else { //vendor already encountered --> increase count for that vendor
+                                vendorMap[vendor] = vendorMap[vendor] + 1;
+                            }
                         }
-                    }
 
-                    var elementDate = new Date(element.last_seen);
-                    if (elementDate > lastFiveMinDate) {
-                        lastFiveMinDevices.push(element);
-                    }
-                    if (elementDate > lastHourDate) {
-                        lastHourDevices.push(element);
-                    }
-                    if (elementDate > lastDayDate) {
-                        lastDayDevices.push(element);
+                        var elementDate = new Date(element.last_seen);
+                        if (elementDate > lastFiveMinDate) {
+                            lastFiveMinDevices.push(element);
+                        }
+                        if (elementDate > lastHourDate) {
+                            lastHourDevices.push(element);
+                        }
+                        if (elementDate > lastDayDate) {
+                            lastDayDevices.push(element);
+                        }
                     }
 
 
