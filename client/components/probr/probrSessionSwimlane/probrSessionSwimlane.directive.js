@@ -318,7 +318,6 @@ angular.module('probrAnalysisApp')
                     // Draw selection area
                     var brush = d3.svg.brush()
                         .x(miniX)
-                        .extent([d3.time.monday(new Date()),d3.time.saturday.ceil(new Date())])
                         .on("brush", display);
 
                     mini.append('g')
