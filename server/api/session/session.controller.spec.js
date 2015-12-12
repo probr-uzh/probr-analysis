@@ -153,8 +153,8 @@ describe("/api/session/reduce endpoint", function() {
             getResponse,
             function(results, cb) {
                 results.forEach(function (res) {
-                    expect(results).to.include({_id: new Date("2015-01-01 08:00:00")});
-                    expect(results).to.include({_id: new Date("2015-01-01 17:55:00")});
+                    expect(results).to.include({_id: new Date("2015-01-01 08:00:00"), value: 0});
+                    expect(results).to.include({_id: new Date("2015-01-01 17:55:00"), value: 0});
                 });
                 done();
             }
