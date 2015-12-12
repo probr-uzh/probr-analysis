@@ -32,13 +32,24 @@ exports.reduce = function (req, res) {
         var upperBound = new Date(slotSize * Math.floor(this.endTimestamp.valueOf() / slotSize) + slotSize);
 
         while (bucket < upperBound) {
-            emit(bucket, 1);
+            emit(bucket, {macs: [this.mac_address]});
             bucket = new Date(bucket.valueOf() + slotSize);
         }
     };
 
     mapReduceOptions.reduce = function (key, values) {
-        return values.length;
+        // count unique mac's
+        var macs = [];
+        for(var i=0; i<values.length; i++) {
+            var val = values[i];
+            for(var j=0; j<val.macs.length; j++) {
+                if (macs.indexOf(val.macs[j]) === -1) {
+                    macs.push(val.macs[j]);
+                }
+            }
+        }
+
+        return { macs: macs };
     };
 
     mapReduceOptions.query = {startTimestamp: {$lt: endTimestamp}, endTimestamp: {$gt: startTimestamp}};
@@ -51,12 +62,24 @@ exports.reduce = function (req, res) {
         mapReduceOptions.query.mac_address = mac_address;
     }
 
-    mapReduceOptions.sort = {id: 1}
+    mapReduceOptions.sort = {id: 1};
 
     Session.mapReduce(
         mapReduceOptions,
         function (err, results, stats) {
             if (err) handleError(res, err);
+            results = results.map(function(r) { return {_id: r._id, value: r.value.macs.length}; });
+
+            // Fill in empty buckets if there are
+            var bucket = new Date(slotSize * Math.floor(startTimestamp.valueOf() / slotSize));
+            var upperBound = new Date(slotSize * Math.floor(endTimestamp.valueOf() / slotSize) + slotSize);
+            while (bucket < upperBound) {
+                if(_.findIndex(results, function(e) { return e._id.valueOf(0) == bucket.valueOf(); }) === -1) {
+                    results.push({_id: bucket, value: 0});
+                }
+                bucket = new Date(bucket.valueOf() + slotSize);
+            }
+            results.sort(function(d, e) { return d._id - e._id; });
             return res.status(200).json(results);
         }
     );
