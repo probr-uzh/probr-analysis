@@ -4,6 +4,8 @@
 
 exports.mapReduceConfig = function (options) {
 
+    var SESSION_TIMEOUT = 20; // minutes
+
     var map = function() {
         var key = this.mac_address_src;
         var value = {
@@ -32,8 +34,8 @@ exports.mapReduceConfig = function (options) {
         for (var i=1; i<sorted.length; i++) {
             var curr = sorted[i];
 
-            // Merge if the session is 5min close to previous session
-            if (curr.startTimestamp.valueOf() <= prev.endTimestamp.valueOf() + 1000*60*5) {
+            // Merge if the session is SESSION_TIMEOUT min close to previous session
+            if (curr.startTimestamp.valueOf() <= prev.endTimestamp.valueOf() + 1000*60*SESSION_TIMEOUT) {
                 prev.endTimestamp = curr.endTimestamp;
                 prev.duration = Math.floor((prev.endTimestamp.valueOf() - prev.startTimestamp.valueOf()) / 1000);
                 prev.weightedSignalStrength = Math.floor((prev.weightedSignalStrength*prev.count + curr.weightedSignalStrength)/(prev.count+1));
@@ -59,8 +61,9 @@ exports.mapReduceConfig = function (options) {
         mapReduce: "packets",
         map: map,
         reduce: reduce,
+        scope: { SESSION_TIMEOUT: SESSION_TIMEOUT },
         out: {reduce: "raw_sessions"},
-        query: { }
+        query: {signal_strength:{$gt: -55}}
     };
 
     // Add/override custom options

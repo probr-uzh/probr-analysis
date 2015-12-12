@@ -1,7 +1,7 @@
 /**
  * Session Task
  *
- * Merges any packets from one device, that are within 5min
+ * Merges any packets from one device, that are within some minutes
  * of each other to sessions together.
  *
  */
