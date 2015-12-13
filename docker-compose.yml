@@ -1,0 +1,21 @@
+# probr-analysis, main node app
+analysis:
+   image: probr/analysis:latest
+   environment:
+     NODE_ENV: production
+   command: node dist/server/app.js
+   ports:
+     - "8080:8080"
+   external_links:
+     - probrcore_redis_1:redis
+     - probrcore_mongodb_1:mongodb
+
+# probr-analysis, worker for tasks
+analysis_worker:
+   image: probr/analysis:latest
+   environment:
+     NODE_ENV: production
+   command: node dist/worker/app.js
+   external_links:
+     - probrcore_redis_1:redis
+     - probrcore_mongodb_1:mongodb

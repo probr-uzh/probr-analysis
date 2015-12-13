@@ -19,7 +19,6 @@ module.exports = function (grunt) {
         cdnify: 'grunt-google-cdn',
         protractor: 'grunt-protractor-runner',
         buildcontrol: 'grunt-build-control',
-        processhtml: 'grunt-processhtml'
     });
 
     // Time how long tasks take. Can help when optimizing build times
@@ -27,14 +26,6 @@ module.exports = function (grunt) {
 
     // Define the configuration for all the tasks
     grunt.initConfig({
-
-        processhtml: {
-            dist: {
-                files: {
-                    '<%= yeoman.dist %>/public/index.html': ['<%= yeoman.dist %>/public/index.html']
-                }
-            },
-        },
 
         // Project settings
         pkg: grunt.file.readJSON('package.json'),
@@ -644,7 +635,6 @@ module.exports = function (grunt) {
         'concat',
         'ngAnnotate',
         'copy:dist',
-        'processhtml',
         'cdnify',
         'cssmin',
         'uglify',
