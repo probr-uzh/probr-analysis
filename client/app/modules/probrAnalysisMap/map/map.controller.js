@@ -1,26 +1,53 @@
 'use strict'
 
 angular.module('probrAnalysisMap')
-    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, Location, Room) {
+    .controller('MapCtrl', function ($scope, $state, $stateParams, $rootScope, $location, Location, Room, leafletData) {
+
+        $scope.geojson = {
+            data: {type: "FeatureCollection", features: []}, style: {
+                fillColor: "#55a67f",
+                fillOpacity: 0.7,
+                weight: 2,
+                color: '#55a67f',
+                opacity: 1
+            }
+        };
 
         // Room
         Room.query({}, function (rooms) {
-            $scope.rooms = rooms;
+
+            if (rooms !== undefined) {
+
+                angular.forEach(rooms, function (room) {
+                    $scope.geojson.data.features.push(room.bounds.features[0]);
+                    leafletData.getMap().then(function (map) {
+                        var latlngs = [];
+                        for (var i in room.bounds.features[0].geometry.coordinates) {
+                            var coord = room.bounds.features[0].geometry.coordinates[i];
+                            for (var j in coord) {
+                                var points = coord[j];
+                                latlngs.push(angular.copy(points).reverse()); // copy it, or else it changes the reference points in the geojson
+                            }
+                        }
+                        map.fitBounds(latlngs);
+                    });
+                });
+
+            }
+
         });
 
         $scope.overlays = {};
 
-        $scope.query = function () {
+        $scope.query = function (startTimestamp, endTimestamp) {
 
             $scope.isLoading = true;
-            var areaCutoff = 10;
-
-            var startTimestamp = parseInt($stateParams.startTimestamp);
-            var endTimestamp = parseInt($stateParams.endTimestamp);
+            var areaCutoff = 100;
+            var noOfCircles = 3;
 
             var query = {
                 area: {$lte: areaCutoff},
-                noOfCircles: {$gte: 4},
+                noOfCircles: {$gte: noOfCircles},
                 time: {$gt: startTimestamp, $lt: endTimestamp}
             };
 
@@ -36,16 +63,28 @@ angular.module('probrAnalysisMap')
                 query: query
             }, function (resultObj) {
 
-                $scope.nrOfLocations = resultObj.length;
-
+                var nrOfLocations = resultObj.length;
+                var intensityTotal = 0;
                 var data = [];
-                var areaSum = 0;
 
                 angular.forEach(resultObj, function (obj) {
-                    //var intensity = Math.log(areaCutoff / obj.area) / 150;
-                    areaSum = areaSum + obj.area;
-                    data.push([obj.location.coordinates[1], obj.location.coordinates[0], 0.3]);
+
+                    var weightedSignal = 0;
+
+                    angular.forEach(obj.derivedFrom, function (obj) {
+                        weightedSignal += obj.weightedSignal;
+                    });
+
+                    var avgWeightedSignal = weightedSignal / obj.derivedFrom.length;
+
+                    var heatmapPower = (1 / Math.log(80)) * Math.log(avgWeightedSignal + 80) / (nrOfLocations / 50);
+                    intensityTotal += heatmapPower;
+
+                    data.push([obj.location.coordinates[1], obj.location.coordinates[0], heatmapPower]);
                 });
+
+                console.log(nrOfLocations);
+                console.log(intensityTotal);
 
                 var overlays = {
                     heatmap: {
@@ -53,7 +92,7 @@ angular.module('probrAnalysisMap')
                         type: "webGLHeatmap",
                         data: data,
                         visible: true,
-                        layerOptions: {size: 1},
+                        layerOptions: {size: 1.5},
                         doRefresh: true
                     }
                 }
@@ -62,9 +101,15 @@ angular.module('probrAnalysisMap')
                 $scope.isLoading = false;
 
             });
+
+            $location.search({startTimestamp: startTimestamp, endTimestamp: endTimestamp});
+
         };
 
-        $scope.query();
+        var startTimestamp = parseInt($stateParams.startTimestamp);
+        var endTimestamp = parseInt($stateParams.endTimestamp);
+
+        $scope.query(startTimestamp, endTimestamp);
 
         angular.element(document).ready(function () {
             $rootScope.$emit("updatePositions");
@@ -73,5 +118,17 @@ angular.module('probrAnalysisMap')
                 $rootScope.$emit("updatePositions");
             });
         });
+
+        $scope.nextSlot = function () {
+            var newStart = startTimestamp + (endTimestamp - startTimestamp);
+            var newEnd = endTimestamp + (endTimestamp - startTimestamp);
+            $scope.query(newStart, newEnd);
+        }
+
+        $scope.previousSlot = function () {
+            var newStart = startTimestamp - (endTimestamp - startTimestamp);
+            var newEnd = endTimestamp - (endTimestamp - startTimestamp);
+            $scope.query(newStart, newEnd);
+        }
 
     });

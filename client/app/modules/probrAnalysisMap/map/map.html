@@ -3,6 +3,10 @@
 
 <div class="container-fluid">
     <div class="row stretch" style="margin-top: -15px;">
-        <probr-map rooms="rooms" overlays="overlays"></probr-map>
+
+        <button class="btn btn-primary" style="position: absolute; top: 110px; left: 50px; z-index: 1000" ng-click="previousSlot()"><<</button>
+        <button class="btn btn-primary" style="position: absolute; top: 110px; left: 100px; z-index: 1000" ng-click="nextSlot()">>></button>
+
+        <probr-map overlays="overlays" geodata="geojson"></probr-map>
     </div>
 </div>
