@@ -20,8 +20,6 @@ angular.module('probrAnalysisDevices')
                 $scope.devices = resultObj;
                 $scope.randomizedDevices = [];
 
-                console.log(resultObj);
-
                 var devices = $scope.devices;
 
                 var vendorMap = new Object();

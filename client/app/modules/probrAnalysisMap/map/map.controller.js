@@ -83,9 +83,6 @@ angular.module('probrAnalysisMap')
                     data.push([obj.location.coordinates[1], obj.location.coordinates[0], heatmapPower]);
                 });
 
-                console.log(nrOfLocations);
-                console.log(intensityTotal);
-
                 var overlays = {
                     heatmap: {
                         name: "Heat Map",

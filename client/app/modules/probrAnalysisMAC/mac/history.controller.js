@@ -86,7 +86,6 @@ angular.module('probrAnalysisMAC')
         var weekDates = [];
         var currentDate = startDate;
         for(var i = 0; i < 7 ; i++){
-          console.log(currentDate);
           weekDates.push(currentDate.getDate());
           currentDate = new Date(currentDate.setDate(currentDate.getDate() + 1));
         }
@@ -109,8 +108,6 @@ angular.module('probrAnalysisMAC')
           $scope.punchCardData.push(punchCardData[dayIndex - 1]);
 
         }
-
-        console.log($scope.punchCardData);
 
       });
 

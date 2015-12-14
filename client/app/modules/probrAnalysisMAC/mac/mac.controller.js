@@ -13,7 +13,6 @@ angular.module('probrAnalysisMAC')
 
         var listenTo = function (targetobj) {
             Socket.listenTo('packet:' + targetobj.mac_address_src, function (packet) {
-                console.log(packet);
                 if ($scope.packets.length < 25) {
                     $scope.packets.unshift(packet);
                 } else {
