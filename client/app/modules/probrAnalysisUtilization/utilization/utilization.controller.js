@@ -39,9 +39,11 @@ angular.module('probrAnalysisUtilization')
 
         var endTime = new Date(parseInt($stateParams.endTimestamp));
         var startTime = new Date(parseInt($stateParams.startTimestamp));
+
         Session.query({
             query: {
-                startTimestamp: {$lt: endTime, $gt: startTime},
+                startTimestamp: {$lt: endTime},
+                endTimestamp: {$gt: startTime},
                 tags: $stateParams.tags
             }}, function(res,err) {
             $scope.sessions = res;
