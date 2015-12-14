@@ -24,10 +24,7 @@ angular.module('probrAnalysisApp', [
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/packets');
-    $locationProvider.html5Mode({
-      enabled: true,
-      requireBase: false
-    });
+    $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
   })
 
