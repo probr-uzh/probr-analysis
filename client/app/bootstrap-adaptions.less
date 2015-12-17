@@ -61,3 +61,33 @@
   min-height: 75% !important;
   min-height: 75vh !important;
 }
+
+/** Date-Range-Picker Adaptions **/
+.daterangepicker {
+  .calendar-table {
+    border: none;
+  }
+
+  td.active {
+    background-color: @brand-primary;
+    border-color: @brand-primary;
+  }
+
+  td.active:hover {
+    background-color: @brand-primary-light;
+    border-color: @brand-primary-light;
+  }
+
+  .input-mini {
+    border-radius: 0;
+  }
+
+  .input-mini.active {
+    border-color: @brand-primary;
+  }
+
+}
+
+.dropdown-menu {
+  border-radius: 0;
+}
