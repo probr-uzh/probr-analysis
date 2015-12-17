@@ -102,7 +102,7 @@ angular.module('probrAnalysisMap')
 
             });
 
-            $location.search({startTimestamp: startTimestamp, endTimestamp: endTimestamp, tags: tags});
+            $location.search({startTimestamp: startTimestamp, endTimestamp: endTimestamp, tags: tags, mac_address: $stateParams.mac_address});
 
         };
 

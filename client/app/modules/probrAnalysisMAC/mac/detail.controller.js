@@ -5,8 +5,6 @@ angular.module('probrAnalysisMAC')
 
         $scope.target = {mac_address: $stateParams.mac_address, alias: ''};
         $scope.aliases = [$scope.target];
-        $scope.startDate = new Date(parseInt($stateParams.startTimestamp));
-        $scope.endDate = new Date(parseInt($stateParams.endTimestamp));
 
         var constructQueryObject = function () {
             return {
