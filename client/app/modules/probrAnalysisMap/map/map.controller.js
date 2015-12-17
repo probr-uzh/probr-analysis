@@ -53,10 +53,9 @@ angular.module('probrAnalysisMap')
 
             if ($stateParams.mac_address) {
                 query.mac_address = $stateParams.mac_address;
-            }
-
-            if ($stateParams.tags) {
-                query.tags = $stateParams.tags;
+            } else {
+                // ignore routers that pollute our data :(
+                query.mac_address = {$nin: ['0002e342cce0']};
             }
 
             Location.query({
@@ -64,7 +63,6 @@ angular.module('probrAnalysisMap')
             }, function (resultObj) {
 
                 var nrOfLocations = resultObj.length;
-                var intensityTotal = 0;
                 var data = [];
 
                 angular.forEach(resultObj, function (obj) {
@@ -75,10 +73,15 @@ angular.module('probrAnalysisMap')
                         weightedSignal += obj.weightedSignal;
                     });
 
-                    var avgWeightedSignal = weightedSignal / obj.derivedFrom.length;
+                    var correctionFactor = 100;
+                    var logFactor = 75;
 
-                    var heatmapPower = (1 / Math.log(80)) * Math.log(avgWeightedSignal + 80) / (nrOfLocations / 50);
-                    intensityTotal += heatmapPower;
+                    if (nrOfLocations < 50) {
+                        correctionFactor = 5;
+                    }
+
+                    var avgWeightedSignal = weightedSignal / obj.derivedFrom.length;
+                    var heatmapPower = (1 / Math.log(logFactor)) * Math.log(avgWeightedSignal + logFactor) / (nrOfLocations / correctionFactor);
 
                     data.push([obj.location.coordinates[1], obj.location.coordinates[0], heatmapPower]);
                 });
@@ -89,7 +92,7 @@ angular.module('probrAnalysisMap')
                         type: "webGLHeatmap",
                         data: data,
                         visible: true,
-                        layerOptions: {size: 1.5},
+                        layerOptions: {size: 1.2},
                         doRefresh: true
                     }
                 }
@@ -99,12 +102,13 @@ angular.module('probrAnalysisMap')
 
             });
 
-            $location.search({startTimestamp: startTimestamp, endTimestamp: endTimestamp});
+            $location.search({startTimestamp: startTimestamp, endTimestamp: endTimestamp, tags: tags});
 
         };
 
         var startTimestamp = parseInt($stateParams.startTimestamp);
         var endTimestamp = parseInt($stateParams.endTimestamp);
+        var tags = $stateParams.tags !== undefined ? $stateParams.tags : [];
 
         $scope.query(startTimestamp, endTimestamp);
 
