@@ -28,7 +28,7 @@
     "Leaflet.awesome-markers": "~2.0.2",
     "lodash": "~2.4.1",
     "ngEnter": "~0.0.1",
-    "webgl-heatmap-leaflet": "*",
+    "webgl-heatmap-leaflet": "https://github.com/ursudio/webgl-heatmap-leaflet.git#4dcc9aa0e5691f1851fc8787e4e09bebd0b528b6",
     "angular-i18n": "~1.4.7",
     "PruneCluster": "~1.1.0",
     "n3-line-chart": "~1.1.12",
