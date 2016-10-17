@@ -96,6 +96,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "start-prod": "NODE_ENV=production grunt build && NODE_ENV=production REDIS_PORT_6379_TCP_ADDR=192.168.1.189 MONGODB_PORT_27017_TCP_ADDR=192.168.1.189 node server/app.js",
+    "start-prod-worker": "NODE_ENV=production REDIS_PORT_6379_TCP_ADDR=192.168.1.189 MONGODB_PORT_27017_TCP_ADDR=192.168.1.189 node worker/app.js",
     "start": "node server/app.js",
     "test": "grunt test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
