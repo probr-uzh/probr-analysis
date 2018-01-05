@@ -40,7 +40,7 @@ exports.mapReduceConfig = function (options) {
                 prev.duration = Math.floor((prev.endTimestamp.valueOf() - prev.startTimestamp.valueOf()) / 1000);
                 prev.weightedSignalStrength = Math.floor((prev.weightedSignalStrength*prev.count + curr.weightedSignalStrength)/(prev.count+1));
                 for(tag in curr.tags) {
-                    if(prev.tags.indexOf(curr.tags[tag]) === -1) {
+                    if(prev.tags && prev.tags.indexOf(curr.tags[tag]) === -1) {
                         prev.tags.push(curr.tags[tag]);
                     }
                 }

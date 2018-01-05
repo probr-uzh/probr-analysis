@@ -10,7 +10,6 @@ angular.module('probrAnalysisApp')
     // socket.io now auto-configures its connection when we ommit a connection url
     var ioSocket = io('', {
       //query: 'token=' + Auth.getToken(),
-      path: basePath + 'socket.io-client'
     });
 
     var socket = socketFactory({
