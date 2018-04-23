@@ -27,8 +27,7 @@ if (config.seedDB) {
 var app = express();
 var server = require('http').createServer(app);
 var socketio = require('socket.io')(server, {
-    serveClient: config.env !== 'production',
-    path: '/socket.io-client'
+    serveClient: config.env !== 'production'
 });
 
 // SocketIO Redis
